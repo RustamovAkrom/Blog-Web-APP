@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %} Post Detail {% endblock %}
+
+{% block content %}
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+              <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ post.author.avatar.url }}">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user_posts' %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+                    <small class="text-muted">{{ post.publisher_at }}</small>
+                    {% if post.author == request.user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post_update' post.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' post.id %}">Delete</a>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <h2 class="article-title">{{ post.title }}</h2>
+                  <p class="article-content">{{ post.content }}
+                  </p>
+                </div>
+              </article>
+</div>
+{% include 'blog/base_last_post.html' %}
+</div>
+</div>
+</main>
+{% endblock %}

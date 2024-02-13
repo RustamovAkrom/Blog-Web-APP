@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block title %} Home page {% endblock %}
+
+{% block content %}
+    <h1>Log out ?</h1><hr>
+    <div>
+        <center>
+            <a><form method="post">
+                {% csrf_token %}
+                <button type="submit">Yes</button>
+            </form></a>
+            <a href="{% url 'home' %}">
+                <button>No</button>
+            </a>
+        </center>
+    </div>
+   
+{% endblock %}
