@@ -1,21 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.urls import reverse
-
-from django.views.generic import DeleteView, UpdateView, CreateView, DetailView
 
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout, login, authenticate
 from django.contrib import messages
 
 from django.core.paginator import Paginator
 
-from .forms import *
-from .models import *
+from .forms import RegisterForm, LoginForm, PostUpdateForm, PostCreateForm
+from .models import Post
 
 import datetime
 

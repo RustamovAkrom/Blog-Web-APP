@@ -1,4 +1,4 @@
-from django.conf.urls import handler400, handler403, handler404, handler500
+from django.conf.urls import handler400, handler403, handler404, handler500 # noqa
 from django.conf.urls.static import static
 from . import settings
 
@@ -11,7 +11,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# handler400 = "apps.shared.views.bad_request_view"
-# handler403 = "apps.shared.views.page_permission_denied_view"
-# handler404 = "apps.shared.views.page_not_found_view"
-# handler500 = "apps.shared.views.server_error_view"
+handler400 = "apps.shared.views.bad_request_view" # noqa
+handler403 = "apps.shared.views.page_permission_denied_view" # noqa 
+handler404 = "apps.shared.views.page_not_found_view" # noqa
+handler500 = "apps.shared.views.server_error_view" # noqa

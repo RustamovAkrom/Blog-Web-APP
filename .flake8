@@ -1,0 +1,27 @@
+[flake8]
+# Maximum allowed line length (PEP8 recommends 79, but you can set 88 for flexibility)
+max-line-length = 88
+
+# Ignore specific errors and warnings
+# E501: Line too long
+# W503: Line break occurred before a binary operator (preference to W504 in black formatting)
+# E231: Missing whitespace after ','
+# Customize based on your needs
+ignore = E501, W503, E231
+
+# Exclude specific directories (e.g., migrations, static files, or virtual environments)
+exclude =
+    .git,
+    __pycache__,
+    migrations,
+    static,
+    env,  # your virtual environment directory
+
+# Enable checking for complexity
+max-complexity = 10
+
+# Show the source code that caused the issue
+show-source = True
+
+# Format errors in a certain way (useful for linting tools integration)
+format = %(path)s:%(row)d:%(col)d: %(code)s %(text)s
