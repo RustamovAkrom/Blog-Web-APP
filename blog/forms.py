@@ -8,8 +8,14 @@ from .models import User, Post
 from django.core.exceptions import ValidationError
 
 class LoginForm(forms.Form):
-    username    = forms.CharField(max_length=28, widget=forms.TextInput(attrs={"placeholder":"Username..."}))
-    password    = forms.CharField(max_length=60, widget=forms.PasswordInput(attrs={"placeholder":"Password..."}))          
+    username = forms.CharField(max_length=28, widget=forms.TextInput(attrs={
+        "placeholder":"Username...",
+        "class": "form-control rounded-4"
+    }))
+    password = forms.CharField(max_length=60, widget=forms.PasswordInput(attrs={
+        "placeholder":"Password...",
+        "class": "form-control rounded-4"
+    }))          
 
 
 class RegisterForm(forms.ModelForm):

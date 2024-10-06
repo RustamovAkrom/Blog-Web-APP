@@ -4,10 +4,7 @@
 {% block titlle %} Login {% endblock %}
 
 {% block head %}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet"  media="screen" href="{% static 'blog/login.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -20,15 +17,18 @@
                     <div class="shape"></div>
                     <div class="shape"></div>
                 </div>
-                <form method="post">
-                    <h3>Login Here</h3>
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    <button type="submit">Log In</button>
-                    <div class="social">
-                    <div class="go"><i class="fab fa-google"></i>  Google</div>
-                    <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <h2>Login</h2>
+                            <form action="#" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </form>
+                            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                        </div>
+                        {% include 'blog/base_last_post.html' %}
                     </div>
-                </form>
-            </div>
+                </div>
 {% endblock %}
