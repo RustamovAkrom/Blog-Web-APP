@@ -23,19 +23,3 @@
       {% endif %}
     </ul>
   </nav>
-<!-- 
-<div class="row">
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}"><</a>
-            <a href="{% url 'home' %}?page={{ page_obj.number }}">{{ page_obj.previous_page_number }}</a>
-        {% endif %}
-
-        <button class="page-item"><h4><a href="{% url 'home' %}?page={{ page_obj.number }}">{{ page_obj.number }}</a>
-
-        {% if page_obj.has_next %}
-            <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-            <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">></a>
-        {% endif %}
-    </div>
-</div> -->

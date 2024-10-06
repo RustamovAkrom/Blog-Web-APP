@@ -22,10 +22,22 @@ from .models import *
 
 import datetime
 
-#User authentificate class
-#====================================================================
 
-class RegisterPageView(View):
+class CustomHtmxMixin:
+    def dispatch(self, request, *args, **kwargs):
+        # import pdb; pdb.set_trace()
+        self.template_htmx = self.template_name
+        if not  self.request.META.get("HTTP_HX_REQUEST"):
+            self.template_name = "blog/include_blog.html"
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        kwargs['template_htmx'] = self.template_htmx
+        return super().get_context_data(**kwargs)
+
+
+class RegisterPageView(CustomHtmxMixin, View):
+    template_name = "blog/register.html"
     def get(self, request):
         return render(request, "blog/register.html", { "form":RegisterForm() })
 
@@ -42,7 +54,9 @@ class RegisterPageView(View):
             return render(request, "blog/register.html", { "form":form })
 
 
-class LoginPageView(View):
+class LoginPageView(CustomHtmxMixin, View):
+    template_name = "blog/login.html"
+
     def get(self, request):
         return render(request, "blog/login.html", { "form":LoginForm() })
     
@@ -66,7 +80,9 @@ class LoginPageView(View):
         return render(request, "blog/login.html", { "form":form })
 
 
-class LogoutView(View):
+class LogoutView(CustomHtmxMixin, View):
+    template_name = "blog/logout.html"
+
     def get(self, request):
         return render(request, "blog/logout.html")
     
@@ -74,33 +90,36 @@ class LogoutView(View):
         logout(request)
         return redirect('home')
 
-#Blog Pages
-#===================================================================
-    
-class HomePageView(View):
+
+class HomePageView(CustomHtmxMixin, TemplateView):
+    template_name = "blog/home.html"
+
     def get(self, request):
-        
         if request.user.is_authenticated: 
             posts = Post.objects.exclude(author=request.user)
-
         else: 
             posts = Post.objects.all()
+
         posts = posts.filter(is_active=True).order_by('id')
 
         page = request.GET.get('page', 1)
         size  = request.GET.get('size', 4)
+
         paginator = Paginator(posts.order_by('id'), size)
         page_obj = paginator.page(page)
+
         return render(request, 'blog/home.html', {
             "page_obj":page_obj,
         })
 
 
-class AboutPageView(TemplateView):
+class AboutPageView(CustomHtmxMixin, TemplateView):
     template_name = "blog/about.html"
     
 
-class PostDetailPageView(View):
+class PostDetailPageView(CustomHtmxMixin, View):
+    template_name = "blog/post_detail.html"
+
     def get(self, request, id):
         posts = Post.objects.get(id=id)
         return render(request, 'blog/post_detail.html', {
@@ -109,18 +128,18 @@ class PostDetailPageView(View):
         })
 
 
-class UserProfilePageView(LoginRequiredMixin, View):
+class UserProfilePageView(CustomHtmxMixin, LoginRequiredMixin, View):
+    template_name = "blog/user_posts.html"
     def get(self, request):
-
         posts  = Post.objects.filter(author=request.user)
-
         return render(request, 'blog/user_posts.html', {
             "posts":posts,
         })
 
 
-class PostFormPageView(LoginRequiredMixin, View):
-
+class PostFormPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
+    template_name = "blog/post_form.html"
+    
     def get(self, request):
         return render(request, "blog/post_form.html", {"form":PostCreateForm()})
     
@@ -143,37 +162,41 @@ class PostFormPageView(LoginRequiredMixin, View):
         return render(request, "blog/post_form.html", {"form":form})
 
 
-class UserPostPageView(ListView):
+class UserPostPageView(CustomHtmxMixin, ListView):
     model = Post
     template_name = "blog/user_posts.html"
     context_object_name = 'posts'
 
-@login_required
-def post_update(request, id):
-    post = get_object_or_404(Post, id=id)
 
-    if request.method == 'POST':
+class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, View):
+    template_name = "blog/post_update.html"
+
+    def get(self, request, id):
+        post = get_object_or_404(Post, id=id)
+        form = PostUpdateForm(instance=post)
+        return render(request,  "blog/post_update.html", {"form": form, "post": post})
+    
+    def post(self, request, id):
+        post = get_object_or_404(Post, id=id)
         form = PostUpdateForm(request.POST, instance=post)
         if form.is_valid():
             messages.success(request, "Post succsessfully updated")
             form.save()
             return redirect("profile")
-
+        
         messages.error(request, "You`r post is not valid !")
         return render(request, "blog/post_update.html", {"form":form})
-    
-    form = PostUpdateForm(instance=post)
-    return render(request, "blog/post_update.html", {
-        "form":form,
-        "post":post
-        })
-    
 
-def post_delete(request, id):
-    post = get_object_or_404(Post, id=id)
 
-    if request.method == "POST":
+class PostDeleteView(CustomHtmxMixin, LoginRequiredMixin, View):
+    template_name = "blog/post_confirm_delete.html"
+
+    def get(self, request, id):
+        post = get_object_or_404(Post, id=id)
+        return render(request, "blog/post_confirm_delete.html", {"post": post})
+    
+    def post(self, request, id):
+        post = get_object_or_404(Post, id=id)
         messages.success(request, "post successfully deleted")
         post.delete()
         return redirect("profile")
-    return render(request, "blog/post_confirm_delete.html", {"post":post})

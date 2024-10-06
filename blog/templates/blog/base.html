@@ -10,52 +10,117 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-    {% block head %}{% endblock %}
+    {% block head %} {% endblock %}
     <title>{% block title %} Base html {% endblock %}</title>
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'home' %}">Django Blog</a>
+          <!-- Django blog (Home page) -->
+          <a class="navbar-brand mr-4" 
+          href="{% url 'home' %}"
+          hx-get="{% url 'home' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          >Django Blog</a>
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+              <!-- Home page -->
+              <a class="nav-item nav-link active" 
+              href="{% url 'home' %}" 
+              hx-get="{% url 'home' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >Home</a>
+
+              <!-- About page -->
+              <a class="nav-item nav-link" 
+              href="{% url 'about' %}"
+              hx-get="{% url 'about' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >About</a>
             </div>
-            <!-- Navbar Right Side -->
-          
-              {% if request.user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'post_form' %}">New Post</a>
-                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-                <h5 style="background-color: whitesmoke">Welcome {{ request.user }}</h5>
-              {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-              {% endif %}
+            {% if request.user.is_authenticated %}
+
+              <!-- New post page -->
+              <a class="nav-item nav-link" 
+              href="{% url 'post_form' %}"
+              hx-get="{% url 'post_form' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >New Post</a>
+
+              <!-- Profile page -->
+              <a class="nav-item nav-link" 
+              href="{% url 'profile' %}"
+              hx-get="{% url 'profile' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >Profile</a>
+
+              <!-- Logout page -->
+              <a class="nav-item nav-link"
+              href="{% url 'logout' %}"
+              hx-get="{% url 'logout' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >Logout</a>
+
+              <h5 style="background-color: whitesmoke">{{ request.user }}</h5>
+            {% else %}
+              <!-- Login page -->
+              <a class="nav-item nav-link" 
+              href="{% url 'login' %}"
+              hx-get="{% url 'login' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >Login</a>
+
+              <!-- Register page -->
+              <a class="nav-item nav-link" 
+              href="{% url 'register' %}"
+              hx-get="{% url 'register' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              >Register</a>
+            {% endif %}
             <div class="navbar-nav">
             </div>
           </div>
         </div>
       </nav>
     </header>
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        <p>{{ message }}</p>
+    
+    <div id="main-content">
+      <!-- Messages -->
+       <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+       </div>
+
+
+      <!-- Content -->
+      {% block content %}
+      {% endblock %}
     </div>
-    {% endfor %}
 
-    {% block content %}
+    
+    <script src="{% static 'htmx/htmx.min.js' %}"></script>
 
-    {% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="{% static 'jquery/js/jquery-3.2.1.slim.min.js' %}"></script>
-    <script src="{% static 'cloudflare.com/js/popper.min.js' %}"></script>
+    <script src="{% static 'cloudflare/js/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
 </html>
