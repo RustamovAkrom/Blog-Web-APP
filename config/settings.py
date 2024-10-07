@@ -21,8 +21,6 @@ INSTALLED_APPS = [
     # "django.contrib.postgres",
     # default apps
     "apps.blog.apps.BlogConfig",
-    # thirtd party apps
-    "compressor",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -46,12 +44,6 @@ TEMPLATES = [
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
-            # "loaders": [
-            #     ("django.template.loaders.cached.Loader", [
-            #         'django.template.loaders.filesystem.Loader',
-            #         'django.template.loaders.app_directories.Loader',
-            #     ])
-            # ],
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -100,10 +92,6 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-COMPRESS_ROOT = "compressor/"
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
-
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media/"
 
@@ -112,29 +100,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "blog.User"
 
 SITE_ID = 1
-
-STATICFILES_FINDERS = (
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
-)
-
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "debug.log",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["file"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-    },
-}
