@@ -3,13 +3,19 @@ from django.conf.urls.static import static
 from . import settings
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 
-urlpatterns = [path("admin/", admin.site.urls), path("", include("apps.blog.urls"))]
+
+urlpatterns = [
+    path("admin/", admin.site.urls), path("", include("apps.blog.urls")),
+    re_path(r"^robots\.txt$", TemplateView.as_view(template_name="bunin/robots.txt"))
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 handler400 = "apps.shared.views.bad_request_view" # noqa
 handler403 = "apps.shared.views.page_permission_denied_view" # noqa 
