@@ -13,7 +13,7 @@ class User(AbstractUser, TimestempedAbstractModel):
     @property
     def post_count(self):
         return self.posts.count
-    
+
 
 class Post(TimestempedAbstractModel):
     title = models.CharField(max_length=120)
@@ -24,11 +24,11 @@ class Post(TimestempedAbstractModel):
     author = models.ForeignKey("User", models.CASCADE, "posts")
 
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={'slug': self.slug})
+        return reverse("post_detail", kwargs={"slug": self.slug})
 
     def get_author_avatar_url(self):
         return self.author.avatar.url
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)

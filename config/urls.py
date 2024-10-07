@@ -1,4 +1,4 @@
-from django.conf.urls import handler400, handler403, handler404, handler500 # noqa
+from django.conf.urls import handler400, handler403, handler404, handler500  # noqa
 from django.conf.urls.static import static
 from . import settings
 
@@ -11,13 +11,19 @@ from apps.blog.sitemaps import PostSitemap
 
 
 sitemaps = {
-    'posts': PostSitemap,
+    "posts": PostSitemap,
 }
 
 urlpatterns = [
-    path("admin/", admin.site.urls), path("", include("apps.blog.urls")),
+    path("admin/", admin.site.urls),
+    path("", include("apps.blog.urls")),
     path("robots.txt", TemplateView.as_view(template_name="bunin/robots.txt")),
-    path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
 ]
 
 if settings.DEBUG:
@@ -25,7 +31,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-handler400 = "apps.shared.views.bad_request_view" # noqa
-handler403 = "apps.shared.views.page_permission_denied_view" # noqa 
-handler404 = "apps.shared.views.page_not_found_view" # noqa
-handler500 = "apps.shared.views.server_error_view" # noqa
+handler400 = "apps.shared.views.bad_request_view"  # noqa
+handler403 = "apps.shared.views.page_permission_denied_view"  # noqa
+handler404 = "apps.shared.views.page_not_found_view"  # noqa
+handler500 = "apps.shared.views.server_error_view"  # noqa
