@@ -18,7 +18,11 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
     "django.contrib.staticfiles",
+    # "django.contrib.postgres",
+    # apps
     "apps.blog.apps.BlogConfig",
 ]
 
@@ -96,3 +100,5 @@ MEDIA_ROOT = BASE_DIR / "media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "blog.User"
+
+SITE_ID = 1
