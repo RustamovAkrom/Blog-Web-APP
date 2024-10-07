@@ -7,7 +7,11 @@
     <div class="row">
       <div class="col-md-8">
               <div class="content-section">
-                  <form method="POST">
+                  <form method="post" 
+                  action="{% url 'post_update' post.slug %}"
+                  hx-post="{% url 'post_update' post.slug %}"
+                  hx-target="#main-content"
+                  hx-push-url="true">
                       {% csrf_token %}
                       <fieldset class="form-group">
                           <legend class="border-bottom mb-4">Update Post</legend>
@@ -16,7 +20,11 @@
                       <div class="form-group">
                         {{ form.as_p }}
                           <button class="btn btn-outline-danger" type="submit">Update</button>
-                          <a class="btn btn-outline-secondary" href="{{ post.get_absolute_url }}">Cancel</a>
+                          <a class="btn btn-outline-secondary" 
+                          href="{{ post.get_absolute_url }}"
+                          hx-get="{{ post.get_absolute_url }}"
+                          hx-target="#main-content"
+                          hx-push-url="true">Cancel</a>
                       </div>
                   </form>
               </div>

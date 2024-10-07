@@ -120,7 +120,9 @@ class PostDetailPageView(CustomHtmxMixin, View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        return render(request, "blog/post_detail.html", {"post": post})
+        return render(
+            request, "blog/post_detail.html", {"post": post}
+        )
 
 
 class UserProfilePageView(CustomHtmxMixin, LoginRequiredMixin, View):

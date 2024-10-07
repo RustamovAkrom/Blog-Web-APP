@@ -3,16 +3,29 @@
 {% block title %}Log out{% endblock %}
 
 {% block content %}
-    <h1>Log out ?</h1><hr>
-    <div>
-        <center>
-            <a><form method="post">
-                {% csrf_token %}
-                <button type="submit">Yes</button>
-            </form></a>
-            <a href="{% url 'home' %}">
-                <button>No</button>
-            </a>
-        </center>
+    <div class="container">
+        <div>
+        <div>
+            <h1>Log out ?</h1><hr>
+            <div>
+                <form method="post" action="{% url 'logout' %}" hx-post="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <div class="mb-2 mt-3">
+                        <button type="submit" class="btn btn-outline-danger">Yes</button>
+                    </div>
+                    <div class="mb-2 mt-3">
+                        <a 
+                        href="{% url 'home' %}"
+                        hx-get="{% url 'home' %}"
+                        hx-target="#main-content"
+                        hx-push-url="true"
+                        >
+                            <button class="btn btn-outline-secondary">No</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
     </div>
 {% endblock %}

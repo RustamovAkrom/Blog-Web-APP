@@ -6,12 +6,25 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h2>Register</h2>
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form 
+                action="{% url 'register' %}"
+                hx-post="{% url 'register' %}"
+                hx-target="#main-content"
+                hx-push-url="true"
+                method="post" 
+                enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
-                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                <p>Already have an account? 
+                    <a 
+                    href="{% url 'login' %}"
+                    hx-get="{% url 'login' %}"
+                    hx-target="#main-content"
+                    hx-push-url="true"
+                    >Login</a>
+                </p>
             </div>
             {% include 'blog/base_last_post.html' %}
         </div>
