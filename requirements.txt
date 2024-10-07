@@ -3,4 +3,4 @@ django-appconf==1.0.6
 django-compressor
 django_sitemaps==2.0.1
 gunicorn==23.0.0
-pillow==10.4.0
+pillow
