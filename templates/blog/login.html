@@ -21,7 +21,8 @@
             action="{% url 'login' %}" 
             hx-post="{% url 'login' %}"           
             hx-target="#main-content"
-            hx-push-url="true"method="post" 
+            hx-push-url="true"
+            method="post" 
             enctype="multipart/form-data"
             >
                 {% csrf_token %}
