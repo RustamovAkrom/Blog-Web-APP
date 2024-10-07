@@ -9,6 +9,7 @@
                 <form 
                 action="{% url 'register' %}"
                 hx-post="{% url 'register' %}"
+                hx-target="#main-content"
                 hx-push-url="true"
                 method="post" 
                 enctype="multipart/form-data">
