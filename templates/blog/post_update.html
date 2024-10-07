@@ -16,7 +16,7 @@
                       <div class="form-group">
                         {{ form.as_p }}
                           <button class="btn btn-outline-danger" type="submit">Update</button>
-                          <a class="btn btn-outline-secondary" href="{% url 'post_detail' post.id %}">Cancel</a>
+                          <a class="btn btn-outline-secondary" href="{{ post.get_absolute_url }}">Cancel</a>
                       </div>
                   </form>
               </div>

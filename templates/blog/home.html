@@ -13,15 +13,15 @@
 
         {% for post in page_obj.object_list %}
         <article class="media content-section">
-            <a href="{{ post.author.avatar.url }}">
-              <img class="rounded-circle article-img" src="{{ post.author.avatar.url }}">
+            <a href="{{ post.get_author_avatar_url }}">
+              <img class="rounded-circle article-img" src="{{ post.get_author_avatar_url }}">
             </a>
             <div class="media-body">
               <div class="article-metadata">
                 <a class="mr-2" href="{% url 'user_posts' %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
                 <small class="text-muted">{{ post.publisher_at }}</small>
               </div>
-              <h5><a class="article-title" href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h5>
+              <h5><a class="article-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
             </div>
         </article>
         {% endfor %}

@@ -118,10 +118,10 @@ class AboutPageView(CustomHtmxMixin, TemplateView):
 class PostDetailPageView(CustomHtmxMixin, View):
     template_name = "blog/post_detail.html"
 
-    def get(self, request, id):
-        posts = Post.objects.get(id=id)
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         return render(
-            request, "blog/post_detail.html", {"post": posts, "user_posts": ""}
+            request, "blog/post_detail.html", {"post": post}
         )
 
 

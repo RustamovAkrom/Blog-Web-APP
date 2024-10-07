@@ -20,15 +20,15 @@
         
             {% for post in posts %}
              <article class="media content-section">
-              <a href="{{ post.author.avatar.url }}">
-                <img class="rounded-circle article-img" src="{{ post.author.avatar.url }}" alt="error in img">
+              <a href="{{ post.get_author_avatar_url }}">
+                <img class="rounded-circle article-img" src="{{ post.get_author_avatar_url }}" alt="error in img">
               </a>
               <div class="media-body">
                 <div class="article-metadata">
                   <a class="mr-2" href="{% url 'user_posts' %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
                   <small class="text-muted">{{ post.publisher_at }}</small>
                 </div>
-                <h4><a class="article-title" href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h4>
+                <h4><a class="article-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
                 <p class="article-content">{{ post.content }}</p>
               </div>
             </article>

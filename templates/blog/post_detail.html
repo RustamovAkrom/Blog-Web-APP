@@ -15,8 +15,8 @@
                     <small class="text-muted">{{ post.publisher_at }}</small>
                     {% if post.author == request.user %}
                     <div>
-                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post_update' post.id %}">Update</a>
-                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' post.id %}">Delete</a>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post_update' post.slug %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' post.slug %}">Delete</a>
                     </div>
                     {% endif %}
                   </div>
