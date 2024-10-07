@@ -177,13 +177,13 @@ class UserPostPageView(CustomHtmxMixin, ListView):
 class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, View):
     template_name = "blog/post_update.html"
 
-    def get(self, request, id):
-        post = get_object_or_404(Post, id=id)
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         form = PostUpdateForm(instance=post)
         return render(request, "blog/post_update.html", {"form": form, "post": post})
 
-    def post(self, request, id):
-        post = get_object_or_404(Post, id=id)
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         form = PostUpdateForm(request.POST, instance=post)
         if form.is_valid():
             messages.success(request, "Post succsessfully updated")
@@ -197,12 +197,12 @@ class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, View):
 class PostDeleteView(CustomHtmxMixin, LoginRequiredMixin, View):
     template_name = "blog/post_confirm_delete.html"
 
-    def get(self, request, id):
-        post = get_object_or_404(Post, id=id)
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         return render(request, "blog/post_confirm_delete.html", {"post": post})
 
-    def post(self, request, id):
-        post = get_object_or_404(Post, id=id)
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         messages.success(request, "post successfully deleted")
         post.delete()
         return redirect("profile")
