@@ -22,7 +22,8 @@ class Post(TimestempedAbstractModel):
     publisher_at = models.DateField()
     is_active = models.BooleanField(default=False)
     author = models.ForeignKey("User", models.CASCADE, "posts")
-
+    watching = models.BigIntegerField(default=0)
+    
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
 
@@ -33,3 +34,30 @@ class Post(TimestempedAbstractModel):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
+    
+    def like_count(self):
+        return self.post_likes.count()
+    
+    def comment_count(self):
+        return self.post_comments.count()
+    
+    def __str__(self) -> str:
+        return self.title
+    
+
+class PostLike(models.Model):
+    user = models.ForeignKey("User", models.DO_NOTHING, "post_likes")
+    post = models.ForeignKey("Post", models.CASCADE, "post_likes")
+
+    def __str__(self) -> str:
+        return f"{self.user} - {self.post}"
+    
+
+class PostComment(TimestempedAbstractModel):
+    user = models.ForeignKey("User", models.CASCADE, "post_comments")
+    post = models.ForeignKey("Post", models.CASCADE, "post_comments")
+    message = models.TextField()
+
+    def __str__(self) -> str:
+        return f"{self.user} - {self.post}"
+    

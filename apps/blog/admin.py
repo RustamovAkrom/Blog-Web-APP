@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, User
+from .models import Post, User, PostComment, PostLike
 
 
 @admin.register(User)
@@ -18,3 +18,14 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ["title", "content"]
     list_filter = ["author", "is_active"]
     date_hierarchy = "publisher_at"
+
+
+@admin.register(PostComment)
+class PostCommentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PostLike)
+class PostLikeAdmin(admin.ModelAdmin):
+    pass
+
