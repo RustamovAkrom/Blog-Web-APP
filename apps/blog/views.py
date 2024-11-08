@@ -213,3 +213,7 @@ def post_like(request, slug):
 def post_dislike(request, slug):
     post = set_post_dislike(request.user, slug)
     return redirect(reverse("post_detail", kwargs={"slug": post.slug}))
+
+
+def post_message(request, slug):
+    return redirect(reverse("post_detail", kwargs={"slug": slug}))
