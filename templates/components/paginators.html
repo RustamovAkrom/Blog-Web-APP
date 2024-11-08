@@ -1,25 +1,38 @@
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-    {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-      {% endif %}
-
-      <li class="page-item"><a class="page-link" href="{% url 'home' %}?page={{ page_obj.number}}">{{ page_obj.number }}</a></li>
-
-      {% if page_obj.has_next %}
-      <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-      <li class="page-item">
-        <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number}}" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
-        </a>
-      </li>
-      {% endif %}
-    </ul>
-  </nav>
+{% if page_obj %}
+<div class="d-flex">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+  
+        <li class="page-item"><a class="page-link text-dark" href="{% url 'home' %}?page={{ page_obj.number}}">{{ page_obj.number }}</a></li>
+  
+        {% if page_obj.has_next %}
+        <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        <li class="page-item">
+          <a class="page-link" href="{% url 'home' %}?page={{ page_obj.next_page_number}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <nav class="ms-5">
+      <div class="col-md-4">
+        <form action="">
+          <input name="size" type="number" min="1"  value="{{ size_value }}" class="form-control">
+        </form>
+      </div>
+    </nav>
+  </div>
+  
+  
+{% endif %}

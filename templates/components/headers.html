@@ -55,9 +55,14 @@
             </ul>
           </li> -->
         </ul>
-        <form>
-          <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+
+        
+        
+        <form action="{% url 'home' %}">
+          <input class="form-control" type="text" name="search_query" placeholder="Search" aria-label="Search">
+
         </form>
+
       </div>
     </div>
   </nav>

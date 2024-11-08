@@ -10,7 +10,8 @@
             <h6>{{ massage }}</h6>
           </div>
         {% endfor %}
-
+        
+        
         {% for post in page_obj.object_list %}
         <div class="col-md-12">
           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -22,11 +23,16 @@
               {% endif %}
               <h3 class="mb-0">{{ post.title }}</h3>
               <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
-              <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text mb-auto">{{ post.content|truncatewords_html:30 }}</p>
               <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
             </div>
           </div>
         </div>
+        {% empty %}
+        <div align="center">
+          <h3>Post not found</h3>
+        </div>
+
         {% endfor %}
     </div>
     {% include 'components/latest_posts.html' %}

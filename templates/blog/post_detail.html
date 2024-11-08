@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static blog_tags %}
 
 {% block title %} Post Detail {% endblock %}
 
@@ -11,13 +11,8 @@
         <h2 class="blog-post-title">{{ post.title }}</h2>
         <p class="blog-post-meta">{{ post.publisher_at }}by <a href="#">{{ post.author }}</a></p>
 
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <ul>
-          <li>First list item</li>
-          <li>Second list item with a longer description</li>
-          <li>Third list item to close it out</li>
-        </ul>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
+        <p>{{ post.content|markdown }}</p>
+
       </article>
       <div class="d-flex mt-5 mb-3">
         <div class="ms-5">

@@ -94,7 +94,17 @@ class HomePageView(TemplateView):
         else:
             posts = Post.objects.all()
 
-        posts = posts.filter(is_active=True).order_by("id")
+        search_query = request.GET.get('search_query', None)
+        
+        if search_query is not None:
+            
+            posts_title = posts.filter(title__icontains=search_query)
+            if not posts_title:
+                posts = posts.filter(content__icontains=search_query)
+            else:
+                posts = posts_title
+        else:
+            posts = posts.filter(is_active=True)
 
         page = request.GET.get("page", 1)
         size = request.GET.get("size", 4)
@@ -107,6 +117,7 @@ class HomePageView(TemplateView):
             "blog/home.html",
             {
                 "page_obj": page_obj,
+                "size_value": size
             },
         )
 
