@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, User, PostComment, PostLike
+from .models import Post, User, PostComment, PostLike, PostDislike, PostCommentLike
 
 
 @admin.register(User)
@@ -29,3 +29,12 @@ class PostCommentAdmin(admin.ModelAdmin):
 class PostLikeAdmin(admin.ModelAdmin):
     pass
 
+
+@admin.register(PostDislike)
+class PostDislike(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PostCommentLike)
+class PostCommentLikeAdmin(admin.ModelAdmin):
+    pass

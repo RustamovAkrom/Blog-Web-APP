@@ -1,22 +1,16 @@
 import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-
-from django.views.generic import TemplateView
-from django.views.generic.list import ListView
-
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, ListView
 from django.contrib import messages
-
-from django.core.paginator import Paginator
+from django.views import View
+from django.urls import reverse
 
 from .forms import RegisterForm, LoginForm, PostUpdateForm, PostCreateForm
 from .models import Post
-from .utils import get_search_model_queryset, get_pagination_obj
-
-
+from .utils import get_search_model_queryset, get_pagination_obj, set_post_like, set_post_dislike
 
 
 class CustomHtmxMixin:
@@ -104,8 +98,6 @@ class HomePageView(TemplateView):
         posts = get_search_model_queryset(posts, search_query)
 
         page_obj = get_pagination_obj(posts, page, size)
-        # paginator = Paginator(posts.order_by("id"), size)
-        # page_obj = paginator.page(page)
 
         return render(
             request,
@@ -212,3 +204,12 @@ class PostDeleteView(LoginRequiredMixin, View):
         messages.success(request, "post successfully deleted")
         post.delete()
         return redirect("profile")
+
+
+def post_like(request, slug):
+    post = set_post_like(request.user, slug)
+    return redirect(reverse("post_detail", kwargs={"slug": post.slug}))
+
+def post_dislike(request, slug):
+    post = set_post_dislike(request.user, slug)
+    return redirect(reverse("post_detail", kwargs={"slug": post.slug}))

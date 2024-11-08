@@ -50,7 +50,15 @@ class PostLike(models.Model):
     post = models.ForeignKey("Post", models.DO_NOTHING, "post_likes")
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.post}"
+        return f"{self.user} -(👍🏼)- {self.post}"
+    
+    
+class PostDislike(models.Model):
+    user = models.ForeignKey("User", models.CASCADE, "post_dislikes")
+    post = models.ForeignKey("Post", models.DO_NOTHING, "post_dislikes")
+
+    def __str__(self) -> str:
+        return f"{self.user} -(👎🏼)- {self.post}"
     
 
 class PostComment(TimestempedAbstractModel):
@@ -59,7 +67,7 @@ class PostComment(TimestempedAbstractModel):
     message = models.TextField()
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.post}"
+        return f"{self.user} -(💬)- {self.post}"
     
 
 class PostCommentLike(models.Model):
@@ -67,4 +75,4 @@ class PostCommentLike(models.Model):
     comment = models.ForeignKey("PostComment", models.DO_NOTHING, "post_comment_likes")
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.comment}"
+        return f"{self.user} -(💬, 👍🏼)- {self.comment}"
