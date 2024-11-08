@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
@@ -12,8 +14,9 @@ from django.core.paginator import Paginator
 
 from .forms import RegisterForm, LoginForm, PostUpdateForm, PostCreateForm
 from .models import Post
+from .utils import get_search_model_queryset, get_pagination_obj
 
-import datetime
+
 
 
 class CustomHtmxMixin:
@@ -95,29 +98,21 @@ class HomePageView(TemplateView):
             posts = Post.objects.all()
 
         search_query = request.GET.get('search_query', None)
-        
-        if search_query is not None:
-            
-            posts_title = posts.filter(title__icontains=search_query)
-            if not posts_title:
-                posts = posts.filter(content__icontains=search_query)
-            else:
-                posts = posts_title
-        else:
-            posts = posts.filter(is_active=True)
-
         page = request.GET.get("page", 1)
         size = request.GET.get("size", 4)
+        
+        posts = get_search_model_queryset(posts, search_query)
 
-        paginator = Paginator(posts.order_by("id"), size)
-        page_obj = paginator.page(page)
+        page_obj = get_pagination_obj(posts, page, size)
+        # paginator = Paginator(posts.order_by("id"), size)
+        # page_obj = paginator.page(page)
 
         return render(
             request,
             "blog/home.html",
             {
                 "page_obj": page_obj,
-                "size_value": size
+                "size_value": size,
             },
         )
 
