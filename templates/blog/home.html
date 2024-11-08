@@ -16,11 +16,12 @@
         <div class="col-md-12">
           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
-              {% if post.is_active %}
-              <strong class="d-inline-block mb-2 text-success">Design</strong>
-              {% else %}
-              <strong class="d-inline-block mb-2 text-primary">World</strong>
-              {% endif %}
+              <div class="d-flex">
+                <strong class="d-inline-block mb-2">
+                  <img src="{{ post.author.avatar.url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
+                  {{ post.author }}
+                </strong>
+              </div>
               <h3 class="mb-0">{{ post.title }}</h3>
               <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
               <p class="card-text mb-auto">{{ post.content|truncatewords_html:30 }}</p>
