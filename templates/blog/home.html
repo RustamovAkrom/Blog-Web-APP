@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
@@ -12,36 +12,25 @@
         {% endfor %}
 
         {% for post in page_obj.object_list %}
-        <article class="media content-section">
-            <a href="{{ post.get_author_avatar_url }}"
-            hx-get="{{ post.get_absolute_url }}"
-            hx-target="#main-content"
-            hx-push-url="true">
-              <img class="rounded-circle article-img" src="{{ post.get_author_avatar_url }}">
-            </a>
-            <div class="media-body">
-              <div class="article-metadata">
-                <a class="mr-2" 
-                href="{% url 'user_posts' %}"
-                hx-get="{% url 'user_posts' %}"
-                hx-target="#main-content"
-                hx-push-url="true"
-                >{{ post.author.first_name }} {{ post.author.last_name }}</a>
-
-                <small class="text-muted">{{ post.publisher_at }}</small>
-              </div>
-              <h5>
-                <a class="article-title" 
-                href="{{ post.get_absolute_url }}"
-                hx-get="{{ post.get_absolute_url }}"
-                hx-target="#main-content"
-                hx-push-url="true">{{ post.title }}</a></h5>
+        <div class="col-md-12">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+              {% if post.is_active %}
+              <strong class="d-inline-block mb-2 text-success">Design</strong>
+              {% else %}
+              <strong class="d-inline-block mb-2 text-primary">World</strong>
+              {% endif %}
+              <h3 class="mb-0">{{ post.title }}</h3>
+              <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
+              <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+              <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
             </div>
-        </article>
+          </div>
+        </div>
         {% endfor %}
     </div>
-    {% include 'blog/base_last_post.html' %}
+    {% include 'components/latest_posts.html' %}
   </div>
-  {% include 'blog/base_paginator.html' %}
+  {% include 'components/paginators.html' %}
 </main>
 {% endblock %}

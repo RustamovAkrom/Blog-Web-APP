@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %} New post {% endblock %}
 
@@ -32,7 +32,7 @@
                         </form>
                     </div>
                 </div>
-                {% include 'blog/base_last_post.html' %}
+                {% include 'components/latest_posts.html' %}
               </div>
             </main>
 {% endblock %}

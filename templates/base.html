@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" property="og:description" content="Django Blog">
+    <meta name="keywords" content="blog, python, django, web development">
+    <meta name="author" content="Rustamov Akrom">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/js/icons/bootstrap-icons.min.css' %}">
+    
+    {% block head %} {% endblock %}
+    <title>{% block title %} Base html {% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+      {% include 'components/headers.html' %}
+      <div class="mt-5">
+        <!-- Messages -->
+         
+          {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+        <!-- Content -->
+         <div id="main-content">
+           {% block content %}
+           {% endblock %}
+         </div>
+      </div>
+      {% include 'components/footers.html' %}
+    </div>
+
+    <script src="{% static 'htmx/htmx.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

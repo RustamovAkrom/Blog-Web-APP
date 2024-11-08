@@ -29,11 +29,11 @@ class CustomHtmxMixin:
         return super().get_context_data(**kwargs)
 
 
-class RegisterPageView(CustomHtmxMixin, View):
-    template_name = "blog/register.html"
+class RegisterPageView(View):
+    template_name = "auth/register.html"
 
     def get(self, request):
-        return render(request, "blog/register.html", {"form": RegisterForm()})
+        return render(request, "auth/register.html", {"form": RegisterForm()})
 
     def post(self, request):
 
@@ -48,11 +48,11 @@ class RegisterPageView(CustomHtmxMixin, View):
             return render(request, "blog/register.html", {"form": form})
 
 
-class LoginPageView(CustomHtmxMixin, View):
-    template_name = "blog/login.html"
+class LoginPageView(View):
+    template_name = "auth/login.html"
 
     def get(self, request):
-        return render(request, "blog/login.html", {"form": LoginForm()})
+        return render(request, "auth/login.html", {"form": LoginForm()})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -71,21 +71,21 @@ class LoginPageView(CustomHtmxMixin, View):
                 messages.error(request, "Invalid username or password.")
                 return redirect("login")
 
-        return render(request, "blog/login.html", {"form": form})
+        return render(request, "auth/login.html", {"form": form})
 
 
-class LogoutView(CustomHtmxMixin, View):
-    template_name = "blog/logout.html"
+class LogoutView(View):
+    template_name = "auth/logout.html"
 
     def get(self, request):
-        return render(request, "blog/logout.html")
+        return render(request, "auth/logout.html")
 
     def post(self, request):
         logout(request)
         return redirect("home")
 
 
-class HomePageView(CustomHtmxMixin, TemplateView):
+class HomePageView(TemplateView):
     template_name = "blog/home.html"
 
     def get(self, request):
@@ -111,11 +111,11 @@ class HomePageView(CustomHtmxMixin, TemplateView):
         )
 
 
-class AboutPageView(CustomHtmxMixin, TemplateView):
+class AboutPageView(TemplateView):
     template_name = "blog/about.html"
 
 
-class PostDetailPageView(CustomHtmxMixin, View):
+class PostDetailPageView(View):
     template_name = "blog/post_detail.html"
 
     def get(self, request, slug):
@@ -123,7 +123,7 @@ class PostDetailPageView(CustomHtmxMixin, View):
         return render(request, "blog/post_detail.html", {"post": post})
 
 
-class UserProfilePageView(CustomHtmxMixin, LoginRequiredMixin, View):
+class UserProfilePageView(LoginRequiredMixin, View):
     template_name = "blog/user_posts.html"
 
     def get(self, request):
@@ -137,7 +137,7 @@ class UserProfilePageView(CustomHtmxMixin, LoginRequiredMixin, View):
         )
 
 
-class PostFormPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
+class PostFormPageView(LoginRequiredMixin, TemplateView):
     template_name = "blog/post_form.html"
 
     def get(self, request):
@@ -166,13 +166,13 @@ class PostFormPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         return render(request, "blog/post_form.html", {"form": form})
 
 
-class UserPostPageView(CustomHtmxMixin, ListView):
+class UserPostPageView(ListView):
     model = Post
     template_name = "blog/user_posts.html"
     context_object_name = "posts"
 
 
-class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, View):
+class PostUpdateView(LoginRequiredMixin, View):
     template_name = "blog/post_update.html"
 
     def get(self, request, slug):
@@ -192,7 +192,7 @@ class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, View):
         return render(request, "blog/post_update.html", {"form": form})
 
 
-class PostDeleteView(CustomHtmxMixin, LoginRequiredMixin, View):
+class PostDeleteView(LoginRequiredMixin, View):
     template_name = "blog/post_confirm_delete.html"
 
     def get(self, request, slug):

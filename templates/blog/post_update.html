@@ -1,36 +1,36 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %} Post update {% endblock %}
 
 {% block content %}
-  <main role="main" class="container">
-    <div class="row">
-      <div class="col-md-8">
-              <div class="content-section">
-                  <form method="post" 
-                  action="{% url 'post_update' post.slug %}"
-                  hx-post="{% url 'post_update' post.slug %}"
-                  hx-target="#main-content"
-                  hx-push-url="true">
-                      {% csrf_token %}
-                      <fieldset class="form-group">
-                          <legend class="border-bottom mb-4">Update Post</legend>
-                          <h2>Are you sure you want to update the post: <h3 style="background-color: cadetblue;">{{ post.title }}</h3></h2>
-                      </fieldset>
-                      <div class="form-group">
-                        {{ form.as_p }}
-                          <button class="btn btn-outline-danger" type="submit">Update</button>
-                          <a class="btn btn-outline-secondary" 
-                          href="{{ post.get_absolute_url }}"
-                          hx-get="{{ post.get_absolute_url }}"
-                          hx-target="#main-content"
-                          hx-push-url="true">Cancel</a>
-                      </div>
-                  </form>
-              </div>
-          </div>
-         {% include 'blog/base_last_post.html' %}
-          </div>
-          </main>
-{% endblock %}
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <form action="{% url 'post_update' post.slug %}" method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <legend class="border-bottom mb-4"><b>Update post</b>: {{ post.title}}</legend>
 
+          <div class="form-group">
+            <label for="title">Title</label>
+            {{ form.title }}
+          </div>
+
+          <div class="form-group">
+            <label for="content">Content</label>
+            {{ form.content }}
+          </div>
+          <div>
+            {{ form.is_active }}
+            Is active
+          </div>
+        </fieldset>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-outline-primary">Update</button>
+        </div>
+      </form>
+    </div>
+    {% include 'components/latest_posts.html' %}
+  </div>
+</main>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %} User posts {% endblock %}
 
@@ -11,46 +11,32 @@
                 <h6>{{ message }}</h6>
               </div>
               {% endfor %}
-
+            
             {% if post %}
             <h1 class="mb-3">Posts {{ request.user.first_name }} {{ request.user.last_name }}</h1>
             {% else %}
-            <a href="{% url 'post_form' %}"
-            hx-get="{% url 'post_form' %}"
-            hx-target="#main-content"
-            hx-push-url="true"><h3 style="color: blue;">
-              <p>Create post</p></h3>
-            </a>
+            <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
             {% endif %}
         
             {% for post in posts %}
-             <article class="media content-section">
-              <a href="{{ post.get_author_avatar_url }}"
-              hx-get="{{ post.get_author_avatar_url }}"
-              hx-target="#main-content"
-              hx-push-url="true">
-                <img class="rounded-circle article-img" src="{{ post.get_author_avatar_url }}" alt="error in img">
-              </a>
-              <div class="media-body">
-                <div class="article-metadata">
-                  <a class="mr-2" 
-                  href="{% url 'user_posts' %}"
-                  hx-get="{% url 'user_posts' %}"
-                  hx-target="#main-content"
-                  hx-push-url="true">{{ post.author.first_name }} {{ post.author.last_name }}</a>
-                  <small class="text-muted">{{ post.publisher_at }}</small>
+            <div class="col-md-12 mt-3 mb-3">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                  {% if post.is_active %}
+                  <strong class="d-inline-block mb-2 text-success">Design</strong>
+                  {% else %}
+                  <strong class="d-inline-block mb-2 text-primary">World</strong>
+                  {% endif %}
+                  <h3 class="mb-0">{{ post.title }}</h3>
+                  <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
+                  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                  <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                 </div>
-                <h4><a class="article-title" 
-                  href="{{ post.get_absolute_url }}"
-                  hx-get="{{ post.get_absolute_url }}"
-                  hx-target="#main-content"
-                  hx-push-url="true">{{ post.title }}</a></h4>
-                <p class="article-content">{{ post.content }}</p>
               </div>
-            </article>
-           {% endfor %}
+            </div>
+            {% endfor %}
           </div>
-         {% include 'blog/base_last_post.html' %}
+         {% include 'components/latest_posts.html' %}
       </div>
       </main>
 {% endblock %}

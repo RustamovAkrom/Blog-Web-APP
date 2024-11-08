@@ -1,42 +1,43 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %} Post Detail {% endblock %}
 
 {% block content %}
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
-              <article class="media content-section">
-                <img class="rounded-circle article-img" src="{{ post.author.avatar.url }}">
-                <div class="media-body">
-                  <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'user_posts' %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
-                    <small class="text-muted">{{ post.publisher_at }}</small>
-                    {% if post.author == request.user %}
-                    <div>
-                        <a class="btn btn-secondary btn-sm mt-1 mb-1" 
-                        href="{% url 'post_update' post.slug %}"
-                        hx-get="{% url 'post_update' post.slug %}"
-                        hx-target="#main-content"
-                        hx-push-url="true">Update</a>
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <article class="blog-post">
+        <h2 class="blog-post-title">{{ post.title }}</h2>
+        <p class="blog-post-meta">{{ post.publisher_at }}by <a href="#">{{ post.author }}</a></p>
 
-                        <a class="btn btn-danger btn-sm mt-1 mb-1" 
-                        href="{% url 'post_delete' post.slug %}"
-                        hx-get="{% url 'post_delete' post.slug %}"
-                        hx-target="#main-content"
-                        hx-push-url="true">Delete</a>
-                    </div>
-                    {% endif %}
-                  </div>
-                  <h2 class="article-title">{{ post.title }}</h2>
-                  <p class="article-content">{{ post.content }}
-                  </p>
-                </div>
-              </article>
-</div>
-{% include 'blog/base_last_post.html' %}
-</div>
-</div>
+        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
+        <ul>
+          <li>First list item</li>
+          <li>Second list item with a longer description</li>
+          <li>Third list item to close it out</li>
+        </ul>
+        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
+      </article>
+      <div class="d-flex mt-5 mb-3">
+        <div class="ms-5">
+          <i class="bi bi-chat-left-text">(11)</i>
+        </div>
+        <div class="ms-5">
+          <i class="bi bi-emoji-smile">(131)</i>
+        </div>
+        <div class="ms-5">
+          <i class="bi bi-emoji-frown">(1)</i>
+        </div>
+      </div>
+      {% if request.user == post.author %}
+      <nav class="blog-pagination" aria-label="Pagination">
+        <a class="btn btn-outline-danger" href="{% url 'post_delete' post.slug %}">delete</a>
+        <a class="btn btn-outline-warning" href="{% url 'post_update' post.slug %}">update</a>
+      </nav>
+      {% endif %}
+    </div>
+    {% include 'components/latest_posts.html' %}
+  </div>
 </main>
 {% endblock %}

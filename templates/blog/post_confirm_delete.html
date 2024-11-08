@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %} Post Confirm Delete {% endblock %}
@@ -8,29 +8,20 @@
     <div class="row">
     <div class="col-md-8">
             <div class="content-section">
-                <form method="POST" 
-                action="{% url 'post_delete' post.slug %}"
-                hx-post="{% url 'post_delete' post.slug %}"
-                hx-target="#main-content"
-                hx-push-url="true">
+                <form method="POST" action="{% url 'post_delete' post.slug %}">
                     {% csrf_token %}
                     <fieldset class="form-group">
-                        <legend class="border-bottom mb-4">Delete Post</legend>
-                        <h2>Are you sure you want to delete the post "I have been watching a decade."</h2>
+                        <legend class="border-bottom mb-4"><h4><b>You are deleted post:</b></h4></legend>
+                        <h4>"{{ post.title }}" ?</h4>
                     </fieldset>
                     <div class="form-group">
                         <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                        <a class="btn btn-outline-secondary" 
-                        href="{{ post.get_absolute_url }}"
-                        hx-get="{{ post.get_absolute_url }}"
-                        hx-target="#main-content"
-                        hx-push-url="true"
-                        >Cancel</a>
+                        <a class="btn btn-outline-secondary" href="{{ post.get_absolute_url }}">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
-        {% include 'blog/base_last_post.html' %}
+        {% include 'components/latest_posts.html' %}
         </div>
         </main>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %} Login {% endblock %}
@@ -19,26 +19,18 @@
             <h2>Login</h2>
             <form 
             action="{% url 'login' %}" 
-            hx-post="{% url 'login' %}"           
-            hx-target="#main-content"
-            hx-push-url="true"
             method="post" 
             enctype="multipart/form-data"
             >
                 {% csrf_token %}
                 {{ form.as_p }}
                 <p>You have an create account? 
-                    <a 
-                    href="{% url 'register' %}"
-                    hx-get="{% url 'register' %}"
-                    hx-target="#main-content"
-                    hx-push-url="true"
-                    >Register</a>
+                    <a href="{% url 'register' %}">Register</a>
                 </p>
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
         </div>
-        {% include 'blog/base_last_post.html' %}
+        {% include 'components/latest_posts.html' %}
     </div>
 </div>
 {% endblock %}
