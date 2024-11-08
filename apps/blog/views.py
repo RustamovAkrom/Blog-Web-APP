@@ -126,6 +126,8 @@ class PostDetailPageView(View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
+        post.watching += 1
+        post.save()
         return render(request, "blog/post_detail.html", {"post": post})
 
 

@@ -23,7 +23,7 @@ class Post(TimestempedAbstractModel):
     is_active = models.BooleanField(default=False)
     author = models.ForeignKey("User", models.CASCADE, "posts")
     watching = models.BigIntegerField(default=0)
-    
+
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
 
@@ -46,8 +46,8 @@ class Post(TimestempedAbstractModel):
     
 
 class PostLike(models.Model):
-    user = models.ForeignKey("User", models.DO_NOTHING, "post_likes")
-    post = models.ForeignKey("Post", models.CASCADE, "post_likes")
+    user = models.ForeignKey("User", models.CASCADE, "post_likes")
+    post = models.ForeignKey("Post", models.DO_NOTHING, "post_likes")
 
     def __str__(self) -> str:
         return f"{self.user} - {self.post}"
@@ -55,9 +55,16 @@ class PostLike(models.Model):
 
 class PostComment(TimestempedAbstractModel):
     user = models.ForeignKey("User", models.CASCADE, "post_comments")
-    post = models.ForeignKey("Post", models.CASCADE, "post_comments")
+    post = models.ForeignKey("Post", models.DO_NOTHING, "post_comments")
     message = models.TextField()
 
     def __str__(self) -> str:
         return f"{self.user} - {self.post}"
     
+
+class PostCommentLike(models.Model):
+    user = models.ForeignKey("User", models.CASCADE, "post_comment_likes")
+    comment = models.ForeignKey("PostComment", models.DO_NOTHING, "post_comment_likes")
+
+    def __str__(self) -> str:
+        return f"{self.user} - {self.comment}"
