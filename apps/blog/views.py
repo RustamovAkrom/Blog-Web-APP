@@ -111,6 +111,7 @@ class HomePageView(TemplateView):
             {
                 "page_obj": page_obj,
                 "size_value": size,
+                "search_query_value": search_query
             },
         )
 
@@ -144,6 +145,11 @@ class UserProfilePageView(View):
         user = get_object_or_404(User, username=username)
         posts = Post.objects.filter(author=user, is_active=True).all().order_by("id")
 
+        search_query = request.GET.get("search_query_for_user_profile", None)
+        
+        if search_query is not None:
+            posts = get_search_model_queryset(posts, search_query)
+    
         return render(
             request, 
             "blog/profile.html", 

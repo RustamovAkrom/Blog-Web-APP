@@ -20,7 +20,7 @@
                 <form action="{% url 'user_posts' %}">
                   <div class="d-flex">
                     <input class="form-control" type="text" name="search_query_for_user_posts" placeholder="Search" aria-label="Search">
-                    <button type="submit" class="btn btn-success ms-2">Search</button>
+                    <button type="submit" class="btn btn-success ms-2"><i class="bi bi-search"></i></button>
                   </div>
                 </form>
               </div>
@@ -42,6 +42,8 @@
                 </div>
               </div>
             </div>
+            {% empty %}
+            <center><div class="p-4">Now posts</div></center>
             {% endfor %}
           </div>
          {% include 'components/latest_posts.html' %}

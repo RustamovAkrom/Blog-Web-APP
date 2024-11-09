@@ -14,14 +14,20 @@
         <p>{{ post.content|markdown }}</p>
 
       </article>
+      <hr>
       <div class="d-flex mt-3 mb-3">
 
-        <div class="col-md-2">
+        <div class="mb-2">
+          <a href="#main-content" class="nav-link text-dark">
+            <i class="bi bi-eye">({{ post.watching }})</i>
+          </a>
+        </div>
+        <div class="mb-2">
           <a href="#post_comments" class="nav-link text-dark">
             <i class="bi bi-chat-left-text">({{ post.comment_count }})</i>
           </a>
         </div>
-        <div class="col-md-2">
+        <div class="md-2">
           <a href="{% url 'post_like' post.slug %}" class="nav-link text-dark">
             {% if request.user.is_authenticated %}
               {% if post|check_like:request.user %}
@@ -34,7 +40,7 @@
             {% endif %}
           </a>
         </div>
-        <div class="col-md-2">
+        <div class="md-2">
           <a href="{% url 'post_dislike' post.slug %}" class="nav-link text-dark">
             {% if request.user.is_authenticated %}
               {% if post|check_dislike:request.user %}
@@ -48,6 +54,7 @@
           </a>
         </div>
       </div>
+      <!-- Delete, Update buttons -->
       {% if request.user == post.author %}
       <nav class="blog-pagination mt-3 mb-3" aria-label="Pagination">
         <a class="btn btn-outline-danger" href="{% url 'post_delete' post.slug %}">delete</a>
@@ -60,7 +67,7 @@
            {% csrf_token %}
            <div class="d-flex">
              <input type="text" name="post_message_input" class="form-control" placeholder="message..." required="">
-             <button class="btn btn-outline-success">Send</button>
+             <button class="btn btn-outline-success ms-2">Send</button>
            </div>
          </form>
        </div>

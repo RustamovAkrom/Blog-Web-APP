@@ -10,8 +10,8 @@
         <div class="col-md-4">
             <div class="content-section">
                 <center>
-
-                    <img src="{{ user.avatar.url }}" class="img-fluid" style="border-radius: 50%; width: 200px; height: 200px;" alt="">
+                    <img src="{{ user.avatar.url }}" class="img-fluid"
+                        style="border-radius: 50%; width: 200px; height: 200px;" alt="">
                     <h3>
                         {% if user.first_name %}
                         {{ user.first_name }}
@@ -42,11 +42,11 @@
                 </div>
                 {% endif %}
                 <div class="col">
-                    <form action="/post/user/">
+                    <form action="{% url 'user_profile' user.username %}">
                         <div class="d-flex">
-                            <input class="form-control" type="text" name="search_query_for_user_posts"
+                            <input class="form-control" type="text" name="search_query_for_user_profile"
                                 placeholder="Search" aria-label="Search">
-                            <button type="submit" class="btn btn-success ms-2">Search</button>
+                            <button type="submit" class="btn btn-success ms-2"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
                 </div>
@@ -57,14 +57,17 @@
                 <div
                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
+                        <div class="d-flex">
+                            <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-eye">{{ post.watching }}</i></strong>
+                            <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-star">{{ post.like_count }}</i></strong>
+                            <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-chat">{{ post.comment_count }}</i></strong>
+                        </div>
 
-                        <strong class="d-inline-block mb-2 text-success">Design</strong>
-
-                        <h3 class="mb-0">Hello World</h3>
-                        <div class="mb-1 text-muted">Nov. 8, 2024</div>
+                        <h3 class="mb-0">{{ post.title }}</h3>
+                        <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
                         <p class="card-text mb-auto">This is a wider card with supporting text below as a natural
                             lead-in to additional content.</p>
-                        <a href="/post/hello-world" class="stretched-link">Continue reading</a>
+                        <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                     </div>
                 </div>
             </div>

@@ -62,7 +62,7 @@
         </ul>
         
         <form action="{% url 'home' %}">
-          <input class="form-control" type="text" name="search_query" placeholder="Search" aria-label="Search">
+          <input class="form-control" type="text" name="search_query" placeholder="Search" value="{% if search_query_value %}{{ search_query_value }}{% endif %}" aria-label="Search">
 
         </form>
 
