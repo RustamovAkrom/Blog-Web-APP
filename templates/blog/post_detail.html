@@ -15,14 +15,37 @@
 
       </article>
       <div class="d-flex mt-3 mb-3">
+
         <div class="col-md-2">
-          <i class="bi bi-chat-left-text">({{ post.comment_count }})</i>
+          <a href="#" class="nav-link text-dark">
+            <i class="bi bi-chat-left-text">({{ post.comment_count }})</i>
+          </a>
         </div>
         <div class="col-md-2">
-          <i class="bi bi-emoji-smile">(131)</i>
+          <a href="{% url 'post_like' post.slug %}" class="nav-link text-dark">
+            {% if request.user.is_authenticated %}
+              {% if post|check_like:request.user %}
+                <i class="bi bi-star-fill">({{ post.like_count }})</i>
+              {% else %}
+                <i class="bi bi-star">({{ post.like_count }})</i>
+              {% endif %}
+            {% else %}
+                <i class="bi bi-star">({{ post.like_count }})</i>
+            {% endif %}
+          </a>
         </div>
         <div class="col-md-2">
-          <i class="bi bi-emoji-frown">(1)</i>
+          <a href="{% url 'post_dislike' post.slug %}" class="nav-link text-dark">
+            {% if request.user.is_authenticated %}
+              {% if post|check_dislike:request.user %}
+                <i class="bi bi-emoji-frown-fill">({{ post.dislike_count }})</i>
+              {% else %}
+                <i class="bi bi-emoji-frown">({{ post.dislike_count }})</i>
+              {% endif %}
+            {% else %}
+              <i class="bi bi-emoji-frown">({{ post.dislike_count }})</i>
+            {% endif %}
+          </a>
         </div>
       </div>
       {% if request.user == post.author %}
@@ -37,7 +60,7 @@
           <input type="text" class="form-control" placeholder="message..." required="">
           <button class="btn btn-outline-success">Send</button>
         </div>
-        </form>
+      </form>
     </div>
     {% include 'components/latest_posts.html' %}
   </div>

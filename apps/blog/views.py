@@ -206,14 +206,25 @@ class PostDeleteView(LoginRequiredMixin, View):
         return redirect("profile")
 
 
+class ContactsView(TemplateView):
+    template_name = "blog/contacts.html"
+
+
 def post_like(request, slug):
-    post = set_post_like(request.user, slug)
-    return redirect(reverse("post_detail", kwargs={"slug": post.slug}))
+    if not request.user.is_authenticated:
+        return redirect(reverse("login"))
+    set_post_like(request.user, slug)
+    return redirect(reverse("post_detail", kwargs={"slug": slug}))
+
 
 def post_dislike(request, slug):
-    post = set_post_dislike(request.user, slug)
-    return redirect(reverse("post_detail", kwargs={"slug": post.slug}))
+    if not request.user.is_authenticated:
+        return redirect(reverse("login"))
+    set_post_dislike(request.user, slug)
+    return redirect(reverse("post_detail", kwargs={"slug": slug}))
 
 
 def post_message(request, slug):
+    if request.user.is_authenticated:
+        return redirect(reverse("login"))
     return redirect(reverse("post_detail", kwargs={"slug": slug}))

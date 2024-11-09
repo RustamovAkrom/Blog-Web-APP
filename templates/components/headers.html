@@ -19,31 +19,8 @@
           </li>
           <li class="nav-item">
             <!-- Contacts -->
-            <a class="nav-link active" aria-current="page" href="#">Contact</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'contacts' %}">Contact</a>
           </li>
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-                <!-- New post -->
-                <a class="nav-link active" aria-current="page" href="{% url 'post_form' %}">Create</a>
-            </li>
-            <li class="nav-item">
-                <!-- Profile page -->
-                <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">Profile</a>
-            </li>
-            <li class="nav-item">
-                <!-- Profile page -->
-                <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <!-- Login page -->
-                <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
-            </li>
-            <li class="nav-item">
-                <!-- Register page -->
-                <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>
-            </li>
-          {% endif %}
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
           </li>
@@ -60,7 +37,28 @@
           </li> -->
         </ul>
 
-        
+        <ul class="navbar-nav col-md-3">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown09">
+              <li><a class="dropdown-item" href="{% url 'post_form' %}">Create</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+
+          {% else %}
+          <li class="nav-item">
+              <!-- Login page -->
+              <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+              <!-- Register page -->
+              <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>
+          </li>
+        {% endif %}
+        </ul>
         
         <form action="{% url 'home' %}">
           <input class="form-control" type="text" name="search_query" placeholder="Search" aria-label="Search">

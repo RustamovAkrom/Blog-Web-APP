@@ -38,6 +38,9 @@ class Post(TimestempedAbstractModel):
     def like_count(self):
         return self.post_likes.count()
     
+    def dislike_count(self):
+        return self.post_dislikes.count()
+    
     def comment_count(self):
         return self.post_comments.count()
     
