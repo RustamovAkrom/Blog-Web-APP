@@ -4,5 +4,72 @@
 {% block title %} Profile {% endblock %}
 
 {% block content %}
-<h1>Profile</h1>
+<main role="main" class="container">
+    <div class="row">
+        <!-- Content -->
+        <div class="col-md-4">
+            <div class="content-section">
+                <center>
+
+                    <img src="{{ user.avatar.url }}" class="img-fluid" style="border-radius: 50%; width: 200px; height: 200px;" alt="">
+                    <h3>
+                        {% if user.first_name %}
+                        {{ user.first_name }}
+                        {% elif user.last_name %}
+                        {{ user.last_name }}
+                        {% else %}
+                        {{ user.username }}
+                        {% endif %}
+                    </h3>
+                    <p class='text-muted'>You can put any information here you'd like.
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-light">Latest Posts</li>
+                        <li class="list-group-item list-group-item-light">Announcements</li>
+                        <li class="list-group-item list-group-item-light">Calendars</li>
+                        <li class="list-group-item list-group-item-light">etc</li>
+                    </ul>
+                    </p>
+                </center>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!--  -->
+            <div class="d-flex">
+
+                {% if request.user == user %}
+                <div class="col">
+                    <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
+                </div>
+                {% endif %}
+                <div class="col">
+                    <form action="/post/user/">
+                        <div class="d-flex">
+                            <input class="form-control" type="text" name="search_query_for_user_posts"
+                                placeholder="Search" aria-label="Search">
+                            <button type="submit" class="btn btn-success ms-2">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% for post in posts %}
+            <div class="col-md-12 mt-3 mb-3">
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+
+                        <strong class="d-inline-block mb-2 text-success">Design</strong>
+
+                        <h3 class="mb-0">Hello World</h3>
+                        <div class="mb-1 text-muted">Nov. 8, 2024</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural
+                            lead-in to additional content.</p>
+                        <a href="/post/hello-world" class="stretched-link">Continue reading</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
 {% endblock %}

@@ -142,9 +142,16 @@ class UserProfilePageView(View):
 
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        posts = Post.objects.filter(author=user).all().order_by("id")
+        posts = Post.objects.filter(author=user, is_active=True).all().order_by("id")
 
-        return render(request, "blog/profile.html", {"posts": posts})
+        return render(
+            request, 
+            "blog/profile.html", 
+            {
+                "posts": posts,
+                "user": user
+            }
+        )
 
 
 class PostFormPageView(LoginRequiredMixin, TemplateView):
