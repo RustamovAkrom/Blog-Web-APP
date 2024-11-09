@@ -6,17 +6,25 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-              {% for message in massages %}
+              <!-- {% for message in massages %}
               <div class="alert alert-{{ message.tags }}">
                 <h6>{{ message }}</h6>
               </div>
-              {% endfor %}
-            
-            {% if post %}
-            <h1 class="mb-3">Posts {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-            {% else %}
-            <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
-            {% endif %}
+              {% endfor %} -->
+            <div class="d-flex">
+
+              <div class="col">
+                <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
+              </div>
+              <div class="col">
+                <form action="{% url 'user_posts' %}">
+                  <div class="d-flex">
+                    <input class="form-control" type="text" name="search_query_for_user_posts" placeholder="Search" aria-label="Search">
+                    <button type="submit" class="btn btn-success ms-2">Search</button>
+                  </div>
+                </form>
+              </div>
+            </div>
         
             {% for post in posts %}
             <div class="col-md-12 mt-3 mb-3">

@@ -9,7 +9,7 @@ from django.views import View
 from django.urls import reverse
 
 from .forms import RegisterForm, LoginForm, PostUpdateForm, PostCreateForm
-from .models import Post, PostComment
+from .models import Post, PostComment, User
 from .utils import (
     get_search_model_queryset, 
     get_pagination_obj, 
@@ -137,12 +137,14 @@ class PostDetailPageView(View):
         )
 
 
-class UserProfilePageView(LoginRequiredMixin, View):
-    template_name = "blog/user_posts.html"
+class UserProfilePageView(View):
+    template_name = "blog/profile.html"
 
-    def get(self, request):
-        posts = Post.objects.filter(author=request.user)
-        return render(request, "blog/user_posts.html", {"posts": posts})
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        print(user)
+
+        return render(request, "blog/profile.html")
 
 
 class PostFormPageView(LoginRequiredMixin, TemplateView):
@@ -174,10 +176,18 @@ class PostFormPageView(LoginRequiredMixin, TemplateView):
         return render(request, "blog/post_form.html", {"form": form})
 
 
-class UserPostPageView(ListView):
-    model = Post
+class UserPostPageView(LoginRequiredMixin, View):
     template_name = "blog/user_posts.html"
-    context_object_name = "posts"
+
+    def get(self, request):
+        
+        search_query_for_user_posts = request.GET.get("search_query_for_user_posts", None)
+        posts = Post.objects.filter(author=request.user)
+
+        if search_query_for_user_posts is not None:
+            posts = get_search_model_queryset(posts, search_query_for_user_posts)
+
+        return render(request, "blog/user_posts.html", {"posts": posts})
 
 
 class PostUpdateView(LoginRequiredMixin, View):

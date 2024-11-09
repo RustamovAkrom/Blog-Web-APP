@@ -43,7 +43,8 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown09">
               <li><a class="dropdown-item" href="{% url 'post_form' %}">Create</a></li>
-              <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'user_profile' request.user.username %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'user_posts' %}">My posts</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
           </li>
