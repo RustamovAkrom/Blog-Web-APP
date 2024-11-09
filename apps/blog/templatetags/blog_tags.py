@@ -1,9 +1,9 @@
 from django import template
-from django.db.models import Count
 from django.utils.safestring import mark_safe
 from ..models import Post, PostLike, PostDislike
 
 import markdown2
+
 
 register = template.Library()
 
