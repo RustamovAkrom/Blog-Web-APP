@@ -9,8 +9,14 @@ from django.views import View
 from django.urls import reverse
 
 from .forms import RegisterForm, LoginForm, PostUpdateForm, PostCreateForm
-from .models import Post
-from .utils import get_search_model_queryset, get_pagination_obj, set_post_like, set_post_dislike
+from .models import Post, PostComment
+from .utils import (
+    get_search_model_queryset, 
+    get_pagination_obj, 
+    set_post_like, 
+    set_post_dislike, 
+    set_post_comment
+)
 
 
 class CustomHtmxMixin:
@@ -118,9 +124,17 @@ class PostDetailPageView(View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
+        post_comments = post.post_comments.all().order_by("-created_at")
         post.watching += 1
         post.save()
-        return render(request, "blog/post_detail.html", {"post": post})
+        return render(
+            request, 
+            "blog/post_detail.html", 
+            {
+                "post": post,
+                "post_comments": post_comments
+            }
+        )
 
 
 class UserProfilePageView(LoginRequiredMixin, View):
@@ -128,13 +142,7 @@ class UserProfilePageView(LoginRequiredMixin, View):
 
     def get(self, request):
         posts = Post.objects.filter(author=request.user)
-        return render(
-            request,
-            "blog/user_posts.html",
-            {
-                "posts": posts,
-            },
-        )
+        return render(request, "blog/user_posts.html", {"posts": posts})
 
 
 class PostFormPageView(LoginRequiredMixin, TemplateView):
@@ -197,7 +205,15 @@ class PostDeleteView(LoginRequiredMixin, View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        return render(request, "blog/post_confirm_delete.html", {"post": post})
+        post_messages = post.post_comments.all()
+        print(post_messages)
+        return render(
+            request, 
+            "blog/post_confirm_delete.html", 
+            {
+                "post": post, "post_messages": post_messages
+            }
+        )
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
@@ -225,6 +241,12 @@ def post_dislike(request, slug):
 
 
 def post_message(request, slug):
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated:
         return redirect(reverse("login"))
+    
+    post_message_input = request.GET.get("post_message_input", None)
+    print(post_message_input)
+
+    if post_message_input is not None:
+        set_post_comment(request.user, slug, post_message_input)
     return redirect(reverse("post_detail", kwargs={"slug": slug}))

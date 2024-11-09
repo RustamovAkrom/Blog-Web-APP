@@ -17,4 +17,5 @@ urlpatterns = [
     path("post/user/", views.UserPostPageView.as_view(), name="user_posts"),
     path("post/like/<slug:slug>", views.post_like, name="post_like"),
     path("post/dislike/<slug:slug>", views.post_dislike, name="post_dislike"),
+    path("post/message/<slug:slug>", views.post_message, name="post_message"),
 ]

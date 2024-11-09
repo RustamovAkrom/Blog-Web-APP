@@ -54,4 +54,3 @@ def set_post_dislike(user, slug) -> None:
 def set_post_comment(user, slug, message: str) -> None:
     post = Post.objects.get(slug=slug)
     PostComment.objects.create(post=post, user=user, message=message)
-    
