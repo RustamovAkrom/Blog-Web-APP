@@ -74,4 +74,3 @@ Ensure you have the following installed:
 - Create a new post, edit existing posts, and add comments to any post. All updates are handled smoothly using HTMX for a better user experience.
 
 ## Project Structure
-
