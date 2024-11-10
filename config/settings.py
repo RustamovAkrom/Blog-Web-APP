@@ -6,7 +6,12 @@ SECRET_KEY = "django-insecure-=hgs&o^0!im!3ut#l83$dbir&&tlh$u-g)2n0pw!wm34h+yaco
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["blog-post-see1.onrender.com", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = [
+    "blog-post-see1.onrender.com", 
+    "localhost", 
+    "127.0.0.1", 
+    "*"
+]
 
 
 INSTALLED_APPS = [
@@ -81,9 +86,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-US"
+LANGUAGE_CODE = "en"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
 # USE_L10N = True
