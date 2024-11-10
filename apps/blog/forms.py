@@ -4,11 +4,12 @@ from apps.users.models import User, UserProfile
 from .models import Post
 
 
-default_attrs = lambda name, placeholder: {
+default_attrs = lambda name, placeholder: { # noqa :E731
     "name": name,
     "placeholder": placeholder,
-    "class": "form-control"
+    "class": "form-control",
 }
+
 
 class PostCreateForm(forms.ModelForm):
 
@@ -30,11 +31,8 @@ class PostCreateForm(forms.ModelForm):
                 }
             ),
             "is_active": forms.CheckboxInput(
-                attrs={
-                    "name": "is_active",
-                    "class": "form-check-input"
-                }
-            )
+                attrs={"name": "is_active", "class": "form-check-input"}
+            ),
         }
 
 
@@ -49,7 +47,7 @@ class PostUpdateForm(forms.ModelForm):
                 attrs={
                     "name": "title",
                     "class": "form-control",
-                    "placeholder": "Title...."
+                    "placeholder": "Title....",
                 },
             ),
             "content": forms.Textarea(
@@ -58,15 +56,12 @@ class PostUpdateForm(forms.ModelForm):
                     "cols": "40",
                     "rows": "10",
                     "class": "form-control",
-                    "placeholder": "Content...."
+                    "placeholder": "Content....",
                 },
             ),
             "is_active": forms.CheckboxInput(
-                attrs={
-                    "name": "is_active",
-                    "class": "form-check-input"
-                }
-            )
+                attrs={"name": "is_active", "class": "form-check-input"}
+            ),
         }
 
 
@@ -79,28 +74,30 @@ class SettingsUserForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs=default_attrs("first_name", "First name..."),
         ),
-        required=False
+        required=False,
     )
     last_name = forms.CharField(
         widget=forms.TextInput(
             attrs=default_attrs("last_name", "Last name"),
-            ), 
-        required=False
+        ),
+        required=False,
     )
-    username = forms.CharField(widget=forms.TextInput(
-        attrs=default_attrs("username", "Username..."),
-    ))
-    email = forms.EmailField(widget=forms.EmailInput(
-        attrs=default_attrs("email", "Email...")
-    ))
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs=default_attrs("username", "Username..."),
+        )
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs=default_attrs("email", "Email..."))
+    )
+
 
 class SettingsUserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ("avatar", "bio")
-    avatar = forms.ImageField(widget=forms.FileInput(
-        attrs=default_attrs("avatar", "Avatar...")
-    ))
-    bio = forms.CharField(widget=forms.TextInput(
-        attrs=default_attrs("bio", "Bio...")
-    ))
+
+    avatar = forms.ImageField(
+        widget=forms.FileInput(attrs=default_attrs("avatar", "Avatar..."))
+    )
+    bio = forms.CharField(widget=forms.TextInput(attrs=default_attrs("bio", "Bio...")))

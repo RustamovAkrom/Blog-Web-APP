@@ -1,11 +1,12 @@
 from django import template
 from django.utils.safestring import mark_safe
-from ..models import Post, PostLike, PostDislike
+from ..models import PostLike, PostDislike
 
 import markdown2
 
 
 register = template.Library()
+
 
 @register.filter(name="markdown")
 def markdown_format(text):

@@ -7,18 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0002_initial'),
+        ("blog", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='postcomment',
-            name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_comments', to='blog.post'),
+            model_name="postcomment",
+            name="post",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post_comments",
+                to="blog.post",
+            ),
         ),
         migrations.AlterField(
-            model_name='postcommentlike',
-            name='comment',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_comment_likes', to='blog.postcomment'),
+            model_name="postcommentlike",
+            name="comment",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post_comment_likes",
+                to="blog.postcomment",
+            ),
         ),
     ]

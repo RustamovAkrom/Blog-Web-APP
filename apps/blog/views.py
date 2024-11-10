@@ -7,15 +7,20 @@ from django.contrib import messages
 from django.views import View
 from django.urls import reverse
 
-from apps.users.models import User, UserProfile
-from .forms import PostUpdateForm, PostCreateForm, SettingsUserForm, SettingsUserProfileForm
+from apps.users.models import User
+from .forms import (
+    PostUpdateForm,
+    PostCreateForm,
+    SettingsUserForm,
+    SettingsUserProfileForm,
+)
 from .models import Post
 from .utils import (
-    get_search_model_queryset, 
-    get_pagination_obj, 
-    set_post_like, 
-    set_post_dislike, 
-    set_post_comment
+    get_search_model_queryset,
+    get_pagination_obj,
+    set_post_like,
+    set_post_dislike,
+    set_post_comment,
 )
 
 
@@ -41,10 +46,10 @@ class HomePageView(TemplateView):
         else:
             posts = Post.objects.all()
 
-        search_query = request.GET.get('search_query', None)
+        search_query = request.GET.get("search_query", None)
         page = request.GET.get("page", 1)
         size = request.GET.get("size", 4)
-        
+
         posts = get_search_model_queryset(posts, search_query)
 
         page_obj = get_pagination_obj(posts, page, size)
@@ -55,7 +60,7 @@ class HomePageView(TemplateView):
             {
                 "page_obj": page_obj,
                 "size_value": size,
-                "search_query_value": search_query
+                "search_query_value": search_query,
             },
         )
 
@@ -73,12 +78,9 @@ class PostDetailPageView(View):
         post.watching += 1
         post.save()
         return render(
-            request, 
-            "blog/post_detail.html", 
-            {
-                "post": post,
-                "post_comments": post_comments
-            }
+            request,
+            "blog/post_detail.html",
+            {"post": post, "post_comments": post_comments},
         )
 
 
@@ -104,7 +106,7 @@ class PostCreatePageView(LoginRequiredMixin, TemplateView):
 
             messages.success(request, "Post succesfully created")
             return redirect("blog:home")
-        
+
         messages.warning(
             request,
             "There is a mistake in your post ! or your post is not filled to the depth.",
@@ -116,8 +118,10 @@ class UserPostsPageView(LoginRequiredMixin, View):
     template_name = "blog/user_posts.html"
 
     def get(self, request):
-        
-        search_query_for_user_posts = request.GET.get("search_query_for_user_posts", None)
+
+        search_query_for_user_posts = request.GET.get(
+            "search_query_for_user_posts", None
+        )
         posts = Post.objects.filter(author=request.user)
 
         if search_query_for_user_posts is not None:
@@ -163,37 +167,30 @@ class ContactsPageView(TemplateView):
 
 class SettingsPageView(LoginRequiredMixin, View):
     template_name = "blog/settings.py"
-    
+
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
         user_form = SettingsUserForm(instance=user)
         user_profile_form = SettingsUserProfileForm(instance=user.profiles)
         return render(
-            request, 
+            request,
             "blog/settings.html",
-            {
-                "user_form": user_form,
-                "user_profile_form": user_profile_form
-            }
+            {"user_form": user_form, "user_profile_form": user_profile_form},
         )
 
     def post(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
-        user_form = SettingsUserForm(
-            data=request.POST, instance=user
-        )
+        user_form = SettingsUserForm(data=request.POST, instance=user)
         user_profile_form = SettingsUserProfileForm(
-            data=request.POST,
-            files=request.FILES,
-            instance=user.profiles
+            data=request.POST, files=request.FILES, instance=user.profiles
         )
         if user_form.is_valid() and user_profile_form.is_valid():
             user_form.save()
             user_profile_form.save()
-        
+
             messages.success(request, "Successfully updated profile settings.")
             return redirect(reverse("blog:user_settings"))
-        
+
         messages.error(request, "Invalid parametres.")
         return redirect(reverse("blog:user_settings"))
 
@@ -215,7 +212,7 @@ def post_dislike(request, slug):
 def post_message(request, slug):
     if not request.user.is_authenticated:
         return redirect(reverse("users:login"))
-    
+
     post_message_input = request.GET.get("post_message_input", None)
     print(post_message_input)
 

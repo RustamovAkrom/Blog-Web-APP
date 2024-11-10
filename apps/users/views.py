@@ -24,7 +24,7 @@ class RegisterPageView(View):
             form.save()
             messages.success(request, "User succesfully registered")
             return redirect(reverse("users:login"))
-        
+
         messages.warning(request, "Error registered!")
         return render(request, "auth/register.html", {"form": form})
 
@@ -74,15 +74,8 @@ class UserProfilePageView(View):
         posts = Post.objects.filter(author=user, is_active=True).all().order_by("id")
 
         search_query = request.GET.get("search_query_for_user_profile", None)
-        
+
         if search_query is not None:
             posts = get_search_model_queryset(posts, search_query)
-    
-        return render(
-            request, 
-            "blog/profile.html", 
-            {
-                "posts": posts,
-                "user": user
-            }
-        )
+
+        return render(request, "blog/profile.html", {"posts": posts, "user": user})

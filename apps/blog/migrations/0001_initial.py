@@ -7,57 +7,110 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Post',
+            name="Post",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('title', models.CharField(db_index=True, max_length=120, verbose_name='title')),
-                ('slug', models.SlugField(max_length=255, unique=True, verbose_name='slug')),
-                ('content', models.TextField(verbose_name='content')),
-                ('publisher_at', models.DateField(verbose_name='publisher at')),
-                ('is_active', models.BooleanField(default=False, verbose_name='active')),
-                ('watching', models.BigIntegerField(default=0, verbose_name='watching')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "title",
+                    models.CharField(
+                        db_index=True, max_length=120, verbose_name="title"
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(max_length=255, unique=True, verbose_name="slug"),
+                ),
+                ("content", models.TextField(verbose_name="content")),
+                ("publisher_at", models.DateField(verbose_name="publisher at")),
+                (
+                    "is_active",
+                    models.BooleanField(default=False, verbose_name="active"),
+                ),
+                (
+                    "watching",
+                    models.BigIntegerField(default=0, verbose_name="watching"),
+                ),
             ],
             options={
-                'verbose_name': 'Post',
-                'verbose_name_plural': 'Posts',
-                'db_table': 'posts',
+                "verbose_name": "Post",
+                "verbose_name_plural": "Posts",
+                "db_table": "posts",
             },
         ),
         migrations.CreateModel(
-            name='PostComment',
+            name="PostComment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('message', models.TextField(verbose_name='message')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("message", models.TextField(verbose_name="message")),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='PostCommentLike',
+            name="PostCommentLike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PostDislike',
+            name="PostDislike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PostLike',
+            name="PostLike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
     ]

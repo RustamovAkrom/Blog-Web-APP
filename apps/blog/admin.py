@@ -10,6 +10,7 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = "publisher_at"
     prepopulated_fields = {"slug": ("title",)}
 
+
 @admin.register(PostComment)
 class PostCommentAdmin(admin.ModelAdmin):
     pass

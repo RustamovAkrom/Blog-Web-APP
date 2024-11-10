@@ -1,4 +1,3 @@
-from typing import Any
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.urls import reverse
@@ -15,16 +14,16 @@ class Post(TimestempedAbstractModel):
     is_active = models.BooleanField(_("active"), default=False)
     author = models.ForeignKey("users.User", models.CASCADE, "posts", db_index=True)
     watching = models.BigIntegerField(_("watching"), default=0)
-    
+
     def delete(self, *args, **kwargs):
         print(self.post_comments.all().delete())
         return super().delete(*args, **kwargs)
-    
+
     class Meta:
         db_table = "posts"
         verbose_name = _("Post")
         verbose_name_plural = _("Posts")
-        
+
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
@@ -35,19 +34,19 @@ class Post(TimestempedAbstractModel):
         if not self.slug:
             self.slug = f"{ slugify(self.title) }-{ get_random_text() }"
         return super().save(*args, **kwargs)
-    
+
     def like_count(self):
         return self.post_likes.count()
-    
+
     def dislike_count(self):
         return self.post_dislikes.count()
-    
+
     def comment_count(self):
         return self.post_comments.count()
-    
+
     def __str__(self) -> str:
         return self.title
-    
+
 
 class PostLike(models.Model):
     user = models.ForeignKey("users.User", models.CASCADE, "post_likes", db_index=True)
@@ -55,28 +54,40 @@ class PostLike(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} -(👍🏼)- {self.post}"
-    
-    
+
+
 class PostDislike(models.Model):
-    user = models.ForeignKey("users.User", models.CASCADE, "post_dislikes", db_index=True)
-    post = models.ForeignKey("blog.Post", models.CASCADE, "post_dislikes", db_index=True)
+    user = models.ForeignKey(
+        "users.User", models.CASCADE, "post_dislikes", db_index=True
+    )
+    post = models.ForeignKey(
+        "blog.Post", models.CASCADE, "post_dislikes", db_index=True
+    )
 
     def __str__(self) -> str:
         return f"{self.user} -(👎🏼)- {self.post}"
-    
+
 
 class PostComment(TimestempedAbstractModel):
-    user = models.ForeignKey("users.User", models.CASCADE, "post_comments", db_index=True)
-    post = models.ForeignKey("blog.Post", models.CASCADE, "post_comments", db_index=True)
+    user = models.ForeignKey(
+        "users.User", models.CASCADE, "post_comments", db_index=True
+    )
+    post = models.ForeignKey(
+        "blog.Post", models.CASCADE, "post_comments", db_index=True
+    )
     message = models.TextField(_("message"))
 
     def __str__(self) -> str:
         return f"{self.user} -(💬)- {self.post}"
-    
+
 
 class PostCommentLike(models.Model):
-    user = models.ForeignKey("users.User", models.CASCADE, "post_comment_likes", db_index=True)
-    comment = models.ForeignKey("blog.PostComment", models.CASCADE, "post_comment_likes", db_index=True)
+    user = models.ForeignKey(
+        "users.User", models.CASCADE, "post_comment_likes", db_index=True
+    )
+    comment = models.ForeignKey(
+        "blog.PostComment", models.CASCADE, "post_comment_likes", db_index=True
+    )
 
     def __str__(self) -> str:
         return f"{self.user} -(💬, 👍🏼)- {self.comment}"
