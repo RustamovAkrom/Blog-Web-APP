@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView
 from django.contrib import messages
 from django.views import View
 from django.urls import reverse
@@ -83,10 +83,10 @@ class PostDetailPageView(View):
 
 
 class PostCreatePageView(LoginRequiredMixin, TemplateView):
-    template_name = "blog/post_form.html"
+    template_name = "blog/post_create.html"
 
     def get(self, request):
-        return render(request, "blog/post_form.html", {"form": PostCreateForm()})
+        return render(request, "blog/post_create.html", {"form": PostCreateForm()})
 
     def post(self, request):
         form = PostCreateForm(request.POST)
@@ -109,7 +109,7 @@ class PostCreatePageView(LoginRequiredMixin, TemplateView):
             request,
             "There is a mistake in your post ! or your post is not filled to the depth.",
         )
-        return render(request, "blog/post_form.html", {"form": form})
+        return redirect(reverse("blog:post_create"))
 
 
 class UserPostsPageView(LoginRequiredMixin, View):
@@ -138,34 +138,23 @@ class PostUpdateView(LoginRequiredMixin, View):
         post = get_object_or_404(Post, slug=slug)
         form = PostUpdateForm(request.POST, instance=post)
         if form.is_valid():
-            messages.success(request, "Post succsessfully updated")
             form.save()
-            return redirect("profile")
+            messages.success(request, "Post succsessfully updated")
+            return redirect(reverse("blog:post_update", kwargs={"slug": slug}))
 
         messages.error(request, "You`r post is not valid !")
-        return render(request, "blog/post_update.html", {"form": form})
+        return redirect(reverse("blog:post_update", kwargs={"slug": slug}))
 
 
-class PostDeletePageView(LoginRequiredMixin, View):
+class PostDeletePageView(LoginRequiredMixin, DeleteView):
     template_name = "blog/post_confirm_delete.html"
-
-    def get(self, request, slug):
-        post = get_object_or_404(Post, slug=slug)
-        post_messages = post.post_comments.all()
-        print(post_messages)
-        return render(
-            request, 
-            "blog/post_confirm_delete.html", 
-            {
-                "post": post, "post_messages": post_messages
-            }
-        )
+    model = Post
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
         messages.success(request, "post successfully deleted")
         post.delete()
-        return redirect("profile")
+        return redirect("blog:user_posts")
 
 
 class ContactsPageView(TemplateView):

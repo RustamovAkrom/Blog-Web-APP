@@ -6,7 +6,7 @@
 <main role="main" class="container">
   <div class="row">
     <div class="col-md-8">
-      <form action="{% url 'post_update' post.slug %}" method="post">
+      <form action="{% url 'blog:post_update' post.slug %}" method="post">
         {% csrf_token %}
         <fieldset class="form-group">
           <legend class="border-bottom mb-4"><b>Update post</b>: {{ post.title}}</legend>

@@ -8,7 +8,7 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ["title", "content"]
     list_filter = ["author", "is_active"]
     date_hierarchy = "publisher_at"
-
+    prepopulated_fields = {"slug": ("title",)}
 
 @admin.register(PostComment)
 class PostCommentAdmin(admin.ModelAdmin):
