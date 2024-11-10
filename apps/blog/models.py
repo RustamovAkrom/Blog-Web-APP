@@ -1,29 +1,24 @@
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.contrib.auth.models import AbstractUser
 from apps.shared.models import TimestempedAbstractModel
 
 
-class User(AbstractUser, TimestempedAbstractModel):
-    avatar = models.ImageField(
-        upload_to="avatars/", null=True, default="avatars/default/logo.png"
-    )
-
-    @property
-    def post_count(self):
-        return self.posts.count
-
-
 class Post(TimestempedAbstractModel):
-    title = models.CharField(max_length=120)
-    slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    content = models.TextField()
-    publisher_at = models.DateField()
-    is_active = models.BooleanField(default=False)
-    author = models.ForeignKey("User", models.CASCADE, "posts")
-    watching = models.BigIntegerField(default=0)
-
+    title = models.CharField(_("title"), max_length=120, db_index=True)
+    slug = models.SlugField(_("slug"), max_length=255, unique=True, db_index=True)
+    content = models.TextField(_("content"))
+    publisher_at = models.DateField(_("publisher at"))
+    is_active = models.BooleanField(_("active"), default=False)
+    author = models.ForeignKey("users.User", models.CASCADE, "posts", db_index=True)
+    watching = models.BigIntegerField(_("watching"), default=0)
+    
+    class Meta:
+        db_table = "posts"
+        verbose_name = _("Post")
+        verbose_name_plural = _("Posts")
+        
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
 
@@ -49,33 +44,33 @@ class Post(TimestempedAbstractModel):
     
 
 class PostLike(models.Model):
-    user = models.ForeignKey("User", models.CASCADE, "post_likes")
-    post = models.ForeignKey("Post", models.DO_NOTHING, "post_likes")
+    user = models.ForeignKey("users.User", models.CASCADE, "post_likes", db_index=True)
+    post = models.ForeignKey("blog.Post", models.DO_NOTHING, "post_likes", db_index=True)
 
     def __str__(self) -> str:
         return f"{self.user} -(👍🏼)- {self.post}"
     
     
 class PostDislike(models.Model):
-    user = models.ForeignKey("User", models.CASCADE, "post_dislikes")
-    post = models.ForeignKey("Post", models.DO_NOTHING, "post_dislikes")
+    user = models.ForeignKey("users.User", models.CASCADE, "post_dislikes", db_index=True)
+    post = models.ForeignKey("blog.Post", models.DO_NOTHING, "post_dislikes", db_index=True)
 
     def __str__(self) -> str:
         return f"{self.user} -(👎🏼)- {self.post}"
     
 
 class PostComment(TimestempedAbstractModel):
-    user = models.ForeignKey("User", models.CASCADE, "post_comments")
-    post = models.ForeignKey("Post", models.DO_NOTHING, "post_comments")
-    message = models.TextField()
+    user = models.ForeignKey("users.User", models.CASCADE, "post_comments", db_index=True)
+    post = models.ForeignKey("blog.Post", models.DO_NOTHING, "post_comments", db_index=True)
+    message = models.TextField(_("message"))
 
     def __str__(self) -> str:
         return f"{self.user} -(💬)- {self.post}"
     
 
 class PostCommentLike(models.Model):
-    user = models.ForeignKey("User", models.CASCADE, "post_comment_likes")
-    comment = models.ForeignKey("PostComment", models.DO_NOTHING, "post_comment_likes")
+    user = models.ForeignKey("users.User", models.CASCADE, "post_comment_likes", db_index=True)
+    comment = models.ForeignKey("blog.PostComment", models.DO_NOTHING, "post_comment_likes", db_index=True)
 
     def __str__(self) -> str:
         return f"{self.user} -(💬, 👍🏼)- {self.comment}"

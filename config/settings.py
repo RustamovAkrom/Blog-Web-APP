@@ -6,7 +6,7 @@ SECRET_KEY = "django-insecure-=hgs&o^0!im!3ut#l83$dbir&&tlh$u-g)2n0pw!wm34h+yaco
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["blog-post-see1.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["blog-post-see1.onrender.com", "localhost", "127.0.0.1", "*"]
 
 
 INSTALLED_APPS = [
@@ -18,9 +18,11 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
-    # "django.contrib.postgres",
+    "django.contrib.postgres",
     # default apps
+    "apps.shared.apps.SharedConfig",
     "apps.blog.apps.BlogConfig",
+    "apps.users.apps.UsersConfig",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -97,6 +99,6 @@ MEDIA_ROOT = BASE_DIR / "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "blog.User"
+AUTH_USER_MODEL = "users.User"
 
 SITE_ID = 1

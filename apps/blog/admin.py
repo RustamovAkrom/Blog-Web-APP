@@ -1,15 +1,5 @@
 from django.contrib import admin
-from .models import Post, User, PostComment, PostLike, PostDislike, PostCommentLike
-
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ["username", "post_count"]
-    search_fields = ["first_name", "last_name", "username"]
-    list_display_links = ["username"]
-
-    def get_post_count(self):
-        return self.count
+from .models import Post, PostComment, PostLike, PostDislike, PostCommentLike
 
 
 @admin.register(Post)
