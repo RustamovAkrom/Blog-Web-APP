@@ -72,16 +72,3 @@ Ensure you have the following installed:
 ### Usage
 
 - Create a new post, edit existing posts, and add comments to any post. All updates are handled smoothly using HTMX for a better user experience.
-
-## Project Structure
-
-```
-django-blog-htmx/
-│
-├── apps/blog/              # Blog app with views, models, and templates
-├── static/                 # Static files (CSS, JavaScript)
-├── templates/              # HTML templates with HTMX support
-├── manage.py               # Django management script
-├── requirements.txt        # List of dependencies
-└── README.md               # This file
-```
