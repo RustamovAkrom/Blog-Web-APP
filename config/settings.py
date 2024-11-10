@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     # default apps
+    "rest_framework",
+    "rest_framework_simplejwt",
     "apps.shared.apps.SharedConfig",
     "apps.blog.apps.BlogConfig",
     "apps.users.apps.UsersConfig",
