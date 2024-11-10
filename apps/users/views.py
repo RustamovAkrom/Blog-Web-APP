@@ -9,6 +9,8 @@ from .models import User
 from apps.blog.utils import get_search_model_queryset
 from apps.blog.models import Post
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 class RegisterPageView(View):
     template_name = "auth/register.html"
@@ -44,9 +46,20 @@ class LoginPageView(View):
             user = authenticate(username=username, password=password)
 
             if user is not None:
-                login(request, user)
+                # login(request, user)
+
+                # Generate JWT tokens
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+
+                # install token in cookies
+                response = redirect(reverse("blog:home"))
+                response.set_cookie("access_token", access_token, httponly=True)
+                response.set_cookie("refresh_token", refresh_token, httponly=True)
+                
                 messages.info(request, f"You are logged in as { username }")
-                return redirect(reverse("blog:home"))
+                return response
 
             else:
                 messages.error(request, "Invalid username or password.")
@@ -62,8 +75,20 @@ class LogoutPageView(LoginRequiredMixin, View):
         return render(request, "auth/logout.html")
 
     def post(self, request):
-        logout(request)
-        return redirect(reverse("blog:home"))
+        # logout(request)
+        refresh_token = request.COOKIES.get("refresh_token")
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception:
+                pass
+
+        response = redirect(reverse("blog:home"))
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+
+        return response
 
 
 class UserProfilePageView(View):
