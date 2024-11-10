@@ -11,20 +11,37 @@ class User(AbstractUser, TimestempedAbstractModel):
     def post_count(self):
         return self.posts.count
     
+    def get_user_avatar_url(self):
+        return self.profiles.avatar.url
+    
+    def get_user_bio(self):
+        bio = self.profiles.bio
+        if bio:
+            return bio
+        return ""
+    
     class Meta:
         db_table = "users"
         verbose_name = _("User")
         verbose_name_plural = _("Users")
     
+    def __str__(self) -> str:
+        return self.username
+    
 
 class UserProfile(TimestempedAbstractModel):
-    user = models.ForeignKey("users.User", models.CASCADE, "user_profiles")
+    user = models.OneToOneField(
+        "users.User", models.CASCADE, related_name="profiles",
+    )
     avatar = models.ImageField(
         _("avatar"), upload_to="avatars/", default="avatars/default/logo.png", blank=True, null=True
     )
-    bio = models.CharField(_("bio"), max_length=170)
+    bio = models.CharField(_("bio"), max_length=170, blank=True, null=True)
 
     class Meta:
         db_table = "user_profiles"
         verbose_name = _("User Profile")
         verbose_name_plural = _("User Profiles")
+
+    def __str__(self) -> str:
+        return self.user.username

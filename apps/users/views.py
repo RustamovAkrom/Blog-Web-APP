@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
@@ -22,7 +23,7 @@ class RegisterPageView(View):
         if form.is_valid():
             form.save()
             messages.success(request, "User succesfully registered")
-            return redirect("login")
+            return redirect(reverse("users:login"))
         else:
             messages.warning(request, "Error registered!")
             return render(request, "blog/register.html", {"form": form})
@@ -45,11 +46,11 @@ class LoginPageView(View):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are logged in as { username }")
-                return redirect("home")
+                return redirect(reverse("blog:home"))
 
             else:
                 messages.error(request, "Invalid username or password.")
-                return redirect("login")
+                return redirect(reverse("users:login"))
 
         return render(request, "auth/login.html", {"form": form})
 
@@ -62,7 +63,7 @@ class LogoutPageView(LoginRequiredMixin, View):
 
     def post(self, request):
         logout(request)
-        return redirect("home")
+        return redirect(reverse("blog:home"))
 
 
 class UserProfilePageView(View):
