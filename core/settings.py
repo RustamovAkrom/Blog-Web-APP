@@ -1,14 +1,19 @@
+import os
+
 from pathlib import Path
 
 from core.config import * # noqa
 
+from dotenv import load_dotenv
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-=hgs&o^0!im!3ut#l83$dbir&&tlh$u-g)2n0pw!wm34h+yaco"
+SECRET_KEY = str(os.getenv("SECRET_KEY"))
 
-DEBUG = True
+DEBUG = bool(os.getenv("DEBUG", True))
 
-ALLOWED_HOSTS = ["blog-post-see1.onrender.com", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
 
 
 INSTALLED_APPS = DEFAULT_APPS + PROJECT_APPS + THIRD_PARTY_APPS
