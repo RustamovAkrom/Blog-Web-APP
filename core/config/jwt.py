@@ -1,10 +1,12 @@
+import os
+
 from datetime import timedelta
 
 
-with open("security/private_key.pem", "r") as f:
+with open(str(os.getenv("PRIVATE_KEY_PATH", "security_settings/private_key.pem")), "r") as f:
     PRIVATE_KEY = f.read()
 
-with open("security/public_key.pem", "r") as f:
+with open(str(os.getenv("PUBLIC_KEY_PATH", "security_settings/public_key.pem")), "r") as f:
     PUBLIC_KEY = f.read()
     
 
