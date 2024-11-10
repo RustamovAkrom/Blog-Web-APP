@@ -7,7 +7,8 @@ from django.contrib import messages
 from django.views import View
 from django.urls import reverse
 
-from .forms import PostUpdateForm, PostCreateForm
+from apps.users.models import User, UserProfile
+from .forms import PostUpdateForm, PostCreateForm, SettingsUserForm, SettingsUserProfileForm
 from .models import Post
 from .utils import (
     get_search_model_queryset, 
@@ -175,10 +176,37 @@ class SettingsPageView(LoginRequiredMixin, View):
     template_name = "blog/settings.py"
     
     def get(self, request):
-        return render(request, "blog/settings.html")
+        user = get_object_or_404(User, pk=request.user.pk)
+        user_form = SettingsUserForm(instance=user)
+        user_profile_form = SettingsUserProfileForm(instance=user.profiles)
+        return render(
+            request, 
+            "blog/settings.html",
+            {
+                "user_form": user_form,
+                "user_profile_form": user_profile_form
+            }
+        )
 
     def post(self, request):
-        return render(request, "blog/settings.html")
+        user = get_object_or_404(User, pk=request.user.pk)
+        user_form = SettingsUserForm(
+            data=request.POST, instance=user
+        )
+        user_profile_form = SettingsUserProfileForm(
+            data=request.POST,
+            files=request.FILES,
+            instance=user.profiles
+        )
+        if user_form.is_valid() and user_profile_form.is_valid():
+            user_form.save()
+            user_profile_form.save()
+        
+            messages.success(request, "Successfully updated profile settings.")
+            return redirect(reverse("blog:user_settings"))
+        
+        messages.error(request, "Invalid parametres.")
+        return redirect(reverse("blog:user_settings"))
 
 
 def post_like(request, slug):

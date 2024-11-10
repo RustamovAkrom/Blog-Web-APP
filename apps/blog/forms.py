@@ -14,7 +14,7 @@ class PostCreateForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title", "content", "is_active"]
+        fields = ("title", "content", "is_active")
 
         widgets = {
             "title": forms.TextInput(
@@ -70,19 +70,34 @@ class PostUpdateForm(forms.ModelForm):
         }
 
 
-class SettingsForm(forms.Form):
-    first_name = forms.CharField(widget=forms.TextInput(
-        attrs=default_attrs("first_name", "First name..."),
-    ))
-    last_name = forms.CharField(widget=forms.TextInput(
-        attrs=default_attrs("last_name", "Last name"),
-    ))
+class SettingsUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "username", "email")
+
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs=default_attrs("first_name", "First name..."),
+        ),
+        required=False
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs=default_attrs("last_name", "Last name"),
+            ), 
+        required=False
+    )
     username = forms.CharField(widget=forms.TextInput(
         attrs=default_attrs("username", "Username..."),
     ))
     email = forms.EmailField(widget=forms.EmailInput(
         attrs=default_attrs("email", "Email...")
     ))
+
+class SettingsUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("avatar", "bio")
     avatar = forms.ImageField(widget=forms.FileInput(
         attrs=default_attrs("avatar", "Avatar...")
     ))

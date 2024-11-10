@@ -9,6 +9,14 @@
         <div class="col-md-8">
             <!-- Content -->
              Settings
+             <div>
+                <form action="{% url 'blog:user_settings' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    {{ user_profile_form.as_p }}
+                    <button type="submit" class="btn btn-outline-primary">Update</button>
+                </form>
+             </div>
         </div>
         {% include 'components/latest_posts.html' %}
     </div>

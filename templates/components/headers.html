@@ -31,7 +31,7 @@
               <li><a class="dropdown-item" href="{% url 'blog:post_create' %}">Create</a></li>
               <li><a class="dropdown-item" href="{% url 'users:user_profile' request.user.username %}">Profile</a></li>
               <li><a class="dropdown-item" href="{% url 'blog:user_posts' %}">My posts</a></li>
-              <li><a class="dropdown-item" href="{% url 'blog:settings' %}">Settings</a></li>
+              <li><a class="dropdown-item" href="{% url 'blog:user_settings' %}">Settings</a></li>
               <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
             </ul>
           </li>

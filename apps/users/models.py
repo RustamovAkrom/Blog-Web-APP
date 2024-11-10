@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from apps.shared.models import TimestempedAbstractModel
@@ -34,7 +35,11 @@ class UserProfile(TimestempedAbstractModel):
         "users.User", models.CASCADE, related_name="profiles",
     )
     avatar = models.ImageField(
-        _("avatar"), upload_to="avatars/", default="avatars/default/logo.png", blank=True, null=True
+        _("avatar"), 
+        upload_to="avatars/", 
+        default="avatars/default/logo.png", 
+        max_length=250,
+        blank=True, null=True,
     )
     bio = models.CharField(_("bio"), max_length=170, blank=True, null=True)
 

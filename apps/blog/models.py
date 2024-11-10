@@ -24,7 +24,7 @@ class Post(TimestempedAbstractModel):
         return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
     def get_author_avatar_url(self):
-        return self.user_profiles.avatar.url
+        return self.author.profiles.avatar.url
 
     def save(self, *args, **kwargs):
         if not self.slug:

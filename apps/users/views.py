@@ -24,9 +24,9 @@ class RegisterPageView(View):
             form.save()
             messages.success(request, "User succesfully registered")
             return redirect(reverse("users:login"))
-        else:
-            messages.warning(request, "Error registered!")
-            return render(request, "blog/register.html", {"form": form})
+        
+        messages.warning(request, "Error registered!")
+        return render(request, "auth/register.html", {"form": form})
 
 
 class LoginPageView(View):
