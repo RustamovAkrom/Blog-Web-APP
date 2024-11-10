@@ -1,6 +1,6 @@
 from pathlib import Path
-from datetime import timedelta
 
+from core.config import * # noqa
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,30 +11,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["blog-post-see1.onrender.com", "localhost", "127.0.0.1", "*"]
 
 
-INSTALLED_APPS = [
-    # Default apps
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.sites",
-    "django.contrib.sitemaps",
-    "django.contrib.staticfiles",
-    "django.contrib.postgres",
-    
-    # Third party apps
-    "rest_framework",
-    "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
+INSTALLED_APPS = DEFAULT_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
-    # Project apps
-    "apps.shared.apps.SharedConfig",
-    "apps.blog.apps.BlogConfig",
-    "apps.users.apps.UsersConfig",
-]
-
-ROOT_URLCONF = "config.urls"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -47,7 +25,7 @@ MIDDLEWARE = [
     "apps.users.middleware.JWTAuthMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
+ROOT_URLCONF = "core.urls"
 
 
 TEMPLATES = [
@@ -67,7 +45,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = "config.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -113,16 +91,3 @@ AUTH_USER_MODEL = "users.User"
 
 SITE_ID = 1
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
-}
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}

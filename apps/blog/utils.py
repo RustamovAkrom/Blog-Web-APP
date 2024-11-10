@@ -14,10 +14,7 @@ def get_search_model_queryset(
     if not search_for_title:
         search_for_content = model_queryset.filter(content__icontains=search_query)
         if not search_for_content:
-            search_for_publisher_at = model_queryset.filter(
-                publisher_at__icontains=search_query
-            )
-            queryset = search_for_publisher_at
+           queryset = search_for_content
         else:
             queryset = search_for_content
     else:

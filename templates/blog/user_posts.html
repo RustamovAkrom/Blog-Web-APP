@@ -37,7 +37,7 @@
                   {% endif %}
                   <h3 class="mb-0">{{ post.title }}</h3>
                   <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
-                  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                  <p class="card-text mb-auto">{{ post.content|truncatewords_html:30 }}</p>
                   <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                 </div>
               </div>
