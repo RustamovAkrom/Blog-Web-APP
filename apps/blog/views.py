@@ -171,6 +171,16 @@ class ContactsPageView(TemplateView):
     template_name = "blog/contacts.html"
 
 
+class SettingsPageView(LoginRequiredMixin, View):
+    template_name = "blog/settings.py"
+    
+    def get(self, request):
+        return render(request, "blog/settings.html")
+
+    def post(self, request):
+        return render(request, "blog/settings.html")
+
+
 def post_like(request, slug):
     if not request.user.is_authenticated:
         return redirect(reverse("users:login"))

@@ -4,5 +4,12 @@
 {% block title %} Settings {% endblock %}
 
 {% block content %}
-<h1>Settings</h1>
-{% endblock %}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Content -->
+             Settings
+        </div>
+        {% include 'components/latest_posts.html' %}
+    </div>
+</main>{% endblock %}

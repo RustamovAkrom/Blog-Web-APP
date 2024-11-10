@@ -1,6 +1,14 @@
 from django import forms
+
+from apps.users.models import User, UserProfile
 from .models import Post
 
+
+default_attrs = lambda name, placeholder: {
+    "name": name,
+    "placeholder": placeholder,
+    "class": "form-control"
+}
 
 class PostCreateForm(forms.ModelForm):
 
@@ -60,3 +68,24 @@ class PostUpdateForm(forms.ModelForm):
                 }
             )
         }
+
+
+class SettingsForm(forms.Form):
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs=default_attrs("first_name", "First name..."),
+    ))
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs=default_attrs("last_name", "Last name"),
+    ))
+    username = forms.CharField(widget=forms.TextInput(
+        attrs=default_attrs("username", "Username..."),
+    ))
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs=default_attrs("email", "Email...")
+    ))
+    avatar = forms.ImageField(widget=forms.FileInput(
+        attrs=default_attrs("avatar", "Avatar...")
+    ))
+    bio = forms.CharField(widget=forms.TextInput(
+        attrs=default_attrs("bio", "Bio...")
+    ))
