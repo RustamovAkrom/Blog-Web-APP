@@ -14,10 +14,10 @@
             <div class="d-flex">
 
               <div class="col">
-                <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
+                <a href="{% url 'blog:post_create' %}" class="btn btn-outline-secondary">Create New Post</a>
               </div>
               <div class="col">
-                <form action="{% url 'user_posts' %}">
+                <form action="{% url 'blog:user_posts' %}">
                   <div class="d-flex">
                     <input class="form-control" type="text" name="search_query_for_user_posts" placeholder="Search" aria-label="Search">
                     <button type="submit" class="btn btn-success ms-2"><i class="bi bi-search"></i></button>

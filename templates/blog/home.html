@@ -20,8 +20,8 @@
               
               <div class="d-flex">
                 <strong class="d-inline-block mb-2">
-                  <a href="{% url 'user_profile' post.author.username %}" class="nav-link">
-                    <img src="{{ post.author.avatar.url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
+                  <a href="{% url 'users:user_profile' post.author.username %}" class="nav-link">
+                    <img src="{{ post.get_author_avatar_url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
                     {{ post.author }}
                   </a>
                 </strong>

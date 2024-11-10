@@ -81,7 +81,7 @@ class PostDetailPageView(View):
         )
 
 
-class PostFormPageView(LoginRequiredMixin, TemplateView):
+class PostCreatePageView(LoginRequiredMixin, TemplateView):
     template_name = "blog/post_form.html"
 
     def get(self, request):
@@ -91,18 +91,19 @@ class PostFormPageView(LoginRequiredMixin, TemplateView):
         form = PostCreateForm(request.POST)
 
         if form.is_valid():
-
+            cd = form.cleaned_data
             post = Post.objects.create(
-                title=form.cleaned_data.get("title"),
-                content=form.cleaned_data.get("content"),
-                is_active=form.cleaned_data.get("is_active"),
+                title=cd.get("title"),
+                content=cd.get("content"),
+                is_active=cd.get("is_active"),
                 author=request.user,
                 publisher_at=datetime.datetime.now().strftime("%Y-%m-%d"),
             )
             post.save()
 
             messages.success(request, "Post succesfully created")
-            return redirect("home")
+            return redirect("blog:home")
+        
         messages.warning(
             request,
             "There is a mistake in your post ! or your post is not filled to the depth.",
@@ -110,7 +111,7 @@ class PostFormPageView(LoginRequiredMixin, TemplateView):
         return render(request, "blog/post_form.html", {"form": form})
 
 
-class UserPostPageView(LoginRequiredMixin, View):
+class UserPostsPageView(LoginRequiredMixin, View):
     template_name = "blog/user_posts.html"
 
     def get(self, request):
@@ -172,25 +173,25 @@ class ContactsPageView(TemplateView):
 
 def post_like(request, slug):
     if not request.user.is_authenticated:
-        return redirect(reverse("login"))
+        return redirect(reverse("users:login"))
     set_post_like(request.user, slug)
-    return redirect(reverse("post_detail", kwargs={"slug": slug}))
+    return redirect(reverse("blog:post_detail", kwargs={"slug": slug}))
 
 
 def post_dislike(request, slug):
     if not request.user.is_authenticated:
-        return redirect(reverse("login"))
+        return redirect(reverse("users:login"))
     set_post_dislike(request.user, slug)
-    return redirect(reverse("post_detail", kwargs={"slug": slug}))
+    return redirect(reverse("blog:post_detail", kwargs={"slug": slug}))
 
 
 def post_message(request, slug):
     if not request.user.is_authenticated:
-        return redirect(reverse("login"))
+        return redirect(reverse("users:login"))
     
     post_message_input = request.GET.get("post_message_input", None)
     print(post_message_input)
 
     if post_message_input is not None:
         set_post_comment(request.user, slug, post_message_input)
-    return redirect(reverse("post_detail", kwargs={"slug": slug}))
+    return redirect(reverse("blog:post_detail", kwargs={"slug": slug}))

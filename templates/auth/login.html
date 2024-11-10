@@ -18,14 +18,14 @@
         <div class="col-md-6">
             <h2>Login</h2>
             <form 
-            action="{% url 'login' %}" 
+            action="{% url 'users:login' %}" 
             method="post" 
             enctype="multipart/form-data"
             >
                 {% csrf_token %}
                 {{ form.as_p }}
                 <p>You have an create account? 
-                    <a href="{% url 'register' %}">Register</a>
+                    <a href="{% url 'users:register' %}">Register</a>
                 </p>
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>

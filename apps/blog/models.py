@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from apps.shared.models import TimestempedAbstractModel
+from apps.shared.utils import get_random_text
 
 
 class Post(TimestempedAbstractModel):
@@ -20,14 +21,14 @@ class Post(TimestempedAbstractModel):
         verbose_name_plural = _("Posts")
         
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={"slug": self.slug})
+        return reverse("blog:post_detail", kwargs={"slug": self.slug})
 
     def get_author_avatar_url(self):
-        return self.author.avatar.url
+        return self.user_profiles.avatar.url
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = f"{ slugify(self.title) }-{ get_random_text() }"
         return super().save(*args, **kwargs)
     
     def like_count(self):

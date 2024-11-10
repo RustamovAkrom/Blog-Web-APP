@@ -16,7 +16,7 @@ sitemaps = {
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("blog/", include("apps.blog.urls", namespace="blog")),
+    path("", include("apps.blog.urls", namespace="blog")),
     path("users/", include("apps.users.urls", namespace="users")),
     path("robots.txt", TemplateView.as_view(template_name="bunin/robots.txt")),
     path(

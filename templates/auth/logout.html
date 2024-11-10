@@ -8,13 +8,13 @@
         <div>
             <h1>Log out ?</h1><hr>
             <div>
-                <form method="post" action="{% url 'logout' %}">
+                <form method="post" action="{% url 'users:logout' %}">
                     {% csrf_token %}
                     <div class="mb-2 mt-3">
                         <button type="submit" class="btn btn-outline-danger">Yes</button>
                     </div>
                     <div class="mb-2 mt-3">
-                        <a href="{% url 'home' %}">
+                        <a href="{% url 'blog:home' %}">
                             <button class="btn btn-outline-secondary">No</button>
                         </a>
                     </div>

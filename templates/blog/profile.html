@@ -10,7 +10,7 @@
         <div class="col-md-4">
             <div class="content-section">
                 <center>
-                    <img src="{{ user.avatar.url }}" class="img-fluid"
+                    <img src="{{ user.get_user_avatar_url }}" class="img-fluid"
                         style="border-radius: 50%; width: 200px; height: 200px;" alt="">
                     <h3>
                         {% if user.first_name %}
@@ -21,7 +21,8 @@
                         {{ user.username }}
                         {% endif %}
                     </h3>
-                    <p class='text-muted'>You can put any information here you'd like.
+                    <p class='text-muted'>
+                        {{ user.get_user_bio }}
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-light">Latest Posts</li>
                         <li class="list-group-item list-group-item-light">Announcements</li>
@@ -38,11 +39,11 @@
 
                 {% if request.user == user %}
                 <div class="col">
-                    <a href="{% url 'post_form' %}" class="btn btn-outline-secondary">Create New Post</a>
+                    <a href="{% url 'blog:post_create' %}" class="btn btn-outline-secondary">Create New Post</a>
                 </div>
                 {% endif %}
                 <div class="col">
-                    <form action="{% url 'user_profile' user.username %}">
+                    <form action="{% url 'users:user_profile' user.username %}">
                         <div class="d-flex">
                             <input class="form-control" type="text" name="search_query_for_user_profile"
                                 placeholder="Search" aria-label="Search">
