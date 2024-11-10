@@ -136,3 +136,7 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 # compressor/
+
+security/
+private_key.pem
+public_key.pem

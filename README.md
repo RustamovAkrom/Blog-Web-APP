@@ -72,5 +72,8 @@ Ensure you have the following installed:
 ### Usage
 
 - Create a new post, edit existing posts, and add comments to any post. All updates are handled smoothly using HTMX for a better user experience.
+<<<<<<< HEAD
 
 ## Project Structure
+=======
+>>>>>>> master
