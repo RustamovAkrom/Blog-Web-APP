@@ -41,7 +41,7 @@ class HomePageView(TemplateView):
     template_name = "blog/home.html"
 
     def get(self, request):
-        if request.user.is_authenticated:
+        if request.user and request.user.is_authenticated:
             posts = Post.objects.exclude(author=request.user)
         else:
             posts = Post.objects.all()
