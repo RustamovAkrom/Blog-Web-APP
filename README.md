@@ -75,13 +75,3 @@ Ensure you have the following installed:
 
 ## Project Structure
 
-```
-django-blog-htmx/
-│
-├── apps/blog/              # Blog app with views, models, and templates
-├── static/                 # Static files (CSS, JavaScript)
-├── templates/              # HTML templates with HTMX support
-├── manage.py               # Django management script
-├── requirements.txt        # List of dependencies
-└── README.md               # This file
-```
