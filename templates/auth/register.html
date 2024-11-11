@@ -6,12 +6,40 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h2>Register</h2>
+
                 <form 
                 action="{% url 'users:register' %}"
                 method="post" 
                 enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <p>
+                        <label>{{ form.username.label }}</label>
+                        <div class="invalid-feedback d-block">
+                            {{ form.username.errors }}
+                        </div>
+                        {{ form.username }}
+                    </p>
+                    <p>
+                        <label>{{ form.email.label }}</label>
+                        <div class="invalid-feedback d-block">
+                            {{ form.email.errors }}
+                        </div>
+                        {{ form.email }}
+                    </p>
+                    <p>
+                        <label>{{ form.password1.label }}</label>
+                        <div class="invalid-feedback d-block">
+                            {{ form.password1.errors }}
+                        </div>
+                        {{ form.password1 }}
+                    </p>
+                    <p>
+                        <label>{{ form.password2.label }}</label>
+                        <div class="invalid-feedback d-block">
+                            {{ form.password2.errors }}
+                        </div>
+                        {{ form.password2 }}
+                    </p>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
                 <p>Already have an account? 
