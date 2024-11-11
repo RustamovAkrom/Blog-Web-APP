@@ -8,6 +8,7 @@
  - Django Simple JWT
  - Authentication for JWT (RS256)
  - HTML, CSS, JavaScript, Bootstrap
+ - SEO Optimizations
 
 ## Databases:
  + PostgreSQL
