@@ -33,10 +33,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 
+TEMPLATES_DIRS = ["templates"]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "DIRS": TEMPLATES_DIRS,
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -52,12 +54,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if os.getenv("DATABASE_ENVIRON") == "postgres":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": str(os.getenv("POSTGRES_NAME")),
+            "USER": str(os.getenv("POSTGRES_USER")),
+            "PASSWORD": str(os.getenv("POSTGRES_PASSWORD")),
+            "HOST": str(os.getenv("POSTGRES_HOST")),
+            "PORT": int(os.getenv("POSTGRES_PORT"))
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -95,4 +110,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 SITE_ID = 1
-
