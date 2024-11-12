@@ -1,9 +1,12 @@
 import os
-
+from pathlib import Path
 from datetime import timedelta
 
 from dotenv import load_dotenv
-load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 with open(str(os.getenv("PRIVATE_KEY_PATH", "security/private_key")), "r") as f:
     PRIVATE_KEY = f.read()
