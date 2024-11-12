@@ -34,10 +34,9 @@ jobs:
         mkdir -p security
         openssl genpkey -algorithm RSA -out security/private_key.pem -pkeyopt rsa_keygen_bits:2048
         openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
-
         echo "Private key saved as security/private_key.pem"
         echo "Public key saved as security/public_key.pem"
-
+        
     - name: Create .env file
       run: |
         touch .env
