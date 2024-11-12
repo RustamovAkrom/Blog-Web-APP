@@ -16,20 +16,45 @@ jobs:
         python-version: [3.8, 3.9]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Check out the repository
+      uses: actions/checkout@v4
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+    - name: Install OpenSSl
+      uses: sudo apt-get install openssl
+
+    - name: Generate private and public keys
+      uses: |
+        mkdir -p security
+        
+        openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
+
+        echo "Private key saved as security/private_key.pem"
+        echo "Public key saved as security/public_key.pem"
+
     - name: Create .env file
       run: |
         touch .env
         echo PRIVATE_KEY_PATH=${{ secrets.PRIVATE_KEY_PATH }} >> .env
         echo PUBLIC_KEY_PATH=${{ secrets.PUBLIC_KEY_PATH }} >> .env
+
+    - name: Check if .env has been updated
+      run: |
+        cat .env
+        
+    - name: Clean up keys (Optional)
+      run: |
+        rm -rf security
+        echo "Keys removed after use."
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
     - name: Run Tests
       run: |
         python manage.py test
