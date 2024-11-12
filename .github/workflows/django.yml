@@ -2,13 +2,16 @@ name: Django CI
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches:
+      - master
+      - main
   pull_request:
-    branches: [ "master", "main" ]
+    branches:
+      - master
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -23,23 +26,22 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install OpenSSl
-      uses: sudo apt-get install openssl
+
+    - name: Install OpenSSL
+      run: sudo apt-get install openssl
 
     - name: Generate private and public keys
-      uses: |
+      run: |
         mkdir -p security
-        
+        openssl genpkey -algorithm RSA -out security/private_key.pem -pkeyopt rsa_keygen_bits:2048
         openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
-
         echo "Private key saved as security/private_key.pem"
         echo "Public key saved as security/public_key.pem"
 
     - name: Create .env file
       run: |
-        touch .env
-        echo PRIVATE_KEY_PATH=${{ secrets.PRIVATE_KEY_PATH }} >> .env
-        echo PUBLIC_KEY_PATH=${{ secrets.PUBLIC_KEY_PATH }} >> .env
+        echo PRIVATE_KEY_PATH=$(pwd)/security/private_key.pem >> .env
+        echo PUBLIC_KEY_PATH=$(pwd)/security/public_key.pem >> .env
 
     - name: Check if .env has been updated
       run: |
@@ -47,14 +49,26 @@ jobs:
 
     - name: Clean up keys (Optional)
       run: |
-        rm -rf security
-        echo "Keys removed after use."
+        if [ -d "security" ]; then
+          rm -rf security
+          echo "Keys removed after use."
+        else
+          echo "No keys to remove."
+        fi
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-python-${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-python-${{ matrix.python-version }}-pip-
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
+
     - name: Run Tests
       run: |
         python manage.py test
