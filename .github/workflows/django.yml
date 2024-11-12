@@ -6,6 +6,7 @@ on:
       - "main"
       - "master"
   pull_request:
+    branches:
       - "main"
       - "master"
 jobs:
@@ -29,7 +30,7 @@ jobs:
       run: sudo apt-get install openssl
 
     - name: Generate private and public keys
-      uses: |
+      run: |
         mkdir -p security
         openssl genpkey -algorithm RSA -out security/private_key.pem -pkeyopt rsa_keygen_bits:2048
         openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
