@@ -4,11 +4,6 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
-{% for message in massages %}
-<div class="alert alert-{{ message.tags }}">
-<h6>{{ message }}</h6>
-</div>
-{% endfor %}
 <div class="background">
     <div class="shape"></div>
     <div class="shape"></div>
@@ -23,7 +18,17 @@
             enctype="multipart/form-data"
             >
                 {% csrf_token %}
-                {{ form.as_p }}
+                <p>
+                    <label>{{ form.username.label }}</label>
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </p>
+                <p>
+                    <label>{{ form.password.label }}</label>
+                    {{ form.username.errors }}
+                    {{ form.password }}
+                </p>
+                
                 <p>You have an create account? 
                     <a href="{% url 'users:register' %}">Register</a>
                 </p>

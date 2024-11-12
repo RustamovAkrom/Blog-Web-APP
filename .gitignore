@@ -139,3 +139,5 @@ GitHub.sublime-settings
 
 # private_key.pem
 # public_key.pem
+
+db.sqlite3

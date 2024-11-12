@@ -20,14 +20,14 @@ class RegisterPageView(View):
 
     def post(self, request):
 
-        form = RegisterForm(request.POST, request.FILES)
+        form = RegisterForm(request.POST)
 
         if form.is_valid():
             form.save()
             messages.success(request, "User succesfully registered")
             return redirect(reverse("users:login"))
 
-        messages.warning(request, "Error registered!")
+        messages.warning(request, "Invalid registration fields!")
         return render(request, "auth/register.html", {"form": form})
 
 
@@ -43,6 +43,7 @@ class LoginPageView(View):
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
+
             user = authenticate(username=username, password=password)
 
             if user is not None:
@@ -58,7 +59,7 @@ class LoginPageView(View):
                 response.set_cookie("access_token", access_token, httponly=True)
                 response.set_cookie("refresh_token", refresh_token, httponly=True)
                 
-                messages.info(request, f"You are logged in as { username }")
+                messages.success(request, f"You are logged in as { username }")
                 return response
 
             else:
