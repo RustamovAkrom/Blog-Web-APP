@@ -3,11 +3,12 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import authenticate
 from .forms import RegisterForm, LoginForm
 from .models import User
 from apps.blog.utils import get_search_model_queryset
 from apps.blog.models import Post
+from .services import get_jwt_login_response, get_jwt_logout_response
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -47,18 +48,12 @@ class LoginPageView(View):
             user = authenticate(username=username, password=password)
 
             if user is not None:
-                # login(request, user)
 
-                # Generate JWT tokens
-                refresh = RefreshToken.for_user(user)
-                access_token = str(refresh.access_token)
-                refresh_token = str(refresh)
-
-                # install token in cookies
                 response = redirect(reverse("blog:home"))
-                response.set_cookie("access_token", access_token, httponly=True)
-                response.set_cookie("refresh_token", refresh_token, httponly=True)
-                
+
+                # Login for jwt
+                response = get_jwt_login_response(response, user)
+
                 messages.success(request, f"You are logged in as { username }")
                 return response
 
@@ -76,18 +71,10 @@ class LogoutPageView(LoginRequiredMixin, View):
         return render(request, "auth/logout.html")
 
     def post(self, request):
-        # logout(request)
-        refresh_token = request.COOKIES.get("refresh_token")
-        if refresh_token:
-            try:
-                token = RefreshToken(refresh_token)
-                token.blacklist()
-            except Exception:
-                pass
-
         response = redirect(reverse("blog:home"))
-        response.delete_cookie("access_token")
-        response.delete_cookie("refresh_token")
+
+        # Logout and remove jwt (refresh, access) tokens
+        response = get_jwt_logout_response(response, request)
 
         return response
 
