@@ -40,8 +40,8 @@ jobs:
     - name: Create .env file
       run: |
         touch .env
-        echo PRIVATE_KEY_PATH=${{ secrets.PRIVATE_KEY_PATH }} >> .env
-        echo PUBLIC_KEY_PATH=${{ secrets.PUBLIC_KEY_PATH }} >> .env
+        echo PRIVATE_KEY_PATH=security/private_key.pem >> .env
+        echo PUBLIC_KEY_PATH=security/public_key.pem >> .env
 
     - name: Check if .env has been updated
       run: |
