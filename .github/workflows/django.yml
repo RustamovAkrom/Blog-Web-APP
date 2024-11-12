@@ -9,7 +9,8 @@ on:
       - main
       - master
 jobs:
-  build:
+
+  generate-keys:
 
     runs-on: ubuntu-latest
     strategy:
