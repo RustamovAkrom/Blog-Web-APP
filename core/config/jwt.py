@@ -2,11 +2,13 @@ import os
 
 from datetime import timedelta
 
+from dotenv import load_dotenv
+load_dotenv()
 
-with open(str(os.getenv("PRIVATE_KEY_PATH", "security_settings/private_key.pem")), "r") as f:
+with open(str(os.getenv("PRIVATE_KEY_PATH")), "r") as f:
     PRIVATE_KEY = f.read()
 
-with open(str(os.getenv("PUBLIC_KEY_PATH", "security_settings/public_key.pem")), "r") as f:
+with open(str(os.getenv("PUBLIC_KEY_PATH")), "r") as f:
     PUBLIC_KEY = f.read()
     
 
@@ -32,6 +34,6 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
     "JTI_CLAIM": "jti",
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_LIFETIME": timedelta(seconds=1),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
