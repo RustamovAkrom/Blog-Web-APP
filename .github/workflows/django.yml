@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
     - name: Check if .env has been updated
       run: |
         cat .env
-        
+
     - name: Clean up keys (Optional)
       run: |
         rm -rf security
