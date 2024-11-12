@@ -33,7 +33,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 
-TEMPLATES_DIRS = ["templates"]
+TEMPLATES_DIRS = [os.path.join(BASE_DIR, "templates")]
 
 TEMPLATES = [
     {
