@@ -10,10 +10,14 @@ User = get_user_model()
 
 class JWTAuthMiddleware(MiddlewareMixin):
     def process_request(self, request):
+        if request.path.startswith('/admin'):
+            return
+        
         access_token = request.COOKIES.get("access_token")
 
         if not access_token:
             request.user = AnonymousUser()
+            return
         
         cached_user = cache.get(access_token)
         if cached_user:
