@@ -11,12 +11,12 @@ EMAIL_USE_TLS = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": str(os.getenv("POSTGRES_NAME")),
-        "USER": str(os.getenv("POSTGRES_USER")),
-        "PASSWORD": str(os.getenv("POSTGRES_PASSWORD")),
-        "HOST": str(os.getenv("POSTGRES_HOST")),
-        "PORT": int(os.getenv("POSTGRES_PORT"))
+        "ENGINE": f"django.db.backends.{str(os.getenv('DATABASE_ENVIRON'))}",
+        "NAME": str(os.getenv("DATABASE_NAME")),
+        "USER": str(os.getenv("DATABASE_USER")),
+        "PASSWORD": str(os.getenv("DATABASE_PASSWORD")),
+        "HOST": str(os.getenv("DATABASE_HOST")),
+        "PORT": int(os.getenv("DATABASE_PORT"))
     }
 }
 

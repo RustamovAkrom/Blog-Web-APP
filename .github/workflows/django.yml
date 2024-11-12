@@ -48,6 +48,9 @@ jobs:
         touch .env
         echo PRIVATE_KEY_PATH=$(pwd)/security/private_key.pem >> .env
         echo PUBLIC_KEY_PATH=$(pwd)/security/public_key.pem >> .env
+        DJANGO_SETTINGS_MODULE=core.settings.development >> .env
+        echo DATABASE_ENVIRON=sqlite3 >> .env
+
 
     - name: Check if .env has been updated
       run: cat .env  # This is a command, so it uses 'run'

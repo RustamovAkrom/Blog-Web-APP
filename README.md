@@ -65,11 +65,11 @@ PUBLIC_KEY_PATH=security_settings/public_key.pem # default
 DATABASE_ENVIRON=sqlite # sqlite or postgres
 
 # PostgreSQL configruations
-POSTGRES_NAME=<your database name>
-POSTGRES_USER=<your database user>
-POSTGRES_PASSWORD=<your database password>
-POSTGRES_HOST=localhost # default
-POSTGRES_PORT=5432 # default
+DATABASE_NAME=<your database name>
+DATABASE_USER=<your database user>
+DATABASE_PASSWORD=<your database password>
+DATABASE_HOST=localhost # default
+DATABASE_PORT=5432 # default
 
 ADMIN_USERNAME=admin # default
 ADMIN_PASSWORD=password # default
