@@ -25,6 +25,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Create .env file
+      run: |
+        touch .env
+        echo PRIVATE_KEY_PATH=${{ secrets.PRIVATE_KEY_PATH }} >> .env
+        echo PUBLIC_KEY_PATH=${{ secrets.PUBLIC_KEY_PATH }} >> .env
     - name: Run Tests
       run: |
         python manage.py test
