@@ -84,7 +84,7 @@ class UserProfilePageView(View):
 
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        posts = Post.objects.filter(author=user, is_active=True).all().order_by("id")
+        posts = Post.published.filter(author=user).all().order_by("-created_at")
 
         search_query = request.GET.get("search_query_for_user_profile", None)
 

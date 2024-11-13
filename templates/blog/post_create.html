@@ -3,36 +3,42 @@
 {% block title %} New post {% endblock %}
 
 {% block content %}
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
-                    <div class="content-section">
-                        <form method="post">
-                          {% csrf_token %}
-                            <fieldset class="form-group">
-                                <legend class="border-bottom mb-4">Blog Post</legend>
-                                <!-- {{ form.as_p }} -->
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    {{ form.title }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="content">Content</label>
-                                    {{ form.content }}
-                                </div>
-                                <div>
-                                  {{ form.is_active }}
-                                  Is active
-                                </div>
-                            </fieldset>
-                            <div class="form-group">
-                                <button class="btn btn-outline-info" type="submit">Post</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                {% include 'components/latest_posts.html' %}
-              </div>
-            </main>
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="content-section">
+        <form method="post">
+          {% csrf_token %}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Blog Post</legend>
+            <!-- {{ form.as_p }} -->
+
+            <div class="form-group">
+              <label for="title">Title</label>
+              {{ form.title }}
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              {{ form.description }}
+            </div>
+
+            <div class="form-group">
+              <label for="content">Content</label>
+              {{ form.content }}
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              {{ form.status }}
+            </div>
+          </fieldset>
+          <div class="form-group col-md-2 mt-3">
+            <button class="btn btn-outline-info" type="submit">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% include 'components/latest_posts.html' %}
+  </div>
+</main>
 {% endblock %}

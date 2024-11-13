@@ -17,12 +17,17 @@
           </div>
 
           <div class="form-group">
+            <label for="description">Description</label>
+            {{ form.description }}
+          </div>
+          
+          <div class="form-group">
             <label for="content">Content</label>
             {{ form.content }}
           </div>
-          <div>
-            {{ form.is_active }}
-            Is active
+          <div class="form-group">
+            <label for="status">Status</label>
+            {{ form.status }}
           </div>
         </fieldset>
         <div class="mt-3">

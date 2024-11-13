@@ -11,56 +11,40 @@ default_attrs = lambda name, placeholder: { # noqa :E731
 }
 
 
-class PostCreateForm(forms.ModelForm):
+class PostCreateUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ("title", "content", "is_active")
+        fields = ("title", "description", "content", "status")
 
         widgets = {
             "title": forms.TextInput(
                 attrs={
                     "class": "form-control",
+                    "name": "title",
                     "placeholder": "Enter you`r post title...",
                 }
             ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "name": "description",
+                    "placeholder": "Enter you`r post description...",
+                }
+            ),
             "content": forms.Textarea(
                 attrs={
                     "class": "form-control",
+                    "name": "content",
                     "placeholder": "Enter you`r post content...",
                 }
             ),
-            "is_active": forms.CheckboxInput(
-                attrs={"name": "is_active", "class": "form-check-input"}
-            ),
-        }
-
-
-class PostUpdateForm(forms.ModelForm):
-
-    class Meta:
-        model = Post
-        fields = ("title", "content", "is_active")
-
-        widgets = {
-            "title": forms.TextInput(
+            "status": forms.Select(
                 attrs={
-                    "name": "title",
-                    "class": "form-control",
-                    "placeholder": "Title....",
-                },
-            ),
-            "content": forms.Textarea(
-                attrs={
-                    "name": "content",
-                    "cols": "40",
-                    "rows": "10",
-                    "class": "form-control",
-                    "placeholder": "Content....",
-                },
-            ),
-            "is_active": forms.CheckboxInput(
-                attrs={"name": "is_active", "class": "form-check-input"}
+                    "class": "form-select",
+                    "name": "status",
+                    "placeholder": "Enter you`r post status...",
+                }
             ),
         }
 

@@ -58,16 +58,16 @@
                 <div
                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
+                        
+                        <h3 class="mb-0">{{ post.title }}</h3>
+                        <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
+                        <p class="card-text mb-auto">{{ post.description|truncatewords_html:30  }}</p>
+                        <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                         <div class="d-flex">
                             <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-eye">{{ post.watching }}</i></strong>
                             <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-star">{{ post.like_count }}</i></strong>
                             <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-chat">{{ post.comment_count }}</i></strong>
                         </div>
-
-                        <h3 class="mb-0">{{ post.title }}</h3>
-                        <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
-                        <p class="card-text mb-auto">{{ post.content|truncatewords_html:30  }}</p>
-                        <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                     </div>
                 </div>
             </div>
