@@ -1,5 +1,5 @@
 from django.db.models import QuerySet
-from django.core.paginator import Paginator, Page
+from django.core.paginator import Paginator, Page, EmptyPage, PageNotAnInteger
 
 from .models import PostLike, PostDislike, Post, PostComment
 
@@ -23,7 +23,18 @@ def get_search_model_queryset(
 
 
 def get_pagination_obj(model_queryset: QuerySet, page: int = 1, size: int = 4) -> Page:
-    return Paginator(model_queryset.order_by("id"), size).page(page)
+    paginator = Paginator(model_queryset.order_by("id"), size)
+
+    try:
+        page_obj = paginator.page(page)
+    
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return page_obj
 
 
 def set_post_like(user, slug) -> None:
