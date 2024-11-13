@@ -3,15 +3,15 @@ import os
 from .base import * # noqa
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "'smtp.google.com'"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 
-DATABASES_ENVIRON = os.getenv("DATABASE_ENVIRON")
+DATABASE_ENVIRON = os.getenv("DATABASE_ENVIRON")
 
-if DATABASES_ENVIRON == "postgresql":
+if DATABASE_ENVIRON == "postgresql":
     DATABASES = {
         "default": {
             "ENGINE": f"django.db.backends.postgresql",
@@ -22,7 +22,7 @@ if DATABASES_ENVIRON == "postgresql":
             "PORT": int(os.getenv("DATABASE_PORT"))
         }
     }
-elif DATABASES_ENVIRON == 'mysql':
+elif DATABASE_ENVIRON == 'mysql':
     DATABASES = {
         "default": {
             "ENGINE": f"django.db.backends.mysql",
@@ -36,3 +36,5 @@ elif DATABASES_ENVIRON == 'mysql':
             }
         }
     }
+else:
+    raise ValueError("DATABASES_ENVIRON is not set correctly. Please set it to 'postgresql' or 'mysql'. ")
