@@ -9,8 +9,7 @@ from django.urls import reverse
 
 from apps.users.models import User
 from .forms import (
-    PostUpdateForm,
-    PostCreateForm,
+    PostCreateUpdateForm,
     SettingsUserForm,
     SettingsUserProfileForm,
 )
@@ -42,9 +41,9 @@ class HomePageView(TemplateView):
 
     def get(self, request):
         if request.user is not None and request.user.is_authenticated:
-            posts = Post.objects.exclude(author=request.user)
+            posts = Post.published.exclude(author=request.user)
         else:
-            posts = Post.objects.all()
+            posts = Post.published.all()
 
         search_query = request.GET.get("search_query", None)
         page = request.GET.get("page", 1)
@@ -74,6 +73,7 @@ class PostDetailPageView(View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
+        
         post_comments = post.post_comments.all().order_by("-created_at")
         post.watching += 1
         post.save()
@@ -88,17 +88,18 @@ class PostCreatePageView(LoginRequiredMixin, TemplateView):
     template_name = "blog/post_create.html"
 
     def get(self, request):
-        return render(request, "blog/post_create.html", {"form": PostCreateForm()})
+        return render(request, "blog/post_create.html", {"form": PostCreateUpdateForm()})
 
     def post(self, request):
-        form = PostCreateForm(request.POST)
+        form = PostCreateUpdateForm(request.POST)
 
         if form.is_valid():
             cd = form.cleaned_data
             post = Post.objects.create(
                 title=cd.get("title"),
+                status=cd.get("status"),
+                description=cd.get("description"),
                 content=cd.get("content"),
-                is_active=cd.get("is_active"),
                 author=request.user,
                 publisher_at=datetime.datetime.now().strftime("%Y-%m-%d"),
             )
@@ -122,7 +123,7 @@ class UserPostsPageView(LoginRequiredMixin, View):
         search_query_for_user_posts = request.GET.get(
             "search_query_for_user_posts", None
         )
-        posts = Post.objects.filter(author=request.user)
+        posts = Post.objects.filter(author=request.user, is_active=True)
 
         if search_query_for_user_posts is not None:
             posts = get_search_model_queryset(posts, search_query_for_user_posts)
@@ -134,13 +135,14 @@ class PostUpdateView(LoginRequiredMixin, View):
     template_name = "blog/post_update.html"
 
     def get(self, request, slug):
-        post = get_object_or_404(Post, slug=slug)
-        form = PostUpdateForm(instance=post)
+        post = get_object_or_404(Post, slug=slug, is_active=True)
+        
+        form = PostCreateUpdateForm(instance=post)
         return render(request, "blog/post_update.html", {"form": form, "post": post})
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        form = PostUpdateForm(request.POST, instance=post)
+        form = PostCreateUpdateForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
             messages.success(request, "Post succsessfully updated")
@@ -156,8 +158,8 @@ class PostDeletePageView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        messages.success(request, "post successfully deleted")
         post.delete()
+        messages.success(request, "post successfully deleted")
         return redirect("blog:user_posts")
 
 
@@ -214,7 +216,6 @@ def post_message(request, slug):
         return redirect(reverse("users:login"))
 
     post_message_input = request.GET.get("post_message_input", None)
-    print(post_message_input)
 
     if post_message_input is not None:
         set_post_comment(request.user, slug, post_message_input)

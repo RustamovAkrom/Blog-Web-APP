@@ -10,7 +10,11 @@
       <article class="blog-post">
         <h2 class="blog-post-title">{{ post.title }}</h2>
         <p class="blog-post-meta">{{ post.publisher_at }}by <a href="{% url 'users:user_profile' post.author.username %}">{{ post.author }}</a></p>
-
+        
+        <div class="text">
+          <p><small>{{ post.description }}</small></p>
+        </div>
+        <!-- Content -->
         <p>{{ post.content|markdown|safe }}</p>
 
       </article>

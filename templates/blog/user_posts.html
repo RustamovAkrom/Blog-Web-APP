@@ -30,14 +30,14 @@
             <div class="col-md-12 mt-3 mb-3">
               <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
-                  {% if post.is_active %}
-                  <strong class="d-inline-block mb-2 text-success">Design</strong>
-                  {% else %}
-                  <strong class="d-inline-block mb-2 text-primary">World</strong>
+                  {% if post.status == 'pb' %}
+                  <strong class="d-inline-block mb-2 text-success">Published</strong>
+                  {% elif post.status == 'df' %}
+                  <strong class="d-inline-block mb-2 text-primary">Draft</strong>
                   {% endif %}
                   <h3 class="mb-0">{{ post.title }}</h3>
                   <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
-                  <p class="card-text mb-auto">{{ post.content|truncatewords_html:30 }}</p>
+                  <p class="card-text mb-auto">{{ post.description|truncatewords_html:30 }}</p>
                   <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
                 </div>
               </div>
