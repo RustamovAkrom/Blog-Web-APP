@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %} Register {% endblock %}
-{% block content %}
+
    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -9,6 +6,9 @@
 
                 <form 
                 action="{% url 'users:register' %}"
+                hx-post="{% url 'users:register' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
                 method="post" 
                 enctype="multipart/form-data">
                     {% csrf_token %}
@@ -49,4 +49,3 @@
             {% include 'components/latest_posts.html' %}
         </div>
     </div>
-{% endblock %}
