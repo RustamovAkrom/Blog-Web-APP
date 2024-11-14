@@ -1,19 +1,23 @@
 import datetime
+from functools import wraps
+from typing import Any
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, DeleteView
 from django.contrib import messages
+from django.http import HttpRequest
 from django.views import View
 from django.urls import reverse
 
 from apps.users.models import User
+from apps.shared.mixins import CustomHtmxMixin, render_htmx_or_default
+from .models import Post
 from .forms import (
     PostCreateUpdateForm,
     SettingsUserForm,
     SettingsUserProfileForm,
 )
-from .models import Post
 from .utils import (
     get_search_model_queryset,
     get_pagination_obj,
@@ -23,52 +27,48 @@ from .utils import (
 )
 
 
-class CustomHtmxMixin:
-    def dispatch(self, request, *args, **kwargs):
-        # import pdb; pdb.set_trace()
-        self.template_htmx = self.template_name
-        if not self.request.META.get("HTTP_HX_REQUEST"):
-            self.template_name = "blog/include_blog.html"
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        kwargs["template_htmx"] = self.template_htmx
-        return super().get_context_data(**kwargs)
-
-
-class HomePageView(TemplateView):
+class HomePageView(CustomHtmxMixin, TemplateView):
     template_name = "blog/home.html"
 
-    def get(self, request):
-        if request.user is not None and request.user.is_authenticated:
-            posts = Post.published.exclude(author=request.user)
+    def get_context_data(self, **kwargs):
+        if self.request.user is not None and self.request.user.is_authenticated:
+            posts = Post.published.exclude(author=self.request.user)
         else:
             posts = Post.published.all()
 
-        search_query = request.GET.get("search_query", None)
-        page = request.GET.get("page", 1)
-        size = request.GET.get("size", 4)
+        search_query = self.request.GET.get("search_query", None)
+        page = self.request.GET.get("page", 1)
+        size = self.request.GET.get("size", 4)
 
         posts = get_search_model_queryset(posts, search_query)
 
         page_obj = get_pagination_obj(posts, page, size)
 
-        return render(
-            request,
-            "blog/home.html",
-            {
-                "page_obj": page_obj,
-                "size_value": size,
-                "search_query_value": search_query,
-            },
-        )
+        kwargs["title"] = "Home"
+        kwargs["page_obj"] = page_obj
+        kwargs["size_value"] = size
+        kwargs["search_query_value"] = search_query
+
+        return super().get_context_data(**kwargs)
 
 
-class AboutPageView(TemplateView):
+class AboutPageView(CustomHtmxMixin, TemplateView):
     template_name = "blog/about.html"
+    
+    def get_context_data(self, **kwargs):
+        kwargs["title"] = "About"
+        return super().get_context_data(**kwargs)
 
 
-class PostDetailPageView(View):
+class ContactsPageView(CustomHtmxMixin, TemplateView):
+    template_name = "blog/contacts.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["title"] = "Contacts"
+        return super().get_context_data(**kwargs)
+
+
+class PostDetailPageView(CustomHtmxMixin, View):
     template_name = "blog/post_detail.html"
 
     def get(self, request, slug):
@@ -77,18 +77,26 @@ class PostDetailPageView(View):
         post_comments = post.post_comments.all().order_by("-created_at")
         post.watching += 1
         post.save()
-        return render(
-            request,
-            "blog/post_detail.html",
-            {"post": post, "post_comments": post_comments},
-        )
+
+        context = {
+            "title": post.title,
+            "post": post, 
+            "post_comments": post_comments,
+            "template_htmx": self.template_htmx
+        }
+
+        return render(request, self.template_name, context)
 
 
-class PostCreatePageView(LoginRequiredMixin, TemplateView):
+class PostCreatePageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
     template_name = "blog/post_create.html"
 
-    def get(self, request):
-        return render(request, "blog/post_create.html", {"form": PostCreateUpdateForm()})
+    def get_context_data(self, **kwargs):
+        kwargs["form"] = PostCreateUpdateForm()
+        kwargs["title"] = "Post Create"
+        return super().get_context_data(**kwargs)
+    # def get(self, request):
+    #     return render(request, self.template_name, {"form": PostCreateUpdateForm()})
 
     def post(self, request):
         form = PostCreateUpdateForm(request.POST)
@@ -115,30 +123,20 @@ class PostCreatePageView(LoginRequiredMixin, TemplateView):
         return redirect(reverse("blog:post_create"))
 
 
-class UserPostsPageView(LoginRequiredMixin, View):
-    template_name = "blog/user_posts.html"
-
-    def get(self, request):
-
-        search_query_for_user_posts = request.GET.get(
-            "search_query_for_user_posts", None
-        )
-        posts = Post.objects.filter(author=request.user, is_active=True)
-
-        if search_query_for_user_posts is not None:
-            posts = get_search_model_queryset(posts, search_query_for_user_posts)
-
-        return render(request, "blog/user_posts.html", {"posts": posts})
-
-
-class PostUpdateView(LoginRequiredMixin, View):
+class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
     template_name = "blog/post_update.html"
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug, is_active=True)
         
         form = PostCreateUpdateForm(instance=post)
-        return render(request, "blog/post_update.html", {"form": form, "post": post})
+        context = {
+            "title": "Update " + post.title,
+            "template_htmx": self.template_htmx,
+            "form": form, 
+            "post": post
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
@@ -152,7 +150,28 @@ class PostUpdateView(LoginRequiredMixin, View):
         return redirect(reverse("blog:post_update", kwargs={"slug": slug}))
 
 
-class PostDeletePageView(LoginRequiredMixin, DeleteView):
+class UserPostsPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
+    template_name = "blog/user_posts.html"
+
+    def get(self, request):
+
+        search_query_for_user_posts = request.GET.get(
+            "search_query_for_user_posts", None
+        )
+        posts = Post.objects.filter(author=request.user, is_active=True)
+
+        if search_query_for_user_posts is not None:
+            posts = get_search_model_queryset(posts, search_query_for_user_posts)
+
+        context = {
+            "title": "My posts",
+            "template_htmx": self.template_htmx,
+            "posts": posts
+        }
+        return render(request, self.template_name, context)
+
+
+class PostDeletePageView(CustomHtmxMixin, LoginRequiredMixin, DeleteView):
     template_name = "blog/post_confirm_delete.html"
     model = Post
 
@@ -163,22 +182,21 @@ class PostDeletePageView(LoginRequiredMixin, DeleteView):
         return redirect("blog:user_posts")
 
 
-class ContactsPageView(TemplateView):
-    template_name = "blog/contacts.html"
-
-
-class SettingsPageView(LoginRequiredMixin, View):
-    template_name = "blog/settings.py"
+class SettingsPageView(CustomHtmxMixin, LoginRequiredMixin, View):
+    template_name = "blog/settings.html"
 
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
         user_form = SettingsUserForm(instance=user)
         user_profile_form = SettingsUserProfileForm(instance=user.profiles)
-        return render(
-            request,
-            "blog/settings.html",
-            {"user_form": user_form, "user_profile_form": user_profile_form},
-        )
+        context = {
+            "title": "Settings",
+            "template_htmx": self.template_htmx,
+            "user_form": user_form, 
+            "user_profile_form": user_profile_form
+        }
+
+        return render(request, self.template_name, context)
 
     def post(self, request):
         user = get_object_or_404(User, pk=request.user.pk)

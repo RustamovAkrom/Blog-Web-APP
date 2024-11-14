@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Home{% endblock %}
-{% block content %}
+
 <main role="main" class="container" id="main-content">
   <div class="row">
     <div class="col-md-8">
@@ -20,7 +17,12 @@
               
               <div class="d-flex">
                 <strong class="d-inline-block mb-2">
-                  <a href="{% url 'users:user_profile' post.author.username %}" class="nav-link">
+                  <a 
+                  href="{% url 'users:user_profile' post.author.username %}" 
+                  hx-get="{% url 'users:user_profile' post.author.username %}" 
+                  hx-push-url="true"
+                  hx-target="#main-content"
+                  class="nav-link">
                     <img src="{{ post.get_author_avatar_url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
                     {{ post.author }}
                   </a>
@@ -32,7 +34,12 @@
               <h3 class="mb-0">{{ post.title }}</h3>
               <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
               <p class="card-text mb-auto">{{ post.description|truncatewords_html:30 }}</p>
-              <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
+              <a 
+              href="{{ post.get_absolute_url }}" 
+              hx-get="{{ post.get_absolute_url }}" 
+              hx-push-url="true"
+              hx-target="#main-content"
+              class="stretched-link">Continue reading</a>
               <div class="d-flex">
                 <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-eye">{{ post.watching }}</i></strong>
                 <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-star">{{ post.like_count }}</i></strong>
@@ -52,4 +59,3 @@
   </div>
   {% include 'components/paginators.html' %}
 </main>
-{% endblock %}

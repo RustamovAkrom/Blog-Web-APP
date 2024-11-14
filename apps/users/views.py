@@ -4,20 +4,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
 from django.contrib.auth import authenticate
-from .forms import RegisterForm, LoginForm
-from .models import User
+
+from apps.shared.mixins import CustomHtmxMixin
 from apps.blog.utils import get_search_model_queryset
 from apps.blog.models import Post
+from .forms import RegisterForm, LoginForm
+from .models import User
 from .services import get_jwt_login_response, get_jwt_logout_response
 
-from rest_framework_simplejwt.tokens import RefreshToken
 
-
-class RegisterPageView(View):
+class RegisterPageView(CustomHtmxMixin, View):
     template_name = "auth/register.html"
 
     def get(self, request):
-        return render(request, "auth/register.html", {"form": RegisterForm()})
+        context = {
+            "title": "Registration",
+            "tempate_htmx": self.template_htmx,
+            "form": RegisterForm()
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request):
 
@@ -32,11 +37,16 @@ class RegisterPageView(View):
         return render(request, "auth/register.html", {"form": form})
 
 
-class LoginPageView(View):
+class LoginPageView(CustomHtmxMixin, View):
     template_name = "auth/login.html"
 
     def get(self, request):
-        return render(request, "auth/login.html", {"form": LoginForm()})
+        context = {
+            "title": "Login",
+            "template_htmx": self.template_htmx,
+            "form": LoginForm()
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -64,11 +74,15 @@ class LoginPageView(View):
         return render(request, "auth/login.html", {"form": form})
 
 
-class LogoutPageView(LoginRequiredMixin, View):
+class LogoutPageView(CustomHtmxMixin, LoginRequiredMixin, View):
     template_name = "auth/logout.html"
 
     def get(self, request):
-        return render(request, "auth/logout.html")
+        context = {
+            "title": "Logout",
+            "template_htmx": self.template_htmx
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request):
         response = redirect(reverse("blog:home"))
@@ -79,7 +93,7 @@ class LogoutPageView(LoginRequiredMixin, View):
         return response
 
 
-class UserProfilePageView(View):
+class UserProfilePageView(CustomHtmxMixin, View):
     template_name = "blog/profile.html"
 
     def get(self, request, username):
@@ -91,4 +105,10 @@ class UserProfilePageView(View):
         if search_query is not None:
             posts = get_search_model_queryset(posts, search_query)
 
-        return render(request, "blog/profile.html", {"posts": posts, "user": user})
+        context = {
+            "title": str(user),
+            "template_htmx": self.template_htmx,
+            "posts": posts, 
+            "user": user
+        }
+        return render(request, self.template_name, context)

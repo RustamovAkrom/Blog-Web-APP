@@ -1,7 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light rounded" aria-label="Eleventh navbar example">
     <div class="container-fluid">
-
-      <a class="navbar-brand" href="{% url 'blog:home' %}"><b>AkromBLOG</b></a>
+      <!-- Site logo -->
+      <a 
+      class="navbar-brand" 
+      href="{% url 'blog:home' %}"
+      hx-get="{% url 'blog:home' %}"
+      hx-push-url="true"
+      hx-target="#main-content"
+      ><b>AkromBLOG</b></a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -11,15 +17,36 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <!-- Home -->
-            <a class="nav-link active" aria-current="page" href="{% url 'blog:home' %}">Home</a>
+            <a 
+            class="nav-link active" 
+            aria-current="page" 
+            href="{% url 'blog:home' %}"
+            hx-get="{% url 'blog:home' %}"
+            hx-push-url="true"
+            hx-target="#main-content"
+            >Home</a>
           </li>
           <li class="nav-item">
             <!-- About -->
-            <a class="nav-link active" aria-current="page" href="{% url 'blog:about' %}">About</a>
+            <a 
+            class="nav-link active" 
+            aria-current="page" 
+            href="{% url 'blog:about' %}"
+            hx-get="{% url 'blog:about' %}"
+            hx-push-url="true"
+            hx-target="#main-content"
+            >About</a>
           </li>
           <li class="nav-item">
             <!-- Contacts -->
-            <a class="nav-link active" aria-current="page" href="{% url 'blog:contacts' %}">Contact</a>
+            <a 
+            class="nav-link active" 
+            aria-current="page" 
+            href="{% url 'blog:contacts' %}"
+            hx-get="{% url 'blog:contacts' %}"
+            hx-push-url="true"
+            hx-target="#main-content"
+            >Contact</a>
           </li>
         </ul>
 
@@ -28,30 +55,93 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown09">
-              <li><a class="dropdown-item" href="{% url 'blog:post_create' %}">Create</a></li>
-              <li><a class="dropdown-item" href="{% url 'users:user_profile' request.user.username %}">Profile</a></li>
-              <li><a class="dropdown-item" href="{% url 'blog:user_posts' %}">My posts</a></li>
-              <li><a class="dropdown-item" href="{% url 'blog:user_settings' %}">Settings</a></li>
-              <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
+              <!-- Create post -->
+              <li><a 
+                class="dropdown-item" 
+                href="{% url 'blog:post_create' %}"
+                hx-get="{% url 'blog:post_create' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
+                >Create</a>
+              </li>
+              <!-- Profile -->
+              <li><a 
+                class="dropdown-item" 
+                href="{% url 'users:user_profile' request.user.username %}"
+                hx-get="{% url 'users:user_profile' request.user.username %}"
+                hx-push-url="true"
+                hx-target="#main-content"
+                >Profile</a>
+              </li>
+              <!-- User posts -->
+              <li><a 
+                class="dropdown-item" 
+                href="{% url 'blog:user_posts' %}"
+                hx-get="{% url 'blog:user_posts' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
+                >My posts</a>
+              </li>
+              <li><a 
+                class="dropdown-item" 
+                href="{% url 'blog:user_settings' %}"
+                hx-get="{% url 'blog:user_settings' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
+                >Settings</a>
+              </li>
+              <li><a 
+                class="dropdown-item" 
+                href="{% url 'users:logout' %}"
+                hx-get="{% url 'users:logout' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
+                >Logout</a>
+              </li>
             </ul>
           </li>
 
           {% else %}
           <li class="nav-item">
               <!-- Login page -->
-              <a class="nav-link active" aria-current="page" href="{% url 'users:login' %}">Login</a>
+              <a 
+              class="nav-link active" 
+              aria-current="page" 
+              href="{% url 'users:login' %}"
+              hx-get="{% url 'users:login' %}"
+              hx-push-url="true"
+              hx-target="#main-content"
+              >Login</a>
           </li>
           <li class="nav-item">
               <!-- Register page -->
-              <a class="nav-link active" aria-current="page" href="{% url 'users:register' %}">Register</a>
+              <a 
+              class="nav-link active" 
+              aria-current="page" 
+              href="{% url 'users:register' %}"
+              hx-get="{% url 'users:register' %}"
+              hx-push-url="true"
+              hx-target="#main-content"
+              >Register</a>
           </li>
         {% endif %}
         </ul>
-        
-        <form action="{% url 'blog:home' %}">
-          <input class="form-control" type="text" name="search_query" placeholder="Search" value="{% if search_query_value %}{{ search_query_value }}{% endif %}" aria-label="Search">
 
+        <!-- Search posts -->
+        <form action="{% url 'blog:home' %}" >
+          <input 
+          class="form-control" 
+          type="text" 
+          name="search_query" 
+          id="search-posts" 
+          placeholder="Search" 
+          value="{% if search_query_value %}{{ search_query_value }}{% endif %}" 
+          aria-label="Search"
+          >
         </form>
+        <!-- hx-get="{% url 'blog:home' %}"
+        hx-trigger="keyup changed delay:150ms"
+        hx-triget="#main-content" -->
 
       </div>
     </div>
