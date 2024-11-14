@@ -5,7 +5,13 @@
             <!-- Кнопка "Назад" -->
             {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="{% url 'blog:home' %}?page={{ page_obj.previous_page_number }}&size={{ size_value }}" aria-label="Previous">
+                <a 
+                class="page-link" 
+                href="{% url 'blog:home' %}?page={{ page_obj.previous_page_number }}&size={{ size_value }}" 
+                hx-get="{% url 'blog:home' %}?page={{ page_obj.previous_page_number }}&size={{ size_value }}" 
+                hx-push-url="true"
+                hx-target="#main-content"
+                aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -23,11 +29,23 @@
                     </li>
                 {% elif i >= page_obj.number|add:'-2' and i <= page_obj.number|add:'2' %}
                     <li class="page-item">
-                        <a class="page-link" href="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}">{{ i }}</a>
+                        <a 
+                        class="page-link" 
+                        href="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}"
+                        hx-get="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}"
+                        hx-push-url="true"
+                        hx-target="#main-content"
+                        >{{ i }}</a>
                     </li>
                 {% elif i == 1 or i == page_obj.paginator.num_pages %}
                     <li class="page-item">
-                        <a class="page-link" href="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}">{{ i }}</a>
+                        <a 
+                        class="page-link" 
+                        href="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}"
+                        hx-get="{% url 'blog:home' %}?page={{ i }}&size={{ size_value }}"
+                        hx-push-url="true"
+                        hx-target="#main-content"
+                        >{{ i }}</a>
                     </li>
                 {% elif i == page_obj.number|add:'-3' or i == page_obj.number|add:'3' %}
                     <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -37,7 +55,12 @@
             <!-- Кнопка "Вперед" -->
             {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="{% url 'blog:home' %}?page={{ page_obj.next_page_number }}&size={{ size_value }}" aria-label="Next">
+                <a class="page-link" 
+                href="{% url 'blog:home' %}?page={{ page_obj.next_page_number }}&size={{ size_value }}" 
+                hx-get="{% url 'blog:home' %}?page={{ page_obj.next_page_number }}&size={{ size_value }}" 
+                hx-push-url="true"
+                hx-target="#main-content"
+                aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

@@ -128,20 +128,24 @@
         </ul>
 
         <!-- Search posts -->
-        <form action="{% url 'blog:home' %}" >
+        <form 
+        action="{% url 'blog:home' %}" 
+        hx-get="{% url 'blog:home' %}" 
+        hx-push-url="true" 
+        hx-target="#main-content">
           <input 
-          class="form-control" 
-          type="text" 
+          class="form-control me-2" 
+          type="search" 
           name="search_query" 
           id="search-posts" 
           placeholder="Search" 
           value="{% if search_query_value %}{{ search_query_value }}{% endif %}" 
           aria-label="Search"
+          hx-get="{% url 'blog:home' %}"
+          hx-trigger="keyup changed delay:150ms"
+          hx-triget="#main-content"
           >
         </form>
-        <!-- hx-get="{% url 'blog:home' %}"
-        hx-trigger="keyup changed delay:150ms"
-        hx-triget="#main-content" -->
 
       </div>
     </div>

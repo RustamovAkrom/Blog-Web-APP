@@ -19,7 +19,7 @@ class RegisterPageView(CustomHtmxMixin, View):
     def get(self, request):
         context = {
             "title": "Registration",
-            "tempate_htmx": self.template_htmx,
+            "template_htmx": self.template_htmx,
             "form": RegisterForm()
         }
         return render(request, self.template_name, context)

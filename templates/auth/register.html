@@ -6,6 +6,9 @@
 
                 <form 
                 action="{% url 'users:register' %}"
+                hx-post="{% url 'users:register' %}"
+                hx-push-url="true"
+                hx-target="#main-content"
                 method="post" 
                 enctype="multipart/form-data">
                     {% csrf_token %}
