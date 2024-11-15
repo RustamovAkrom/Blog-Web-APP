@@ -4,7 +4,7 @@ from apps.shared.models import TimestempedAbstractModel
 from django.db import models
 
 
-class User(AbstractUser, TimestempedAbstractModel):
+class User(TimestempedAbstractModel, AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
 
     @property
