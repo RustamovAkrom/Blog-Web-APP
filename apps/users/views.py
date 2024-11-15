@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
@@ -31,11 +31,11 @@ class RegisterPageView(CustomHtmxMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, "User succesfully registered")
-            return redirect(reverse("users:login"))
+            return redirect(reverse_lazy("users:login"))
 
         messages.warning(request, "Invalid registration fields!")
-        return render(request, "auth/register.html", {"form": form})
-
+        return redirect(reverse_lazy("auth:register"))
+    
 
 class LoginPageView(CustomHtmxMixin, View):
     template_name = "auth/login.html"
@@ -59,7 +59,7 @@ class LoginPageView(CustomHtmxMixin, View):
 
             if user is not None:
 
-                response = redirect(reverse("blog:home"))
+                response = redirect(reverse_lazy("blog:home"))
 
                 # Login for jwt
                 response = get_jwt_login_response(response, user)
@@ -67,11 +67,10 @@ class LoginPageView(CustomHtmxMixin, View):
                 messages.success(request, f"You are logged in as { username }")
                 return response
 
-            else:
-                messages.error(request, "Invalid username or password.")
-                return redirect(reverse("users:login"))
+            messages.error(request, "Invalid username or password.")
 
-        return render(request, "auth/login.html", {"form": form})
+        return redirect(reverse_lazy("users:login"))
+        
 
 
 class LogoutPageView(CustomHtmxMixin, LoginRequiredMixin, View):
