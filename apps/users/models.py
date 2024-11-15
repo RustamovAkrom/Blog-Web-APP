@@ -1,7 +1,10 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
-from apps.shared.models import TimestempedAbstractModel
 from django.db import models
+from apps.shared.models import TimestempedAbstractModel
+from .utils import processor_iamge
+
+from PIL import Image
 
 
 class User(TimestempedAbstractModel, AbstractUser):
@@ -11,11 +14,11 @@ class User(TimestempedAbstractModel, AbstractUser):
     def post_count(self):
         return self.posts.count
 
-    def get_user_avatar_url(self):
-        return self.profiles.avatar.url
+    def get_user_avatar_url(self) -> str:
+        return str(self.profiles.avatar.url)
 
-    def get_user_bio(self):
-        bio = self.profiles.bio
+    def get_user_bio(self) -> str:
+        bio = str(self.profiles.bio)
         if bio:
             return bio
         return ""
@@ -52,3 +55,8 @@ class UserProfile(TimestempedAbstractModel):
 
     def __str__(self) -> str:
         return self.user.username
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        processor_iamge(self.avatar.path)
