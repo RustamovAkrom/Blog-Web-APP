@@ -33,7 +33,12 @@
 
                 {% if request.user == user %}
                 <div class="col">
-                    <a href="{% url 'blog:post_create' %}" class="btn btn-outline-secondary">Create New Post</a>
+                    <a 
+                    href="{% url 'blog:post_create' %}" 
+                    hx-get="{% url 'blog:post_create' %}" 
+                    hx-push-url="true"
+                    hx-target="#main-content"
+                    class="btn btn-outline-secondary">Create New Post</a>
                 </div>
                 {% endif %}
                 <div class="col">
@@ -56,7 +61,13 @@
                         <h3 class="mb-0">{{ post.title }}</h3>
                         <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
                         <p class="card-text mb-auto">{{ post.description|truncatewords_html:30  }}</p>
-                        <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                        <a 
+                        href="{{ post.get_absolute_url }}" 
+                        hx-get="{{ post.get_absolute_url }}" 
+                        hx-push-url="true"
+                        hx-target="#main-content"
+                        class="stretched-link"
+                        >Continue reading</a>
                         <div class="d-flex">
                             <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-eye">{{ post.watching }}</i></strong>
                             <strong class="d-inline-block mb-2 col text-primary"><i class="bi bi-star">{{ post.like_count }}</i></strong>

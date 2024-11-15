@@ -1,9 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
 
-{% block title %} Post Confirm Delete {% endblock %}
-
-{% block content %}
 <main role="main" class="container">
     <div class="row">
     <div class="col-md-8">
@@ -16,7 +11,13 @@
                     </fieldset>
                     <div class="form-group">
                         <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                        <a class="btn btn-outline-secondary" href="{{ post.get_absolute_url }}#content">Cancel</a>
+                        <a 
+                        class="btn btn-outline-secondary" 
+                        href="{{ post.get_absolute_url }}#content"
+                        hx-get="{{ post.get_absolute_url }}#content"
+                        hx-push-url="true"
+                        hx-target="#main-content"
+                        >Cancel</a>
                     </div>
                 </form>
             </div>
@@ -24,6 +25,5 @@
         {% include 'components/latest_posts.html' %}
         </div>
         </main>
-{% endblock %}
             
             

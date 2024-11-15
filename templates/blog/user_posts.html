@@ -1,18 +1,22 @@
 <main role="main" class="container">
   <div class="row">
     <div class="col-md-8">
-      <!-- {% for message in massages %}
-              <div class="alert alert-{{ message.tags }}">
-                <h6>{{ message }}</h6>
-              </div>
-              {% endfor %} -->
       <div class="d-flex">
 
         <div class="col">
-          <a href="{% url 'blog:post_create' %}" class="btn btn-outline-secondary">Create New Post</a>
+          <a 
+          href="{% url 'blog:post_create' %}" 
+          hx-get="{% url 'blog:post_create' %}" 
+          hx-push-url="true"
+          hx-target="#main-content"
+          class="btn btn-outline-secondary">Create New Post</a>
         </div>
         <div class="col">
-          <form action="{% url 'blog:user_posts' %}">
+          <form 
+          action="{% url 'blog:user_posts' %}"
+          hx-get="{% url 'blog:user_posts' %}"
+          hx-push-url="true"
+          hx-target="#main-content">
             <div class="d-flex">
               <input class="form-control" type="text" name="search_query_for_user_posts" placeholder="Search"
                 aria-label="Search">
@@ -34,7 +38,12 @@
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.publisher_at }}</div>
             <p class="card-text mb-auto">{{ post.description|truncatewords_html:30 }}</p>
-            <a href="{{ post.get_absolute_url }}" class="stretched-link">Continue reading</a>
+            <a 
+            href="{{ post.get_absolute_url }}" 
+            hx-get="{{ post.get_absolute_url }}" 
+            hx-push-url="true"
+            hx-target="#main-content"
+            class="stretched-link">Continue reading</a>
           </div>
         </div>
       </div>

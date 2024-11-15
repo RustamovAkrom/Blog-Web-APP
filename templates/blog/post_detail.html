@@ -5,7 +5,14 @@
     <div class="col-md-8">
       <article class="blog-post">
         <h2 class="blog-post-title">{{ post.title }}</h2>
-        <p class="blog-post-meta">{{ post.publisher_at }}by <a href="{% url 'users:user_profile' post.author.username %}">{{ post.author }}</a></p>
+        <p class="blog-post-meta">{{ post.publisher_at }}by 
+          <a 
+          href="{% url 'users:user_profile' post.author.username %}"
+          hx-get="{% url 'users:user_profile' post.author.username %}"
+          hx-push-url="true"
+          hx-target="#main-content"
+          >{{ post.author }}</a>
+        </p>
         
         <div class="text">
           <p><small>{{ post.description }}</small></p>
@@ -19,19 +26,34 @@
 
         <!-- Watching count-->
         <div class="mb-2">
-          <a href="#main-content" class="nav-link text-dark">
+          <a 
+          href="#main-content" 
+          hx-get="#main-content" 
+          hx-push-url="true"
+          hx-target="#main-content"
+          class="nav-link text-dark">
             <i class="bi bi-eye">({{ post.watching }})</i>
           </a>
         </div>
         <!-- Comments count -->
         <div class="mb-2">
-          <a href="#post_comments" class="nav-link text-dark">
+          <a 
+          href="#post_comments" 
+          hx-get="#post_comments" 
+          hx-push-url="true"
+          hx-target="#main-content"
+          class="nav-link text-dark">
             <i class="bi bi-chat-left-text">({{ post.comment_count }})</i>
           </a>
         </div>
         <!-- Like count -->
         <div class="md-2" id="post_like_count">
-          <a href="{% url 'blog:post_like' post.slug %}#post_like_count" class="nav-link text-dark">
+          <a 
+          href="{% url 'blog:post_like' post.slug %}#post_like_count" 
+          hx-get="{% url 'blog:post_like' post.slug %}#post_like_count"
+          hx-push-url="true"
+          hx-target="#main-content" 
+          class="nav-link text-dark">
             {% if request.user.is_authenticated %}
               {% if post|check_like:request.user %}
                 <i class="bi bi-star-fill">({{ post.like_count }})</i>
@@ -45,7 +67,12 @@
         </div>
         <!-- Dislike count -->
         <div class="md-2" id="post_dislike_count">
-          <a href="{% url 'blog:post_dislike' post.slug %}#post_dislike_count" class="nav-link text-dark">
+          <a 
+          href="{% url 'blog:post_dislike' post.slug %}#post_dislike_count" 
+          hx-get="{% url 'blog:post_dislike' post.slug %}#post_dislike_count" 
+          hx-push-url="true"
+          hx-target="#main-content"
+          class="nav-link text-dark">
             {% if request.user.is_authenticated %}
               {% if post|check_dislike:request.user %}
                 <i class="bi bi-emoji-frown-fill">({{ post.dislike_count }})</i>
@@ -61,13 +88,30 @@
       <!-- Delete, Update buttons -->
       {% if request.user == post.author %}
       <nav class="blog-pagination mt-3 mb-3" aria-label="Pagination">
-        <a class="btn btn-outline-danger" href="{% url 'blog:post_delete' post.slug %}">delete</a>
-        <a class="btn btn-outline-warning" href="{% url 'blog:post_update' post.slug %}">update</a>
+        <a 
+        class="btn btn-outline-danger" 
+        href="{% url 'blog:post_delete' post.slug %}"
+        hx-get="{% url 'blog:post_delete' post.slug %}"
+        hx-push-url="true"
+        hx-target="#main-content"
+        >delete</a>
+        <a 
+        class="btn btn-outline-warning" 
+        href="{% url 'blog:post_update' post.slug %}"
+        hx-get="{% url 'blog:post_update' post.slug %}"
+        hx-push-url="true"
+        hx-target="#main-content"
+        >update</a>
       </nav>
       {% endif %}
       <!-- Send comment message -->
        <div id="post_comments_form">
-         <form action="{% url 'blog:post_message' post.slug %}#post_comments_form" class="mt-3 mb-3">
+         <form 
+         action="{% url 'blog:post_message' post.slug %}#post_comments_form" 
+         hx-get="{% url 'blog:post_message' post.slug %}#post_comments_form" 
+         hx-push-url="true"
+         hx-target="#main-content"
+         class="mt-3 mb-3">
            {% csrf_token %}
            <div class="d-flex">
              <input type="text" name="post_message_input" class="form-control" placeholder="message..." required="">

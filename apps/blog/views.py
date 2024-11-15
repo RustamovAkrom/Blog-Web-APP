@@ -166,7 +166,7 @@ class UserPostsPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         context = {
             "title": "My posts",
             "template_htmx": self.template_htmx,
-            "posts": posts
+            "posts": posts.order_by("-created_at")
         }
         return render(request, self.template_name, context)
 
