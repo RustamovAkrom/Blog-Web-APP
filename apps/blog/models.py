@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+
 from apps.shared.models import TimestempedAbstractModel
 from apps.shared.utils import get_random_text
 from .managers import PublishedManager
@@ -29,7 +30,7 @@ class Post(TimestempedAbstractModel):
     published = PublishedManager()
 
     def delete(self, *args, **kwargs):
-        print(self.post_comments.all().delete())
+        self.post_comments.all().delete()
         return super().delete(*args, **kwargs)
 
     class Meta:
