@@ -8,5 +8,4 @@ gunicorn==23.0.0
 markdown2==2.5.1
 pillow==10.4.0
 psycopg2-binary==2.9.10
-mysqlclient
 python-dotenv==1.0.1

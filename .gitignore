@@ -141,3 +141,4 @@ GitHub.sublime-settings
 # public_key.pem
 
 db.sqlite3
+poetry.lock

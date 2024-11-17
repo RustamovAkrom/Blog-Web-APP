@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "blog app"
+version = "0.1.0"
+description = "Best blog app project for django"
+authors = ["Akromjon <152626511+RustamovAkrom@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cryptography = "^43.0.3"
+django-appconf = "^1.0.6"
+django-sitemaps = "^2.0.1"
+djangorestframework = "^3.15.2"
+djangorestframework-simplejwt = "^5.3.1"
+gunicorn = "^23.0.0"
+markdown2 = {extras = ["all"], version = "^2.5.1"}
+pillow = "^11.0.0"
+psycopg2-binary = "^2.9.10"
+python-dotenv = "^1.0.1"
+django-filter = "^24.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
