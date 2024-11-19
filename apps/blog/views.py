@@ -197,6 +197,9 @@ class SettingsPageView(CustomHtmxMixin, LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        print(request.FILES)
+        print(request.POST)
+
         user = get_object_or_404(User, pk=request.user.pk)
         user_form = SettingsUserForm(data=request.POST, instance=user)
         user_profile_form = SettingsUserProfileForm(

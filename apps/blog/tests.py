@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from django.test import TestCase
+from django.core.files.uploadedfile import UploadedFile
+
 from apps.users.models import User
 from apps.blog.models import Post
 from django.urls import reverse
-from apps.users.forms import RegisterForm
-from .forms import PostCreateUpdateForm
+from .forms import PostCreateUpdateForm, SettingsUserForm, SettingsUserProfileForm
 from .choices import StatusChoice
 
 
@@ -64,15 +65,23 @@ class TestBlog(TestCase):
         form = PostCreateUpdateForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_register_form(self):
-        user_create_form_data = {
-            "username": "Saydula",
-            "first_name": "Sayid",
-            "last_name": "Movlonov",
-            "password1": "Sayid",
-            "password2": "Sayid",
-            "email": "sayidmovlonov34@gmail.com",
-            "avatar": "C:/Users/user/Pictures/Screenshots homevork/Снимок экрана 2024-02-08 193246.png",
+    def test_SettingsUserForm(self):
+        form_data = {
+            "first_name": "Admin1",
+            "last_name": "Adminovna",
+            "email": "admin@example.com",
         }
-        form = RegisterForm(data=user_create_form_data)
+        form = SettingsUserForm(data=form_data, instance=self.user)
         self.assertTrue(form.is_valid())
+
+    # def test_SettingsUserProfileForm(self):
+    #     form_files = {
+    #         "avatar": "media/avatars/default/logo.png",
+    #     }
+    #     form_data = {
+    #         "bio": "settings user profile bio ...",
+    #     }
+    #     form = SettingsUserProfileForm(data=form_data, files=form_files)
+    #     print(form.get_context())
+    #     print(form.errors.get_context())
+    #     self.assertTrue(form.is_valid())
