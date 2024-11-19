@@ -12,11 +12,12 @@ def get_search_model_queryset(
         return model_queryset
 
     search_query = model_queryset.filter(
-        Q(title__icontains=search_query) | Q(description__icontains=search_query) | Q(content__icontains=search_query)
+        Q(title__icontains=search_query)
+        | Q(description__icontains=search_query)
+        | Q(content__icontains=search_query)
     )
-    
-    return search_query
 
+    return search_query
 
 
 def get_pagination_obj(model_queryset: QuerySet, page: int = 1, size: int = 4) -> Page:
@@ -24,10 +25,10 @@ def get_pagination_obj(model_queryset: QuerySet, page: int = 1, size: int = 4) -
 
     try:
         page_obj = paginator.page(page)
-    
+
     except PageNotAnInteger:
         page_obj = paginator.page(1)
-    
+
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 

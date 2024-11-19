@@ -13,4 +13,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         return [IsAuthenticated(), IsAdminUser(), IsOwnerPermission()]
 
-__all__ = ("UserProfileViewSet", )
+
+__all__ = ("UserProfileViewSet",)

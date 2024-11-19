@@ -1,2 +1,2 @@
-from .User import * # noqa
-from .UserProfile import * # noqa
+from .User import *  # noqa
+from .UserProfile import *  # noqa

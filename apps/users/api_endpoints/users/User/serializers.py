@@ -12,7 +12,7 @@ class MiniUserProfileSerializer(serializers.ModelSerializer):
             "bio",
         ]
 
-        
+
 class UserSerializer(serializers.ModelSerializer):
     profiles = MiniUserProfileSerializer(read_only=True)
     password = serializers.CharField(write_only=True, required=True)
@@ -22,13 +22,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "first_name", 
-            "last_name", 
+            "first_name",
+            "last_name",
             "username",
-            "email", 
+            "email",
             "password",
             "password_confirm",
-            "is_active", 
+            "is_active",
             "is_superuser",
             "is_staff",
             "profiles",
@@ -40,10 +40,9 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         "Confirmation passwords"
 
-        if attrs['password'] != attrs['password_confirm']:
+        if attrs["password"] != attrs["password_confirm"]:
             raise serializers.ValidationError({"password": "Password didnt match!"})
         return attrs
-    
 
     def create(self, validated_data):
         "Save a hashed password"

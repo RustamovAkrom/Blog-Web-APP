@@ -2,9 +2,10 @@ import os
 
 from pathlib import Path
 
-from core.config import * # noqa
+from core.config import *  # noqa
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent

@@ -18,7 +18,7 @@ class MiniPostCommentLikePostCommentSerializer(serializers.ModelSerializer):
 class PostCommentLikeSerializer(serializers.ModelSerializer):
     user = MiniPostCommentLikeUserSerializer(read_only=True)
     comment = MiniPostCommentLikePostCommentSerializer(read_only=True)
-    
+
     class Meta:
         model = PostCommentLike
         fields = ["id", "user", "comment"]

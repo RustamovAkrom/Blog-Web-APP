@@ -10,7 +10,7 @@ class PostLikeViewSet(viewsets.ModelViewSet):
     queryset = PostLike.objects.all()
     serializer_class = PostLikeSerializer
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def create(self, request, *args, **kwargs):
         post_id = request.data.get("post")
         post = get_object_or_404(Post, id=post_id)
@@ -21,11 +21,14 @@ class PostLikeViewSet(viewsets.ModelViewSet):
         existing_like = PostLike.objects.filter(post=post, user=user)
         if existing_like.exists():
             existing_like.delete()
-            return response.Response({"message": "Like removed"}, status=status.HTTP_200_OK)
-        
+            return response.Response(
+                {"message": "Like removed"}, status=status.HTTP_200_OK
+            )
+
         like = PostLike.objects.create(post=post, user=user)
         serializer = self.get_serializer(like)
 
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
-__all__ = ("PostLikeViewSet", )
+
+__all__ = ("PostLikeViewSet",)

@@ -11,14 +11,12 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 class TestUsers(TestCase):
     def setUp(self):
         self.username = "Admin"
-        self.is_active=True
-        self.email = "admin@example.com",
+        self.is_active = True
+        self.email = ("admin@example.com",)
         self.password = "password"
 
         user = User.objects.create(
-            username=self.username, 
-            is_active=self.is_active, 
-            email=self.email
+            username=self.username, is_active=self.is_active, email=self.email
         )
         user.set_password(self.password)
         user.save()
@@ -55,7 +53,9 @@ class TestUsers(TestCase):
         self.assertContains(response, "Logout")
 
     def test_user_profile_page(self):
-        response = self.client.get(reverse("users:user_profile", kwargs={"username": self.username}))
+        response = self.client.get(
+            reverse("users:user_profile", kwargs={"username": self.username})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/profile.html")
         self.assertContains(response, self.user.username)
@@ -69,7 +69,7 @@ class TestUsers(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertTrue(form.is_valid())
-    
+
     def test_LoginForm(self):
         form_data = {
             "username": "Admin1",
@@ -86,21 +86,21 @@ class TestUsers(TestCase):
             "email": "admin1@example.com",
         }
         response = self.client.post(reverse("users:register"), data=data)
-        self.assertEqual(response.status_code, 302) # Redirecting
+        self.assertEqual(response.status_code, 302)  # Redirecting
         self.assertRedirects(response, reverse("users:login"))
-        
+
     def test_authorization(self):
         data = {
             "username": self.username,
             "password": self.password,
         }
-        
+
         response = self.client.post(reverse("users:login"), data=data)
 
         refresh_token = response.client.cookies.get("refresh_token").value
         access_token = response.client.cookies.get("access_token").value
-        
-        self.assertEqual(response.status_code, 302) # Redirecting
+
+        self.assertEqual(response.status_code, 302)  # Redirecting
         self.assertRedirects(response, reverse("blog:home"))
 
         access_token = AccessToken(access_token)
@@ -108,18 +108,17 @@ class TestUsers(TestCase):
 
         user_id = access_token["user_id"]
         user_in_db = User.objects.filter(id=user_id)
-        
-        user_in_refresh_id = refresh_token.for_user(user_in_db.first()).access_token["user_id"]
+
+        user_in_refresh_id = refresh_token.for_user(user_in_db.first()).access_token[
+            "user_id"
+        ]
 
         self.assertTrue(user_in_db.exists())
         self.assertEqual(self.user.id, user_in_db.first().id)
         self.assertEqual(self.user.id, user_in_refresh_id)
 
     def test_logout(self):
-        data = {
-            "username": self.username,
-            "password": self.password
-        }
+        data = {"username": self.username, "password": self.password}
         # Authorization
         response = self.client.post(reverse("users:login"), data=data)
 
@@ -133,4 +132,3 @@ class TestUsers(TestCase):
 
         self.assertNotEqual(refresh_token_before, refresh_token_after)
         self.assertNotEqual(access_token_before, access_token_after)
-

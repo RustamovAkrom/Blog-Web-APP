@@ -46,7 +46,9 @@ class TestBlog(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_detil(self):
-        response = self.client.get(reverse("blog:post_detail", kwargs={"slug": self.post.slug}))
+        response = self.client.get(
+            reverse("blog:post_detail", kwargs={"slug": self.post.slug})
+        )
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
         self.assertContains(response, self.post.author.username)
@@ -59,7 +61,7 @@ class TestBlog(TestCase):
             "content": "PostContent1",
             "is_active": True,
             "author": self.user,
-            "status": StatusChoice.PUBLISHED.value
+            "status": StatusChoice.PUBLISHED.value,
         }
 
         form = PostCreateUpdateForm(data=form_data)

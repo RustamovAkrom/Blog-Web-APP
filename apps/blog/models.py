@@ -14,12 +14,14 @@ class Post(TimestempedAbstractModel):
     title = models.CharField(_("title"), max_length=120, db_index=True)
     slug = models.SlugField(_("slug"), max_length=255, unique=True, db_index=True)
     status = models.CharField(
-        _("status"), 
-        max_length=2, 
-        choices=StatusChoice.choices, 
-        default=StatusChoice.DRAFT.value
+        _("status"),
+        max_length=2,
+        choices=StatusChoice.choices,
+        default=StatusChoice.DRAFT.value,
     )
-    description = models.CharField(_("description"), max_length=300, blank=True, null=True)
+    description = models.CharField(
+        _("description"), max_length=300, blank=True, null=True
+    )
     content = models.TextField(_("content"))
     publisher_at = models.DateField(_("publisher at"))
     is_active = models.BooleanField(_("active"), default=True)

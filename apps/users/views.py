@@ -20,7 +20,7 @@ class RegisterPageView(CustomHtmxMixin, View):
         context = {
             "title": "Registration",
             "template_htmx": self.template_htmx,
-            "form": RegisterForm()
+            "form": RegisterForm(),
         }
         return render(request, self.template_name, context)
 
@@ -39,7 +39,7 @@ class RegisterPageView(CustomHtmxMixin, View):
         response = redirect(reverse_lazy("users:register"))
         response.status_code = 400
         return response
-    
+
 
 class LoginPageView(CustomHtmxMixin, View):
     template_name = "auth/login.html"
@@ -48,7 +48,7 @@ class LoginPageView(CustomHtmxMixin, View):
         context = {
             "title": "Login",
             "template_htmx": self.template_htmx,
-            "form": LoginForm()
+            "form": LoginForm(),
         }
         return render(request, self.template_name, context)
 
@@ -74,16 +74,13 @@ class LoginPageView(CustomHtmxMixin, View):
             messages.error(request, "Invalid username or password.")
 
         return redirect(reverse_lazy("users:login"))
-        
+
 
 class LogoutPageView(CustomHtmxMixin, LoginRequiredMixin, View):
     template_name = "auth/logout.html"
 
     def get(self, request):
-        context = {
-            "title": "Logout",
-            "template_htmx": self.template_htmx
-        }
+        context = {"title": "Logout", "template_htmx": self.template_htmx}
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -110,7 +107,7 @@ class UserProfilePageView(CustomHtmxMixin, View):
         context = {
             "title": str(user),
             "template_htmx": self.template_htmx,
-            "posts": posts, 
-            "user": user
+            "posts": posts,
+            "user": user,
         }
         return render(request, self.template_name, context)

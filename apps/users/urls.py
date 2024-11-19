@@ -14,5 +14,4 @@ urlpatterns = [
         views.UserProfilePageView.as_view(),
         name="user_profile",
     ),
-    
 ]

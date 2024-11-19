@@ -21,12 +21,14 @@ class PostDislikeViewSet(viewsets.ModelViewSet):
         existing_dislike = PostDislike.objects.filter(post=post, user=user)
         if existing_dislike.exists():
             existing_dislike.delete()
-            return response.Response({"message": "Dislike removed"}, status=status.HTTP_200_OK)
-        
+            return response.Response(
+                {"message": "Dislike removed"}, status=status.HTTP_200_OK
+            )
+
         dislike = PostDislike.objects.create(post=post, user=user)
         serializer = self.get_serializer(dislike)
 
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-    
 
-__all__ = ("PostDislikeViewSet", )
+
+__all__ = ("PostDislikeViewSet",)

@@ -1,6 +1,6 @@
 import os
 
-from .base import * # noqa
+from .base import *  # noqa
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -17,6 +17,6 @@ DATABASES = {
         "USER": str(os.getenv("DATABASE_USER")),
         "PASSWORD": str(os.getenv("DATABASE_PASSWORD")),
         "HOST": str(os.getenv("DATABASE_HOST")),
-        "PORT": int(os.getenv("DATABASE_PORT"))
+        "PORT": int(os.getenv("DATABASE_PORT")),
     }
 }

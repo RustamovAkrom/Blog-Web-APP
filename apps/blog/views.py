@@ -54,7 +54,7 @@ class HomePageView(CustomHtmxMixin, TemplateView):
 
 class AboutPageView(CustomHtmxMixin, TemplateView):
     template_name = "blog/about.html"
-    
+
     def get_context_data(self, **kwargs):
         kwargs["title"] = "About"
         return super().get_context_data(**kwargs)
@@ -73,16 +73,16 @@ class PostDetailPageView(CustomHtmxMixin, View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        
+
         post_comments = post.post_comments.all().order_by("-created_at")
         post.watching += 1
         post.save()
 
         context = {
             "title": post.title,
-            "post": post, 
+            "post": post,
             "post_comments": post_comments,
-            "template_htmx": self.template_htmx
+            "template_htmx": self.template_htmx,
         }
 
         return render(request, self.template_name, context)
@@ -126,13 +126,13 @@ class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug, is_active=True)
-        
+
         form = PostCreateUpdateForm(instance=post)
         context = {
             "title": "Update " + post.title,
             "template_htmx": self.template_htmx,
-            "form": form, 
-            "post": post
+            "form": form,
+            "post": post,
         }
         return render(request, self.template_name, context)
 
@@ -164,7 +164,7 @@ class UserPostsPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         context = {
             "title": "My posts",
             "template_htmx": self.template_htmx,
-            "posts": posts.order_by("-created_at")
+            "posts": posts.order_by("-created_at"),
         }
         return render(request, self.template_name, context)
 
@@ -190,8 +190,8 @@ class SettingsPageView(CustomHtmxMixin, LoginRequiredMixin, View):
         context = {
             "title": "Settings",
             "template_htmx": self.template_htmx,
-            "user_form": user_form, 
-            "user_profile_form": user_profile_form
+            "user_form": user_form,
+            "user_profile_form": user_profile_form,
         }
 
         return render(request, self.template_name, context)

@@ -4,7 +4,7 @@ from apps.users.models import User, UserProfile
 from .models import Post
 
 
-default_attrs = lambda name, placeholder: { # noqa :E731
+default_attrs = lambda name, placeholder: {  # noqa :E731
     "name": name,
     "placeholder": placeholder,
     "class": "form-control",

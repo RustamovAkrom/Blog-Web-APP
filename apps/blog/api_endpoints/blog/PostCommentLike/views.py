@@ -9,4 +9,5 @@ class PostCommentLikeViewSet(viewsets.ModelViewSet):
     serializer_class = PostCommentLikeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-__all__ = ("PostCommentLikeViewSet", )
+
+__all__ = ("PostCommentLikeViewSet",)
