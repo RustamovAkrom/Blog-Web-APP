@@ -44,27 +44,53 @@ class UsersApiTestCase(APITestCase):
         self.assertEqual(self.user.id, jwt_refresh.for_user(self.user).access_token["user_id"])
 
         self.assertEqual(response.status_code, 200)
-
-    # def test_api_user_create(self):
-    #     url = "/api/v1/users/user/"
-    #     def check_user():
-    #         data = {
-    #             "username": "Admin2",
-    #             "email": "admin2@example.com",
-    #             "password": "password",
-    #             "password_confirm": "password"
-    #         }
-
-    #     invalid_data = {
-    #         "username": self.username,
-    #         "email": self.email,
-    #         "password": self.password,
-    #         "password_confirm": self.password
-    #     }
+    
+    def test_api_user_create(self):
+        url = "/api/v1/users/user/"
         
-    #     response = self.client.post(url, data=valid_data)
-        
+        def _check_user_error_field():
+            data = {
+                "username": self.username,
+                "email": self.email,
+                "password": self.password,
+                "password_confirm": self.password
+            }
+            response = self.client.post(url, data=data)
+            response_data = response.json()
 
-    #     print(response.status_code)
-    #     print(response.json())
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response_data['username'][0], 'A user with that username already exists.')
+            self.assertEqual(response_data['email'][0], 'User with this email address already exists.')
 
+        def _check_user_passwords_field():
+            data = {
+                "username": "Admin2",
+                "email": "admin2@example.com",
+                "password": "password",
+                "password_confirm": "error password"
+            }
+            response = self.client.post(url, data=data)
+            response_data = response.json()
+
+            self.assertEqual(response_data['password'][0], 'Password didnt match!')
+            
+        def _create_user():
+            data = {
+                "username": "Admin2",
+                "email": "admin2@example.com",
+                "password": "password",
+                "password_confirm": "password"
+            }
+            response = self.client.post(url, data=data)
+            response_data = response.json()
+
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response_data['username'], data["username"])
+            self.assertEqual(response_data['email'], data["email"])
+            self.assertEqual(response_data['id'], 2)
+            self.assertEqual(response_data['profiles']['id'], response_data['id'])
+
+
+        _check_user_error_field()
+        _check_user_passwords_field()
+        _create_user()
