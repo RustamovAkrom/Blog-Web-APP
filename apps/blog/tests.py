@@ -1,17 +1,21 @@
+from datetime import datetime
+
 from django.test import TestCase
-from .models import User, Post
+
+from apps.users.models import User
+from apps.blog.models import Post
 from django.urls import reverse
-from .forms import PostCreateForm, RegisterForm
+from .forms import PostCreateUpdateForm, SettingsUserForm
+from .choices import StatusChoice
 
 
 class TestBlog(TestCase):
     def setUp(self):
         user = User.objects.create(
-            first_name="Saydula",
-            last_name="Polatov",
-            username="Polat",
+            first_name="Admin",
+            last_name="Adminovich",
+            username="Admin",
             email="saydulapolatov456@gmail.com",
-            avatar="avatars/fitnes.png",
         )
 
         user.set_password("2007")
@@ -19,66 +23,66 @@ class TestBlog(TestCase):
         self.user = user
 
         post = Post.objects.create(
-            title="Olamnig uygonishi",
-            content="content1",
-            publisher_at="2024-02-06",
-            author=user,
+            title="PostTitle1d",
+            description="PostDescription1",
+            content="PostContent1",
+            publisher_at=datetime.now().strftime("%Y-%m-%d"),
+            author=self.user,
             is_active=True,
         )
         self.post = post
 
-    def test_home(self):
-        response = self.client.get(reverse("home"))
+    def test_home_page(self):
+        response = self.client.get(reverse("blog:home"))
         self.assertEqual(response.status_code, 200)
 
-    def test_About_page(self):
-        response = self.client.get(reverse("about"))
+    def test_about_page(self):
+        response = self.client.get(reverse("blog:about"))
         self.assertEqual(response.status_code, 200)
 
-    def test_Login_page(self):
-        response = self.client.get(reverse("login"))
-        print(response.headers)
+    def test_contacts_page(self):
+        response = self.client.get(reverse("blog:contacts"))
+        self.assertEqual(response.status_code, 200)
 
     def test_post_detil(self):
-        response = self.client.get(reverse("post_detail", kwargs={"id": self.post.id}))
+        response = self.client.get(
+            reverse("blog:post_detail", kwargs={"slug": self.post.slug})
+        )
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
-        self.assertContains(response, self.post.author.first_name)
-        self.assertContains(response, self.post.author.last_name)
+        self.assertContains(response, self.post.author.username)
         self.assertTrue(self.post.is_active, "True")
 
-    def test_forms(self):
+    def test_PostCreateUpdateForm_forms(self):
         form_data = {
-            "title": "postTietle1",
-            "content": "postContent1",
-            "publisher_at": "2024-02-05",
+            "title": "PostTitle1",
+            "description": "PostDescription1",
+            "content": "PostContent1",
             "is_active": True,
             "author": self.user,
+            "status": StatusChoice.PUBLISHED.value,
         }
 
-        form = PostCreateForm(data=form_data)
+        form = PostCreateUpdateForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_objects_firstname_and_lastname(self):
-        author = User.objects.get(id=1)
-        post_count = author.is_active
-        object_name = f"{author.first_name}, {author.last_name}|Is active: {post_count}"
-
-        print(object_name)
-
-    def test_register_form(self):
-        user_create_form_data = {
-            "username": "Saydula",
-            "first_name": "Sayid",
-            "last_name": "Movlonov",
-            "password1": "Sayid",
-            "password2": "Sayid",
-            "email": "sayidmovlonov34@gmail.com",
-            "avatar": "C:/Users/user/Pictures/Screenshots homevork/Снимок экрана 2024-02-08 193246.png",
+    def test_SettingsUserForm(self):
+        form_data = {
+            "first_name": "Admin1",
+            "last_name": "Adminovna",
+            "email": "admin@example.com",
         }
-        form = RegisterForm(data=user_create_form_data)
+        form = SettingsUserForm(data=form_data, instance=self.user)
         self.assertTrue(form.is_valid())
 
-    def test_Users(self):
-        users = User.objects.all()
-        print(users)
+    # def test_SettingsUserProfileForm(self):
+    #     form_files = {
+    #         "avatar": "media/avatars/default/logo.png",
+    #     }
+    #     form_data = {
+    #         "bio": "settings user profile bio ...",
+    #     }
+    #     form = SettingsUserProfileForm(data=form_data, files=form_files)
+    #     print(form.get_context())
+    #     print(form.errors.get_context())
+    #     self.assertTrue(form.is_valid())

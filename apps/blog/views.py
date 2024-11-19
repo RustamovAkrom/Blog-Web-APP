@@ -1,17 +1,14 @@
 import datetime
-from functools import wraps
-from typing import Any
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, DeleteView
 from django.contrib import messages
-from django.http import HttpRequest
 from django.views import View
 from django.urls import reverse
 
 from apps.users.models import User
-from apps.shared.mixins import CustomHtmxMixin, render_htmx_or_default
+from apps.shared.mixins import CustomHtmxMixin
 from .models import Post
 from .forms import (
     PostCreateUpdateForm,
@@ -54,7 +51,7 @@ class HomePageView(CustomHtmxMixin, TemplateView):
 
 class AboutPageView(CustomHtmxMixin, TemplateView):
     template_name = "blog/about.html"
-    
+
     def get_context_data(self, **kwargs):
         kwargs["title"] = "About"
         return super().get_context_data(**kwargs)
@@ -73,16 +70,16 @@ class PostDetailPageView(CustomHtmxMixin, View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        
+
         post_comments = post.post_comments.all().order_by("-created_at")
         post.watching += 1
         post.save()
 
         context = {
             "title": post.title,
-            "post": post, 
+            "post": post,
             "post_comments": post_comments,
-            "template_htmx": self.template_htmx
+            "template_htmx": self.template_htmx,
         }
 
         return render(request, self.template_name, context)
@@ -95,8 +92,6 @@ class PostCreatePageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         kwargs["form"] = PostCreateUpdateForm()
         kwargs["title"] = "Post Create"
         return super().get_context_data(**kwargs)
-    # def get(self, request):
-    #     return render(request, self.template_name, {"form": PostCreateUpdateForm()})
 
     def post(self, request):
         form = PostCreateUpdateForm(request.POST)
@@ -128,13 +123,13 @@ class PostUpdateView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug, is_active=True)
-        
+
         form = PostCreateUpdateForm(instance=post)
         context = {
             "title": "Update " + post.title,
             "template_htmx": self.template_htmx,
-            "form": form, 
-            "post": post
+            "form": form,
+            "post": post,
         }
         return render(request, self.template_name, context)
 
@@ -166,7 +161,7 @@ class UserPostsPageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         context = {
             "title": "My posts",
             "template_htmx": self.template_htmx,
-            "posts": posts.order_by("-created_at")
+            "posts": posts.order_by("-created_at"),
         }
         return render(request, self.template_name, context)
 
@@ -192,13 +187,16 @@ class SettingsPageView(CustomHtmxMixin, LoginRequiredMixin, View):
         context = {
             "title": "Settings",
             "template_htmx": self.template_htmx,
-            "user_form": user_form, 
-            "user_profile_form": user_profile_form
+            "user_form": user_form,
+            "user_profile_form": user_profile_form,
         }
 
         return render(request, self.template_name, context)
 
     def post(self, request):
+        print(request.FILES)
+        print(request.POST)
+
         user = get_object_or_404(User, pk=request.user.pk)
         user_form = SettingsUserForm(data=request.POST, instance=user)
         user_profile_form = SettingsUserProfileForm(

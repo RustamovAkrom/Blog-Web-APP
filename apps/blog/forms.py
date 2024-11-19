@@ -4,7 +4,7 @@ from apps.users.models import User, UserProfile
 from .models import Post
 
 
-default_attrs = lambda name, placeholder: { # noqa :E731
+default_attrs = lambda name, placeholder: {  # noqa :E731
     "name": name,
     "placeholder": placeholder,
     "class": "form-control",
@@ -52,7 +52,7 @@ class PostCreateUpdateForm(forms.ModelForm):
 class SettingsUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "username", "email")
+        fields = ("first_name", "last_name", "email")
 
     first_name = forms.CharField(
         widget=forms.TextInput(
@@ -65,11 +65,6 @@ class SettingsUserForm(forms.ModelForm):
             attrs=default_attrs("last_name", "Last name"),
         ),
         required=False,
-    )
-    username = forms.CharField(
-        widget=forms.TextInput(
-            attrs=default_attrs("username", "Username..."),
-        )
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs=default_attrs("email", "Email..."))

@@ -4,8 +4,6 @@ from django.db import models
 from apps.shared.models import TimestempedAbstractModel
 from .utils import processor_iamge
 
-from PIL import Image
-
 
 class User(TimestempedAbstractModel, AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
@@ -58,5 +56,5 @@ class UserProfile(TimestempedAbstractModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        
+
         processor_iamge(self.avatar.path)

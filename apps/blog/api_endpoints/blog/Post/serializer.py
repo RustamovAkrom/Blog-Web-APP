@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             "id",
-            "title", 
+            "title",
             "get_absolute_url",
             "status",
             "description",

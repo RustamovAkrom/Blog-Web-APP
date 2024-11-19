@@ -28,7 +28,7 @@ def render_htmx_or_default(template_name, htmx_template_name=None):
                     return render(request, htmx_template_name, response.context_data)
                 return render(request, template_name, response.context_data)
             return response
-        return _wrapped_view
-    return decorator
 
-        
+        return _wrapped_view
+
+    return decorator

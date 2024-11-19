@@ -2,9 +2,10 @@ import os
 
 from pathlib import Path
 
-from core.config import * # noqa
+from core.config import *  # noqa
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -16,7 +17,7 @@ DEBUG = bool(os.getenv("DEBUG", True))
 ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
 
 
-INSTALLED_APPS = DEFAULT_APPS + PROJECT_APPS + THIRD_PARTY_APPS
+INSTALLED_APPS = DEFAULT_APPS + PROJECT_APPS + THIRD_PARTY_APPS # NOQA
 
 
 MIDDLEWARE = [
@@ -33,7 +34,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 
-TEMPLATES_DIRS = [os.path.join(BASE_DIR, "templates")]
+TEMPLATES_DIRS = [BASE_DIR.joinpath("templates")]
 
 TEMPLATES = [
     {
@@ -51,6 +52,12 @@ TEMPLATES = [
     },
 ]
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR.joinpath("db.sqlite3"),
+    },
+}
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -82,8 +89,8 @@ LOGIN_URL = "/users/login/"
 LOGIN_REDIRECT_URL = "/"
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
+STATICFILES_DIRS = [BASE_DIR.joinpath("static")]
 
 # AUTHENTICATION_BACKENDS = (
 #     'apps.users.authentication.JWTAdminAuthentication',
@@ -91,7 +98,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # )
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media/"
+MEDIA_ROOT = BASE_DIR.joinpath("media/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 with open(str(os.getenv("PRIVATE_KEY_PATH", "security/private_key")), "r") as f:
     PRIVATE_KEY = f.read()
 
 with open(str(os.getenv("PUBLIC_KEY_PATH", "security/public_key.pem")), "r") as f:
     PUBLIC_KEY = f.read()
-    
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
@@ -21,9 +21,9 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
-    "ALGORITHM": "RS256", # SH256 old, new RS256
-    "SIGNING_KEY": PRIVATE_KEY, # private key
-    "VERIFYING_KEY": PUBLIC_KEY, # public key
+    "ALGORITHM": "RS256",  # SH256 old, new RS256
+    "SIGNING_KEY": PRIVATE_KEY,  # private key
+    "VERIFYING_KEY": PUBLIC_KEY,  # public key
     "AUDIENCE": None,
     "ISSUER": None,
     "JWK_URL": None,
