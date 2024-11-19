@@ -31,7 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active", 
             "is_superuser",
             "is_staff",
-            "post_count",
             "profiles",
             "created_at",
             "updated_at",

@@ -1,12 +1,6 @@
-from django.urls import path, include
+from django.urls import path
 
-from .api_endpoints import router
 from . import views
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
 
 
 app_name = "users"

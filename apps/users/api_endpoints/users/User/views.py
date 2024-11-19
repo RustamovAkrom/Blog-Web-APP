@@ -3,7 +3,7 @@ from rest_framework_simplejwt import authentication
 
 from apps.users.models import User
 from .serializers import UserSerializer
-from .permissions import IsOwnerPermission
+from apps.users.permissions import IsOwnerPermission
 
 
 class UserViewSet(viewsets.ModelViewSet):
