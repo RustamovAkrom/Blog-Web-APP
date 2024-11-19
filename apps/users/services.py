@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpRequest
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def generate_jwt_tokens(user):

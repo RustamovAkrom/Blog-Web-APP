@@ -1,4 +1,4 @@
-name: Django Test
+name: Lint Code
 
 on:
   push:
