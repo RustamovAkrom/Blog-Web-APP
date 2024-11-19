@@ -1,4 +1,4 @@
-name: Django CI
+name: Django Test
 
 on:
   push:
@@ -20,23 +20,21 @@ jobs:
 
     steps:
     - name: Check out the repository
-      uses: actions/checkout@v4  # This is an action, so it uses 'uses'
+      uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3  # This is an action, so it uses 'uses'
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install OpenSSL
-      run: sudo apt-get install -y openssl  # This is a command, so it uses 'run'
+      run: sudo apt-get install -y openssl
 
     - name: Generate private and public keys
       run: |
-        # Очистка старых файлов перед созданием новых
         rm -rf security
         mkdir -p security
         
-        # Генерация приватного и публичного ключа
         openssl genpkey -algorithm RSA -out security/private_key.pem -pkeyopt rsa_keygen_bits:2048
         openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
         
@@ -53,17 +51,17 @@ jobs:
 
 
     - name: Check if .env has been updated
-      run: cat .env  # This is a command, so it uses 'run'
+      run: cat .env
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt  # This is a command, so it uses 'run'
+        pip install -r requirements.txt
         
     - name: Run Tests
-      run: python manage.py test  # This is a command, so it uses 'run'
+      run: python manage.py test
 
     - name: Clean up keys (Optional)
       run: |
         rm -rf security
-        echo "Keys removed after use."  # This is a command, so it uses 'run'
+        echo "Keys removed after use."
