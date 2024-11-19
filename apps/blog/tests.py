@@ -1,12 +1,11 @@
 from datetime import datetime
 
 from django.test import TestCase
-from django.core.files.uploadedfile import UploadedFile
 
 from apps.users.models import User
 from apps.blog.models import Post
 from django.urls import reverse
-from .forms import PostCreateUpdateForm, SettingsUserForm, SettingsUserProfileForm
+from .forms import PostCreateUpdateForm, SettingsUserForm
 from .choices import StatusChoice
 
 

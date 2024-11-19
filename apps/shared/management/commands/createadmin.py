@@ -1,11 +1,10 @@
 import os
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
+from django.core.management import BaseCommand
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 ADMIN_USERNAME = str(os.getenv("ADMIN_USERNAME"))
@@ -14,6 +13,8 @@ ADMIN_EMAIL = str(os.getenv("ADMIN_PASSWORD"))
 
 
 class Command(BaseCommand):
+    help = "Create superuser"
+
     def handle(self, *args, **options):
         User = get_user_model()
         self.create_superuser(User, ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD)

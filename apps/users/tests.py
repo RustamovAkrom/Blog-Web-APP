@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .models import User, UserProfile
-from .services import generate_jwt_tokens
 from .forms import RegisterForm, LoginForm
 
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken

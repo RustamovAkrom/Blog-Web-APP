@@ -1,17 +1,14 @@
 import datetime
-from functools import wraps
-from typing import Any
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, DeleteView
 from django.contrib import messages
-from django.http import HttpRequest
 from django.views import View
 from django.urls import reverse
 
 from apps.users.models import User
-from apps.shared.mixins import CustomHtmxMixin, render_htmx_or_default
+from apps.shared.mixins import CustomHtmxMixin
 from .models import Post
 from .forms import (
     PostCreateUpdateForm,
