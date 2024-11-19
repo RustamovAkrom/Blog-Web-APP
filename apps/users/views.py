@@ -31,10 +31,14 @@ class RegisterPageView(CustomHtmxMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, "User succesfully registered")
-            return redirect(reverse_lazy("users:login"))
+            response = redirect(reverse_lazy("users:login"))
+            response.status_code = 302
+            return response
 
         messages.warning(request, "Invalid registration fields!")
-        return redirect(reverse_lazy("auth:register"))
+        response = redirect(reverse_lazy("users:register"))
+        response.status_code = 400
+        return response
     
 
 class LoginPageView(CustomHtmxMixin, View):
@@ -71,7 +75,6 @@ class LoginPageView(CustomHtmxMixin, View):
 
         return redirect(reverse_lazy("users:login"))
         
-
 
 class LogoutPageView(CustomHtmxMixin, LoginRequiredMixin, View):
     template_name = "auth/logout.html"

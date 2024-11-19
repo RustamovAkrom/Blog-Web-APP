@@ -95,8 +95,6 @@ class PostCreatePageView(CustomHtmxMixin, LoginRequiredMixin, TemplateView):
         kwargs["form"] = PostCreateUpdateForm()
         kwargs["title"] = "Post Create"
         return super().get_context_data(**kwargs)
-    # def get(self, request):
-    #     return render(request, self.template_name, {"form": PostCreateUpdateForm()})
 
     def post(self, request):
         form = PostCreateUpdateForm(request.POST)

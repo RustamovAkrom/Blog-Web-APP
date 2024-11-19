@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpRequest
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 
-def generate_jwt_tokens(user):
+def generate_jwt_tokens(user) -> tuple[RefreshToken, AccessToken]:
     refresh = RefreshToken.for_user(user)
     access_token = refresh.access_token
     access_token['user_id'] = user.id
