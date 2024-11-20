@@ -102,3 +102,6 @@ class UsersApiTestCase(APITestCase):
         _check_user_error_field()
         _check_user_passwords_field()
         _create_user()
+
+    def test_api_user_update(self):
+        pass
