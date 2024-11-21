@@ -23,19 +23,20 @@ sitemaps = {
 }
 
 # URLs
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("i18n", include("django.conf.urls.i18n")),
     path("", include("apps.blog.urls", namespace="blog")),
     path("users/", include("apps.users.urls", namespace="users")),
     path("robots.txt", TemplateView.as_view(template_name="bunin/robots.txt")),
+    path("rosetta/", include("rosetta.urls")),
     path(
         "sitemap.xml",
         sitemap,
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-]
+)
 
 # API Endpoints
 urlpatterns += [
