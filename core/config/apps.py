@@ -17,6 +17,15 @@ PROJECT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.import_export",
+    "unfold.contrib.guardian",
+    "unfold.contrib.simple_history",
+    "modeltranslation",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
