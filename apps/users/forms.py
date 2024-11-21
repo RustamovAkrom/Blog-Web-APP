@@ -12,8 +12,8 @@ class LoginForm(forms.Form):
         ),
         error_messages={
             "required": "Username is required!",
-            'max_length': "Username is too lang, max length is 150 charecters."
-        }
+            "max_length": "Username is too lang, max length is 150 charecters.",
+        },
     )
     password = forms.CharField(
         max_length=60,
@@ -22,8 +22,8 @@ class LoginForm(forms.Form):
         ),
         error_messages={
             "required": "Password is required!",
-            "max_length": "Password is to long, max length is 60 charecters."
-        }
+            "max_length": "Password is to long, max length is 60 charecters.",
+        },
     )
 
 
@@ -32,7 +32,6 @@ class RegisterForm(forms.ModelForm):
         label="Password",
         max_length=28,
         widget=forms.PasswordInput(attrs={"id": "password", "type": "password"}),
-
     )
     password2 = forms.CharField(
         label="Password (Confirm)",
@@ -46,7 +45,7 @@ class RegisterForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise ValidationError("Passwords must be match!")
         return password2
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
 
@@ -61,4 +60,9 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "password1", "password2", "email", )
+        fields = (
+            "username",
+            "password1",
+            "password2",
+            "email",
+        )

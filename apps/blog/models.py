@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+
 from apps.shared.models import TimestempedAbstractModel
 from apps.shared.utils import get_random_text
 from .managers import PublishedManager
@@ -13,12 +14,14 @@ class Post(TimestempedAbstractModel):
     title = models.CharField(_("title"), max_length=120, db_index=True)
     slug = models.SlugField(_("slug"), max_length=255, unique=True, db_index=True)
     status = models.CharField(
-        _("status"), 
-        max_length=2, 
-        choices=StatusChoice.choices, 
-        default=StatusChoice.DRAFT.value
+        _("status"),
+        max_length=2,
+        choices=StatusChoice.choices,
+        default=StatusChoice.DRAFT.value,
     )
-    description = models.CharField(_("description"), max_length=300, blank=True, null=True)
+    description = models.CharField(
+        _("description"), max_length=300, blank=True, null=True
+    )
     content = models.TextField(_("content"))
     publisher_at = models.DateField(_("publisher at"))
     is_active = models.BooleanField(_("active"), default=True)
@@ -29,7 +32,7 @@ class Post(TimestempedAbstractModel):
     published = PublishedManager()
 
     def delete(self, *args, **kwargs):
-        print(self.post_comments.all().delete())
+        self.post_comments.all().delete()
         return super().delete(*args, **kwargs)
 
     class Meta:

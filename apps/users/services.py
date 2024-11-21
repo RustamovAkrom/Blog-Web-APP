@@ -5,7 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 def generate_jwt_tokens(user):
     refresh = RefreshToken.for_user(user)
     access_token = refresh.access_token
-    access_token['user_id'] = user.id
+    access_token["user_id"] = user.id
 
     access_token = str(access_token)
     refresh_token = str(refresh)
@@ -25,7 +25,9 @@ def get_jwt_login_response(response: HttpResponse, user) -> HttpResponse:
     return response
 
 
-def get_jwt_logout_response(response: HttpResponse, request: HttpRequest) -> HttpResponse:
+def get_jwt_logout_response(
+    response: HttpResponse, request: HttpRequest
+) -> HttpResponse:
 
     # Get refresh token for cookie
     refresh_token = request.COOKIES.get("refresh_token")
@@ -36,7 +38,7 @@ def get_jwt_logout_response(response: HttpResponse, request: HttpRequest) -> Htt
             token.blacklist()
         except Exception:
             pass
-        
+
         # Delete token in cookies
         response.delete_cookie("access_token")
         response.delete_cookie("refresh_token")

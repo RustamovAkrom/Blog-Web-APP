@@ -1,4 +1,4 @@
-
+{% load blog_tags %}
 <main role="main" class="container" id="main-content">
   <div class="row">
     <div class="col-md-8">
@@ -23,7 +23,7 @@
                   hx-push-url="true"
                   hx-target="#main-content"
                   class="nav-link">
-                    <img src="{{ post.get_author_avatar_url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
+                      <img src="{{ post.get_author_avatar_url }}" style="border-radius: 30%;" width="30px" height="30px" alt="author logo">
                     {{ post.author }}
                   </a>
                 </strong>

@@ -15,7 +15,7 @@ exclude =
     __pycache__,
     migrations,
     static,
-    env,  # your virtual environment directory
+    venv,  # your virtual environment directory
 
 # Enable checking for complexity
 max-complexity = 10

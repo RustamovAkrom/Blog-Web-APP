@@ -1,9 +1,11 @@
 from django.contrib import admin
 from .models import Post, PostComment, PostLike, PostDislike, PostCommentLike
 
+from unfold.admin import ModelAdmin
+
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(ModelAdmin):
     list_display = ["title", "content", "author", "is_active"]
     search_fields = ["title", "content"]
     list_filter = ["author", "is_active"]
@@ -12,20 +14,20 @@ class PostAdmin(admin.ModelAdmin):
 
 
 @admin.register(PostComment)
-class PostCommentAdmin(admin.ModelAdmin):
+class PostCommentAdmin(ModelAdmin):
     pass
 
 
 @admin.register(PostLike)
-class PostLikeAdmin(admin.ModelAdmin):
+class PostLikeAdmin(ModelAdmin):
     pass
 
 
 @admin.register(PostDislike)
-class PostDislike(admin.ModelAdmin):
+class PostDislike(ModelAdmin):
     pass
 
 
 @admin.register(PostCommentLike)
-class PostCommentLikeAdmin(admin.ModelAdmin):
+class PostCommentLikeAdmin(ModelAdmin):
     pass
