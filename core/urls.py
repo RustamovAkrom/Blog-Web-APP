@@ -23,13 +23,17 @@ sitemaps = {
 }
 
 # URLs
-urlpatterns = i18n_patterns(
+urlpatterns = [
     path("admin/", admin.site.urls),
     path("i18n", include("django.conf.urls.i18n")),
+    path("rosetta/", include("rosetta.urls")),
+]
+
+# Translated urls
+urlpatterns += i18n_patterns(
     path("", include("apps.blog.urls", namespace="blog")),
     path("users/", include("apps.users.urls", namespace="users")),
     path("robots.txt", TemplateView.as_view(template_name="bunin/robots.txt")),
-    path("rosetta/", include("rosetta.urls")),
     path(
         "sitemap.xml",
         sitemap,

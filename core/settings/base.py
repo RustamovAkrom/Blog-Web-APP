@@ -19,7 +19,7 @@ DEBUG = bool(os.getenv("DEBUG", True))
 ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
 
 
-INSTALLED_APPS = DEFAULT_APPS + PROJECT_APPS + THIRD_PARTY_APPS # NOQA
+INSTALLED_APPS = THIRD_PARTY_APPS + DEFAULT_APPS + PROJECT_APPS # NOQA
 
 
 MIDDLEWARE = [
@@ -101,8 +101,8 @@ LOGIN_URL = "/users/login/"
 LOGIN_REDIRECT_URL = "/"
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
-STATICFILES_DIRS = [BASE_DIR.joinpath("static")]
+STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
+STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 
 # AUTHENTICATION_BACKENDS = (
 #     'apps.users.authentication.JWTAdminAuthentication',
@@ -110,7 +110,7 @@ STATICFILES_DIRS = [BASE_DIR.joinpath("static")]
 # )
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR.joinpath("media/")
+MEDIA_ROOT = str(BASE_DIR.joinpath("media/"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
