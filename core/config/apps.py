@@ -26,6 +26,8 @@ THIRD_PARTY_APPS = [
     "unfold.contrib.simple_history",
     # Translation
     "modeltranslation",
+    #
+    "django_ckeditor_5",
     # Translation pannel
     "rosetta",
     # DRF Swaggers

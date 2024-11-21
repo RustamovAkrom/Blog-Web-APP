@@ -3,6 +3,7 @@ from .models import Post, PostComment, PostLike, PostDislike, PostCommentLike
 
 from unfold.admin import ModelAdmin
 
+
 @admin.register(Post)
 class PostAdmin(ModelAdmin):
     list_display = ["title", "content", "author", "is_active"]

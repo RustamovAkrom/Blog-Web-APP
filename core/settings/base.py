@@ -18,19 +18,23 @@ DEBUG = bool(os.getenv("DEBUG", True))
 
 ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
 
+CSRF_TRUSTED_ORIGINS = str(os.getenv("CSRF_TRUSTED_ORIGINS")).split(",")
 
-INSTALLED_APPS = THIRD_PARTY_APPS + DEFAULT_APPS + PROJECT_APPS # NOQA
+INSTALLED_APPS = THIRD_PARTY_APPS + DEFAULT_APPS + PROJECT_APPS  # noqa
 
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.BrokenLinkEmailsMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.users.middleware.JWTAuthMiddleware", # My Jwt Auth Middleware
+    "apps.users.middleware.JWTAuthMiddleware",  # My Jwt Auth Middleware
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -87,7 +91,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-gettext = lambda s: gettext_lazy(s)
+gettext = lambda s: gettext_lazy(s) # noqa
 
 LANGUAGES = (
     ("ru", gettext("Russia")),

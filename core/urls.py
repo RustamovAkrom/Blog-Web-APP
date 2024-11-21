@@ -1,5 +1,5 @@
 from django.conf.urls import handler400, handler403, handler404, handler500  # noqa
-from django.conf.urls.i18n import i18n_patterns # noqa: F401
+from django.conf.urls.i18n import i18n_patterns  # noqa: F401
 from django.conf.urls.static import static
 from django.conf import settings
 

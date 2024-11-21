@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
-from apps.users.models import UserProfile, User
+from apps.users.models import UserProfile, User # noqa
 
 
 class UserProfileApiTestCase(APITestCase):
@@ -18,5 +18,3 @@ class UserProfileApiTestCase(APITestCase):
         refresh = RefreshToken.for_user(self.user)
         self.token = str(refresh.access_token)
         return super().setUp()
-    
-    

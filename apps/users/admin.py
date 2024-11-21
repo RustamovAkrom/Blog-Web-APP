@@ -1,13 +1,14 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin # noqa
 from .models import User, UserProfile
 
 from unfold.admin import ModelAdmin
 
+
 @admin.register(User)
 class UserAdmin(ModelAdmin):
     list_display = ["username", "post_count"]
-    search_fields = ["first_name", "last_name", "username"]
+    search_fields = ["first_name", "last_name", "username", "email"]
     list_display_links = ["username"]
 
     def get_post_count(self):
@@ -16,4 +17,4 @@ class UserAdmin(ModelAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(ModelAdmin):
-    pass
+    list_display = ["user", "avatar", "bio"]

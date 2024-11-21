@@ -62,6 +62,6 @@ UNFOLD = {
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": True,
-        "navigation": navigation.PAGES
-    }
+        "navigation": navigation.PAGES,
+    },
 }

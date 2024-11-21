@@ -1,27 +1,35 @@
 from django.db.models import QuerySet
 from django.db.models import Q
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from django.core.paginator import Paginator, Page, EmptyPage, PageNotAnInteger, InvalidPage
+from django.core.paginator import (
+    Paginator,
+    Page,
+    EmptyPage,
+    PageNotAnInteger,
+    InvalidPage,
+)
 from django.conf import settings
 
 from .models import PostLike, PostDislike, Post, PostComment
 
 
-def get_search_model_queryset(
-    model_queryset: QuerySet, query: str = None
-) -> QuerySet:
+def get_search_model_queryset(model_queryset: QuerySet, query: str = None) -> QuerySet:
     if not query:
         return model_queryset
 
     search_vector = SearchVector("title", "description", "content")
     search_query = SearchQuery(query)
 
-    if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql':
+    if settings.DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
         # PostgreSQL search
-        queryset = model_queryset.annotate(
-            search=search_vector,
-            rank=SearchRank(search_vector, search_query),
-        ).filter(search=search_query).order_by('-rank')
+        queryset = (
+            model_queryset.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query),
+            )
+            .filter(search=search_query)
+            .order_by("-rank")
+        )
     else:
         # SQLite3 search
         queryset = model_queryset.filter(
