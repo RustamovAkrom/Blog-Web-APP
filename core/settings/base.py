@@ -2,6 +2,8 @@ import os
 
 from pathlib import Path
 
+from django.utils.translation import gettext_lazy
+
 from core.config import *  # noqa
 
 from dotenv import load_dotenv
@@ -28,7 +30,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.users.middleware.JWTAuthMiddleware",
+    "apps.users.middleware.JWTAuthMiddleware", # My Jwt Auth Middleware
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -81,9 +83,18 @@ LANGUAGE_CODE = "en"
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
-# USE_L10N = True
 
 USE_TZ = True
+
+gettext = lambda s: gettext_lazy(s)
+
+LANGUAGES = (
+    ("ru", gettext("Russia")),
+    ("en", gettext("English")),
+    ("uz", gettext("Uzbek")),
+)
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 LOGIN_URL = "/users/login/"
 LOGIN_REDIRECT_URL = "/"

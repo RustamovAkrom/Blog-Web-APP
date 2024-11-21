@@ -17,16 +17,23 @@ PROJECT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    # Admin panel
     "unfold",
     "unfold.contrib.filters",
     "unfold.contrib.forms",
     "unfold.contrib.import_export",
     "unfold.contrib.guardian",
     "unfold.contrib.simple_history",
+    # Translation
     "modeltranslation",
+    # Translation pannel
+    "rosetta",
+    # DRF Swaggers
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    # Rest Framework
     "rest_framework",
+    # Rest Framework JWT (Json web token)s
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
 ]

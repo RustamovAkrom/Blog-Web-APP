@@ -10,6 +10,7 @@ User = get_user_model()
 
 class JWTAuthMiddleware(MiddlewareMixin):
     def process_request(self, request):
+        # If admin auth for session
         if request.path.startswith("/admin"):
             return
 
