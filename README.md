@@ -131,4 +131,4 @@ Authorization: Bearer <access_token>
 ## 📖 Документация
 
 Подробная документация доступна здесь:  
-👉 [Documentation](https://rustamovakrom.github.io/blog-web-app/)
+👉 [Documentation](https://rustamovakrom.github.io/Blog-Web-APP/)
