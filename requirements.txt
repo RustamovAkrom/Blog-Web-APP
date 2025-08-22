@@ -74,4 +74,3 @@ sqlparse==0.5.1
 svgwrite==1.4.3
 tomlkit==0.12.0
 trove-classifiers>=2024.1.0
-t
