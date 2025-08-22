@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-with open(str(os.getenv("PRIVATE_KEY_PATH", "security/private_key")), "r") as f:
+with open(str(os.getenv("PRIVATE_KEY_PATH", "security/private_key.pem")), "r") as f:
     PRIVATE_KEY = f.read()
 
 with open(str(os.getenv("PUBLIC_KEY_PATH", "security/public_key.pem")), "r") as f:

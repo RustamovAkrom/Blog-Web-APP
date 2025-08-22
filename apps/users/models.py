@@ -9,16 +9,20 @@ class User(TimestempedAbstractModel, AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
 
     @property
-    def post_count(self):
-        return self.posts.count
+    def post_count(self) -> int:
+        """Количество постов пользователя"""
+        return getattr(self, "posts", None).count() if hasattr(self, "posts") else 0
 
     def get_user_avatar_url(self) -> str:
-        return str(self.profiles.avatar.url)
+        """Безопасно возвращает URL аватара"""
+        if hasattr(self, "profiles") and self.profiles.avatar:
+            return self.profiles.avatar.url
+        return "/media/avatars/default/logo.png"
 
     def get_user_bio(self) -> str:
-        bio = str(self.profiles.bio)
-        if bio:
-            return bio
+        """Безопасно возвращает bio"""
+        if hasattr(self, "profiles") and self.profiles.bio:
+            return self.profiles.bio
         return ""
 
     class Meta:
@@ -28,6 +32,13 @@ class User(TimestempedAbstractModel, AbstractUser):
 
     def __str__(self) -> str:
         return self.username
+
+    def save(self, *args, **kwargs):
+        """Автоматически создаём профиль при сохранении юзера"""
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new and not hasattr(self, "profiles"):
+            UserProfile.objects.create(user=self)
 
 
 class UserProfile(TimestempedAbstractModel):
@@ -56,5 +67,8 @@ class UserProfile(TimestempedAbstractModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
-        processor_iamge(self.avatar.path)
+        if self.avatar:  # обработка изображения только если оно реально есть
+            try:
+                processor_iamge(self.avatar.path)
+            except (FileNotFoundError, ValueError):
+                pass

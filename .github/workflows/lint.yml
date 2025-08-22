@@ -11,8 +11,7 @@ on:
       - "master"
 
 jobs:
-
-  build:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -46,21 +45,20 @@ jobs:
         touch .env
         echo PRIVATE_KEY_PATH=$(pwd)/security/private_key.pem >> .env
         echo PUBLIC_KEY_PATH=$(pwd)/security/public_key.pem >> .env
-        DJANGO_SETTINGS_MODULE=core.settings.development >> .env
+        echo DJANGO_SETTINGS_MODULE=core.settings.development >> .env
         echo DATABASE_ENVIRON=sqlite3 >> .env
-
 
     - name: Check if .env has been updated
       run: cat .env
 
     - name: Install Dependencies
       run: |
-        pip install flake8
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install ruff
         
-    - name: Lint Code
-      run: flake8 .
+    - name: Run Ruff Linter
+      run: ruff check .
 
     - name: Clean up keys (Optional)
       run: |

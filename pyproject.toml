@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "blog app"
+name = "Blog Web APP"
 version = "0.1.0"
 description = "Best blog app project for django"
 authors = ["Akromjon <152626511+RustamovAkrom@users.noreply.github.com>"]
@@ -25,6 +25,7 @@ django-modeltranslation = "^0.19.11"
 drf-spectacular = "^0.27.2"
 drf-spectacular-sidecar = "^2024.11.1"
 django-rosetta = "^0.10.1"
+ruff = "^0.12.10"
 
 
 [build-system]
