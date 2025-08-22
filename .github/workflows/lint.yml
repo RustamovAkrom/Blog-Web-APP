@@ -22,45 +22,14 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install OpenSSL
-      run: sudo apt-get install -y openssl
-
-    - name: Generate private and public keys
-      run: |
-        rm -rf security
-        mkdir -p security
-        
-        openssl genpkey -algorithm RSA -out security/private_key.pem -pkeyopt rsa_keygen_bits:2048
-        openssl rsa -pubout -in security/private_key.pem -out security/public_key.pem
-        
-        echo "Private key saved as security/private_key.pem"
-        echo "Public key saved as security/public_key.pem"
-        
-    - name: Create .env file
-      run: |
-        touch .env
-        echo PRIVATE_KEY_PATH=$(pwd)/security/private_key.pem >> .env
-        echo PUBLIC_KEY_PATH=$(pwd)/security/public_key.pem >> .env
-        echo DJANGO_SETTINGS_MODULE=core.settings.development >> .env
-        echo DATABASE_ENVIRON=sqlite3 >> .env
-
-    - name: Check if .env has been updated
-      run: cat .env
-
-    - name: Install Dependencies
+    - name: Install Ruff
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
         pip install ruff
         
     - name: Run Ruff Linter
       run: ruff check .
-
-    - name: Clean up keys (Optional)
-      run: |
-        rm -rf security
-        echo "Keys removed after use."
