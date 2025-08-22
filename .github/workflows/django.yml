@@ -11,7 +11,6 @@ on:
       - "master"
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -23,12 +22,14 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install OpenSSL
-      run: sudo apt-get install -y openssl
+    # ⚡ OpenSSL уже есть в образе, установка не нужна
+    # если хочешь проверить наличие:
+    - name: Check OpenSSL version
+      run: openssl version
 
     - name: Generate private and public keys
       run: |
@@ -40,15 +41,14 @@ jobs:
         
         echo "Private key saved as security/private_key.pem"
         echo "Public key saved as security/public_key.pem"
-        
+
     - name: Create .env file
       run: |
         touch .env
         echo PRIVATE_KEY_PATH=$(pwd)/security/private_key.pem >> .env
         echo PUBLIC_KEY_PATH=$(pwd)/security/public_key.pem >> .env
-        DJANGO_SETTINGS_MODULE=core.settings.development >> .env
+        echo DJANGO_SETTINGS_MODULE=core.settings.development >> .env
         echo DATABASE_ENVIRON=sqlite3 >> .env
-
 
     - name: Check if .env has been updated
       run: cat .env
@@ -57,11 +57,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
+
     - name: Run Tests
       run: python manage.py test
 
     - name: Clean up keys (Optional)
+      if: always()
       run: |
         rm -rf security
         echo "Keys removed after use."
